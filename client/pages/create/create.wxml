@@ -2,7 +2,7 @@
 
   <view class="section">
     <view class="label">房间名称</view>
-    <input class="name-input" placeholder="给房间起个名字" value="{{roomName}}" bindinput="onInputRoomName" />
+    <input class="name-input" placeholder="房间名称，如「晨间 HIIT」" value="{{roomName}}" bindinput="onInputRoomName" />
   </view>
 
   <!-- 分类标签 -->
@@ -17,27 +17,61 @@
     <view class="ex-preset-card {{selectedPresets[item.name] ? 'selected' : ''}}"
       wx:for="{{presets}}" wx:key="name"
       bindtap="onTogglePreset"
-      data-name="{{item.name}}" data-icon="{{item.icon}}" data-dur="{{item.dur}}">
+      data-name="{{item.name}}" data-icon="{{item.icon}}"
+      data-sets="{{item.sets}}" data-reps="{{item.reps}}"
+      data-dur="{{item.dur}}" data-rest="{{item.rest}}">
+      <view wx:if="{{selectedPresets[item.name]}}" class="ex-check-on">✓</view>
       <view class="ex-icon">{{item.icon}}</view>
       <view class="ex-name">{{item.name}}</view>
-      <view class="ex-time">{{item.dur}}s</view>
-      <view wx:if="{{selectedPresets[item.name]}}" class="ex-check-on">✓</view>
+      <view class="ex-time">{{item.sets}}组×{{item.reps}}次·{{item.dur}}s | 休{{item.rest}}s</view>
     </view>
   </view>
 
-  <!-- 已选动作 -->
-  <view class="section" wx:if="{{Object.keys(selectedPresets).length > 0}}">
-    <view class="label">已选动作</view>
-    <view class="chip-wrap">
-      <view class="chip" wx:for="{{selectedPresets}}" wx:key="name">
-        <text>{{item.icon}} {{item.name}} · {{item.dur}}s</text>
-        <text class="chip-close" bindtap="onRemovePreset" data-name="{{item.name}}">×</text>
+  <!-- 自定义动作 -->
+  <view class="custom-ex-section">
+    <view class="label">自定义动作</view>
+    <view class="custom-form">
+      <view class="custom-row">
+        <input class="custom-inp" placeholder="输入动作名称，如「波比跳」" value="{{customName}}" bindinput="onCustomInput" data-field="customName" />
+        <input class="custom-inp-sm" type="number" value="{{customSets}}" placeholder="组数" bindinput="onCustomInput" data-field="customSets" />
+        <input class="custom-inp-sm" type="number" value="{{customReps}}" placeholder="次数" bindinput="onCustomInput" data-field="customReps" />
+      </view>
+      <view class="custom-row" style="align-items:center;">
+        <text class="custom-label">每组</text>
+        <input class="custom-inp-sm" type="number" value="{{customDur}}" placeholder="秒" bindinput="onCustomInput" data-field="customDur" />
+        <text class="custom-label">秒</text>
+        <text class="custom-label" style="margin-left:8rpx;">休息</text>
+        <input class="custom-inp-sm" type="number" value="{{customRest}}" placeholder="秒" bindinput="onCustomInput" data-field="customRest" />
+        <text class="custom-label">秒</text>
+        <button class="btn-add-custom" bindtap="onAddCustom">添加</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 已选动作列表（可编辑） -->
+  <view id="selected-ex-list">
+    <view class="section" wx:if="{{selectedList.length > 0}}">
+      <view class="label">已选动作（{{selectedList.length}}）</view>
+      <view class="sel-card" wx:for="{{selectedList}}" wx:key="name" wx:for-item="p">
+        <view class="sel-hdr">
+          <text>{{p.icon}} {{p.name}}</text>
+          <text class="sel-del" bindtap="onRemovePreset" data-name="{{p.name}}">删除</text>
+        </view>
+        <view class="sel-fields">
+          <view class="sel-fld"><text class="sel-fld-lbl">组数</text><input class="sel-fld-inp" type="number" value="{{p.sets}}" data-name="{{p.name}}" data-field="sets" bindinput="onEditPreset" /></view>
+          <view class="sel-fld"><text class="sel-fld-lbl">次数</text><input class="sel-fld-inp" type="number" value="{{p.reps}}" data-name="{{p.name}}" data-field="reps" bindinput="onEditPreset" /></view>
+          <view class="sel-fld"><text class="sel-fld-lbl">每组(s)</text><input class="sel-fld-inp" type="number" value="{{p.dur}}" data-name="{{p.name}}" data-field="dur" bindinput="onEditPreset" /></view>
+          <view class="sel-fld"><text class="sel-fld-lbl">休息(s)</text><input class="sel-fld-inp" type="number" value="{{p.rest}}" data-name="{{p.name}}" data-field="rest" bindinput="onEditPreset" /></view>
+        </view>
       </view>
     </view>
   </view>
 
   <button class="btn-create" bindtap="onCreate">
-    创建房间（已选 {{Object.keys(selectedPresets).length}} 个动作）
+    创建房间（已选 {{selectedList.length}} 个动作）
   </button>
+  <view style="margin-top:20rpx;text-align:center;">
+    <button class="btn-back" bindtap="showHome">返回首页</button>
+  </view>
 
 </view>

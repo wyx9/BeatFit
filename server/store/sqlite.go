@@ -57,7 +57,10 @@ func initSchema(db *sql.DB) error {
 		id TEXT PRIMARY KEY,
 		room_id TEXT NOT NULL,
 		name TEXT NOT NULL,
-		duration_seconds INTEGER NOT NULL,
+		sets INTEGER NOT NULL DEFAULT 5,
+		reps INTEGER NOT NULL DEFAULT 8,
+		duration_seconds INTEGER NOT NULL DEFAULT 6,
+		rest_seconds INTEGER NOT NULL DEFAULT 20,
 		sort_order INTEGER NOT NULL,
 		FOREIGN KEY (room_id) REFERENCES rooms(id)
 	);
@@ -180,8 +183,8 @@ func (s *Store) CreateExercises(exercises []model.Exercise) error {
 
 	for _, e := range exercises {
 		_, err := tx.Exec(
-			"INSERT INTO exercises (id, room_id, name, duration_seconds, sort_order) VALUES (?, ?, ?, ?, ?)",
-			e.ID, e.RoomID, e.Name, e.DurationSeconds, e.SortOrder,
+			"INSERT INTO exercises (id, room_id, name, sets, reps, duration_seconds, rest_seconds, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+			e.ID, e.RoomID, e.Name, e.Sets, e.Reps, e.DurationSeconds, e.RestSeconds, e.SortOrder,
 		)
 		if err != nil {
 			return err
@@ -192,7 +195,7 @@ func (s *Store) CreateExercises(exercises []model.Exercise) error {
 
 func (s *Store) GetExercisesByRoomID(roomID string) ([]model.Exercise, error) {
 	rows, err := s.db.Query(
-		"SELECT id, room_id, name, duration_seconds, sort_order FROM exercises WHERE room_id = ? ORDER BY sort_order",
+		"SELECT id, room_id, name, sets, reps, duration_seconds, rest_seconds, sort_order FROM exercises WHERE room_id = ? ORDER BY sort_order",
 		roomID,
 	)
 	if err != nil {
@@ -203,7 +206,7 @@ func (s *Store) GetExercisesByRoomID(roomID string) ([]model.Exercise, error) {
 	var exercises []model.Exercise
 	for rows.Next() {
 		var e model.Exercise
-		if err := rows.Scan(&e.ID, &e.RoomID, &e.Name, &e.DurationSeconds, &e.SortOrder); err != nil {
+		if err := rows.Scan(&e.ID, &e.RoomID, &e.Name, &e.Sets, &e.Reps, &e.DurationSeconds, &e.RestSeconds, &e.SortOrder); err != nil {
 			return nil, err
 		}
 		exercises = append(exercises, e)

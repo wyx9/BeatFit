@@ -1,66 +1,58 @@
 <view class="container">
 
-  <!-- 登录区域 -->
+  <!-- 登录 -->
   <view class="login-section" wx:if="{{!loggedIn}}">
-    <view class="logo">一起健身</view>
-    <view class="subtitle">和朋友一起完成训练计划</view>
+    <view class="login-icon">💪</view>
+    <view class="login-title">BeatFit</view>
+    <view class="login-sub">和朋友一起完成训练计划</view>
     <input class="nickname-input" placeholder="输入你的昵称" value="{{nickname}}" bindinput="onInputNickname" />
-    <button class="btn-primary" bindtap="onLogin">进入</button>
-
-    <!-- 最近使用 -->
+    <button class="btn-login" bindtap="onLogin">进入</button>
     <view class="recent-section" wx:if="{{recentUsers.length > 0}}">
       <view class="recent-title">最近使用</view>
       <view class="recent-list">
-        <view class="recent-tag" wx:for="{{recentUsers}}" wx:key="index" bindtap="onQuickLogin" data-name="{{item}}">
-          {{item}}
-        </view>
+        <view class="recent-tag" wx:for="{{recentUsers}}" wx:key="index" bindtap="onQuickLogin" data-name="{{item}}">{{item}}</view>
       </view>
     </view>
   </view>
 
-  <!-- 主界面 -->
-  <view class="main-section" wx:if="{{loggedIn}}">
-    <view class="header">
-      <view class="greeting" bindtap="onToggleSwitch">Hi, {{nickname}} ▾</view>
-      <button class="btn-create" bindtap="onCreateRoom">+ 创建房间</button>
+  <!-- 首页 -->
+  <view wx:if="{{loggedIn}}">
+    <view class="home-header">
+      <view class="home-greeting" bindtap="onToggleSwitch">Hi, {{nickname}} <text class="arrow">▾</text></view>
+      <button class="btn-create-room" bindtap="onCreateRoom">+ 创建房间</button>
     </view>
 
-    <!-- 切换账号面板 -->
+    <!-- 切换账号 -->
     <view class="switch-panel" wx:if="{{showSwitch}}">
-      <view class="switch-title">切换账号</view>
-      <view class="switch-list">
-        <view class="switch-item" wx:for="{{recentUsers}}" wx:key="index" bindtap="onQuickLogin" data-name="{{item}}">
-          {{item}}
-          <text class="switch-hint" wx:if="{{item === nickname}}">（当前）</text>
-        </view>
+      <view class="switch-label">切换账号</view>
+      <view class="switch-item" wx:for="{{recentUsers}}" wx:key="index" bindtap="onQuickLogin" data-name="{{item}}">
+        <text>{{item}}</text><text class="cur" wx:if="{{item === nickname}}">当前</text>
       </view>
       <view class="switch-actions">
-        <button class="btn-logout" bindtap="onLogout">登出</button>
-        <button class="btn-cancel" bindtap="onToggleSwitch">取消</button>
+        <button class="btn-switch-out" bindtap="onLogout">登出</button>
+        <button class="btn-switch-cancel" bindtap="onToggleSwitch">取消</button>
       </view>
     </view>
 
-    <!-- 加入房间 -->
-    <view class="join-bar">
-      <view class="join-toggle" bindtap="onJoinToggle">
-        <text>加入房间</text>
-        <text class="arrow">{{showJoin ? '▲' : '▼'}}</text>
-      </view>
-      <view class="join-form" wx:if="{{showJoin}}">
-        <input class="code-input" placeholder="输入6位房间码" value="{{joinCode}}" bindinput="onInputCode" maxlength="6" />
-        <button class="btn-join" bindtap="onJoinRoom">加入</button>
+    <!-- 加入 -->
+    <view class="join-section">
+      <view class="join-label">加入房间</view>
+      <view class="join-body">
+        <input class="code-input" placeholder="6位房码" value="{{joinCode}}" bindinput="onInputCode" maxlength="6" />
+        <button class="btn-join-code" bindtap="onJoinRoom">加入</button>
       </view>
     </view>
 
     <!-- 房间列表 -->
-    <view class="room-list">
-      <view class="section-title">活跃房间</view>
-      <view class="empty" wx:if="{{rooms.length === 0}}">暂无活跃房间，创建一个吧！</view>
-      <view class="room-card" wx:for="{{rooms}}" wx:key="id" bindtap="onEnterRoom" data-code="{{item.code}}">
-        <view class="room-name">{{item.name}}</view>
-        <view class="room-code">房间码: {{item.code}}</view>
-        <view class="room-status">{{item.status === 'waiting' ? '等待中' : '训练中'}}</view>
+    <view class="room-list-title">活跃房间</view>
+    <view class="room-empty" wx:if="{{rooms.length === 0}}">暂无活跃房间，创建一个吧</view>
+    <view class="room-item" wx:for="{{rooms}}" wx:key="id">
+      <view class="info" bindtap="onEnterRoom" data-code="{{item.code}}">
+        <view class="name">{{item.name}}</view>
+        <view class="code">房码 {{item.code}}</view>
       </view>
+      <view class="status-tag {{item.status === 'waiting' ? 'status-waiting' : 'status-active'}}">{{item.status === 'waiting' ? '等待中' : '训练中'}}</view>
+      <button wx:if="{{item.status === 'waiting'}}" class="btn-join-room" catchtap="onJoinFromList" data-code="{{item.code}}">加入</button>
     </view>
   </view>
 

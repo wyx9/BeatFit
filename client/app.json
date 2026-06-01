@@ -7,10 +7,10 @@
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#1a1a2e",
-    "navigationBarTitleText": "一起健身",
+    "navigationBarBackgroundColor": "#000000",
+    "navigationBarTitleText": "BeatFit",
     "navigationBarTextStyle": "white",
-    "backgroundColor": "#16213e"
+    "backgroundColor": "#000000"
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json"

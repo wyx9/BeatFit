@@ -26,7 +26,9 @@ type RoomSession struct {
 	// 训练状态
 	training          bool
 	currentIdx        int
-	exerciseStartTime time.Time // 当前动作开始时间，用于计算重连时剩余秒数
+	currentSet        int       // 当前第几组 (1-based)
+	currentPhase      string    // "active" 或 "rest"
+	exerciseStartTime time.Time // 当前阶段开始时间，用于计算重连时剩余秒数
 	timerStop         chan struct{}
 	timerPause        chan bool
 
@@ -161,15 +163,23 @@ func (rs *RoomSession) AddClient(userID string, conn *websocket.Conn) {
 	// 如果训练正在进行，向新客户端发送当前进度
 	if rs.training && rs.currentIdx < len(rs.Exercises) {
 		elapsed := int(time.Since(rs.exerciseStartTime).Seconds())
-		remaining := rs.Exercises[rs.currentIdx].DurationSeconds - elapsed
+		var totalSec int
+		if rs.currentPhase == "rest" {
+			totalSec = rs.Exercises[rs.currentIdx].RestSeconds
+		} else {
+			totalSec = rs.Exercises[rs.currentIdx].DurationSeconds
+		}
+		remaining := totalSec - elapsed
 		if remaining < 0 {
 			remaining = 0
 		}
 		resume := model.TrainingResumeData{
 			Exercises:    rs.Exercises,
 			CurrentIndex: rs.currentIdx,
+			SetNumber:    rs.currentSet,
 			SecondsLeft:  remaining,
-			TotalSeconds: rs.Exercises[rs.currentIdx].DurationSeconds,
+			TotalSeconds: totalSec,
+			Phase:        rs.currentPhase,
 		}
 		data, _ := json.Marshal(model.WSMessage{Type: "training_resume", Data: resume})
 		select {
@@ -221,12 +231,20 @@ func (rs *RoomSession) StartTraining() {
 	}
 	rs.training = true
 	rs.currentIdx = 0
-	rs.exerciseStartTime = time.Now() // 记录开始时间，用于重连时计算剩余秒数
+	rs.currentSet = 1
+	rs.currentPhase = "active"
+	rs.exerciseStartTime = time.Now()
 	rs.mu.Unlock()
 
+	// 计算总时长（所有动作的总秒数）
 	totalDuration := 0
 	for _, e := range rs.Exercises {
-		totalDuration += e.DurationSeconds
+		for s := 0; s < e.Sets; s++ {
+			totalDuration += e.DurationSeconds
+			if s < e.Sets-1 {
+				totalDuration += e.RestSeconds
+			}
+		}
 	}
 
 	rs.BroadcastMessage(model.WSMessage{
@@ -241,6 +259,7 @@ func (rs *RoomSession) StartTraining() {
 	go rs.runTimer()
 }
 
+// 训练计时器：动作循环内嵌套组循环，每组 active → rest
 func (rs *RoomSession) runTimer() {
 	for {
 		rs.mu.RLock()
@@ -252,35 +271,41 @@ func (rs *RoomSession) runTimer() {
 		exercise := rs.Exercises[idx]
 		rs.mu.RUnlock()
 
-		remaining := exercise.DurationSeconds
+		// 遍历该动作的每一组
+		for set := 1; set <= exercise.Sets; set++ {
+			// ---- 动作阶段 ----
+			rs.mu.Lock()
+			rs.currentSet = set
+			rs.currentPhase = "active"
+			rs.exerciseStartTime = time.Now()
+			rs.mu.Unlock()
 
-		// 倒计时
-		ticker := time.NewTicker(1 * time.Second)
-		for remaining > 0 {
-			select {
-			case <-ticker.C:
-				remaining--
+			if !rs.countdown(exercise.DurationSeconds, idx, set, "active", exercise.Name) {
+				return // 被终止
+			}
 
-				rs.BroadcastMessage(model.WSMessage{
-					Type: "timer_tick",
-					Data: model.TimerTickData{
-						SecondsLeft:   remaining,
-						ExerciseIndex: idx,
-						TotalSeconds:  exercise.DurationSeconds,
-					},
-				})
+			// 最后一组不需要休息
+			if set == exercise.Sets {
+				break
+			}
 
-			case <-rs.timerStop:
-				ticker.Stop()
-				return
+			// ---- 休息阶段 ----
+			rs.mu.Lock()
+			rs.currentPhase = "rest"
+			rs.exerciseStartTime = time.Now()
+			rs.mu.Unlock()
+
+			if !rs.countdown(exercise.RestSeconds, idx, set, "rest", exercise.Name) {
+				return // 被终止
 			}
 		}
-		ticker.Stop()
 
 		// 切换到下一个动作
 		rs.mu.Lock()
 		rs.currentIdx++
-		rs.exerciseStartTime = time.Now() // 记录新动作开始时间
+		rs.currentSet = 1
+		rs.currentPhase = "active"
+		rs.exerciseStartTime = time.Now()
 		nextIdx := rs.currentIdx
 		rs.mu.Unlock()
 
@@ -295,16 +320,45 @@ func (rs *RoomSession) runTimer() {
 			return
 		}
 
-		next := rs.Exercises[nextIdx]
+		nextEx := rs.Exercises[nextIdx]
 		rs.BroadcastMessage(model.WSMessage{
 			Type: "exercise_change",
 			Data: model.ExerciseChangeData{
 				ExerciseIndex: nextIdx,
-				Exercise:      next,
-				TotalDuration: next.DurationSeconds,
+				Exercise:      nextEx,
+				TotalDuration: nextEx.DurationSeconds,
 			},
 		})
 	}
+}
+
+// countdown 倒计时 total 秒，每秒广播 timer_tick，被终止返回 false
+func (rs *RoomSession) countdown(totalSec int, exIdx, setNum int, phase, exName string) bool {
+	ticker := time.NewTicker(1 * time.Second)
+	defer ticker.Stop()
+
+	remaining := totalSec
+	for remaining > 0 {
+		select {
+		case <-ticker.C:
+			remaining--
+			rs.BroadcastMessage(model.WSMessage{
+				Type: "timer_tick",
+				Data: model.TimerTickData{
+					SecondsLeft:   remaining,
+					ExerciseIndex: exIdx,
+					TotalSeconds:  totalSec,
+					SetNumber:     setNum,
+					TotalSets:     rs.Exercises[exIdx].Sets,
+					Phase:         phase,
+					ExerciseName:  exName,
+				},
+			})
+		case <-rs.timerStop:
+			return false
+		}
+	}
+	return true
 }
 
 func (rs *RoomSession) stopTimer() {

@@ -43,17 +43,31 @@ func (svc *RoomService) CreateRoom(ownerID string, req model.CreateRoomReq) (*mo
 	exercises := make([]model.Exercise, len(req.Exercises))
 	exerciseInfos := make([]model.ExerciseInfo, len(req.Exercises))
 	for i, e := range req.Exercises {
+		// 校验：至少 1 组，每组至少 1 秒
+		sets := e.Sets
+		if sets < 1 { sets = 5 }
+		dur := e.DurationSeconds
+		if dur < 1 { dur = 6 }
+		reps := e.Reps
+		if reps < 1 { reps = 8 }
+
 		exercises[i] = model.Exercise{
 			ID:              uuid.New().String(),
 			RoomID:          room.ID,
 			Name:            e.Name,
-			DurationSeconds: e.DurationSeconds,
+			Sets:            sets,
+			Reps:            reps,
+			DurationSeconds: dur,
+			RestSeconds:     e.RestSeconds, // 用户可设为 0（无休息）
 			SortOrder:       i,
 		}
 		exerciseInfos[i] = model.ExerciseInfo{
 			ID:              exercises[i].ID,
 			Name:            e.Name,
-			DurationSeconds: e.DurationSeconds,
+			Sets:            sets,
+			Reps:            reps,
+			DurationSeconds: dur,
+			RestSeconds:     e.RestSeconds,
 			SortOrder:       i,
 		}
 	}

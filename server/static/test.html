@@ -7,20 +7,19 @@
 <style>
 /* ===== 基础变量 & 重置 ===== */
 :root {
-  --bg: #0a0a0f;
-  --surface: rgba(255,255,255,0.04);
-  --surface-hover: rgba(255,255,255,0.07);
-  --border: rgba(255,255,255,0.06);
-  --primary: #ff4757;
-  --primary-glow: rgba(255,71,87,0.25);
-  --accent: #7c5cfc;
-  --success: #2ed573;
-  --text: #f0f0f5;
-  --text-dim: rgba(255,255,255,0.55);
-  --text-muted: rgba(255,255,255,0.3);
-  --radius: 16px;
-  --radius-sm: 10px;
-  --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+  --bg: #000;
+  --surface: rgba(255,255,255,0.08);
+  --surface-hover: rgba(255,255,255,0.12);
+  --border: rgba(255,255,255,0.1);
+  --primary: #007AFF;
+  --primary-dim: rgba(0,122,255,0.12);
+  --success: #34C759;
+  --text: #fff;
+  --text-dim: rgba(255,255,255,0.6);
+  --text-muted: rgba(255,255,255,0.35);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --transition: 0.2s ease;
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -34,18 +33,14 @@ body {
   overflow-x: hidden;
 }
 
-/* 背景氛围光 */
+/* 背景氛围光 — 极淡的蓝色光晕 */
 body::before {
   content: '';
   position: fixed;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(ellipse at 30% 20%, rgba(124,92,252,0.06) 0%, transparent 50%),
-              radial-gradient(ellipse at 70% 60%, rgba(255,71,87,0.05) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(ellipse at 30% 10%, rgba(0,122,255,0.04) 0%, transparent 60%);
+  pointer-events: none; z-index: 0;
 }
 
 .container {
@@ -87,9 +82,8 @@ body::before {
 .btn-primary {
   background: var(--primary);
   color: #fff;
-  box-shadow: 0 4px 20px var(--primary-glow);
 }
-.btn-primary:hover { box-shadow: 0 6px 30px var(--primary-glow); transform: translateY(-1px); }
+.btn-primary:hover { opacity: 0.9; }
 
 .btn-outline {
   background: transparent;
@@ -142,7 +136,7 @@ body::before {
 .login-box { text-align: center; padding-top: 100px; }
 .login-icon {
   width: 72px; height: 72px; margin: 0 auto 24px;
-  background: linear-gradient(135deg, var(--primary), #ff6b81);
+  background: var(--primary);
   border-radius: 22px;
   display: flex; align-items: center; justify-content: center;
   font-size: 36px;
@@ -244,7 +238,7 @@ body::before {
   position: relative; text-align: center;
 }
 .ex-preset-card:hover { border-color: rgba(255,255,255,0.18); }
-.ex-preset-card.selected { border-color: var(--primary); background: rgba(255,71,87,0.06); }
+.ex-preset-card.selected { border-color: var(--primary); background: var(--primary-dim); }
 .ex-preset-card .ex-icon { font-size: 28px; margin-bottom: 6px; }
 .ex-preset-card .ex-title { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
 .ex-preset-card .ex-time { font-size: 11px; color: var(--text-dim); }
@@ -259,20 +253,38 @@ body::before {
   background-size: 12px; background-position: center; background-repeat: no-repeat;
 }
 
-/* 已选动作摘要 */
-.selected-summary { margin-bottom: 20px; }
-.selected-summary .section-label { margin-bottom: 8px; }
-.selected-chip {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 6px 12px; margin: 0 6px 6px 0;
-  background: rgba(255,71,87,0.08); border: 1px solid rgba(255,71,87,0.15);
-  border-radius: 20px; font-size: 12px;
+/* 自定义动作 */
+.custom-ex-section { margin-bottom: 20px; padding: 14px; background: rgba(124,92,252,0.06); border: 1px solid rgba(124,92,252,0.15); border-radius: var(--radius-sm); }
+.custom-ex-section .section-label { cursor: pointer; margin-bottom: 10px; }
+.custom-ex-row { display: flex; gap: 8px; margin-bottom: 8px; }
+.custom-inp { flex: 1; height: 38px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 0 12px; font-size: 13px; outline: none; -webkit-appearance: none; appearance: none; }
+.custom-inp-sm { width: 72px; height: 38px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 0 8px; font-size: 13px; text-align: center; outline: none; -webkit-appearance: none; appearance: none; flex-shrink: 0; }
+.custom-inp:focus, .custom-inp-sm:focus { border-color: var(--accent); }
+.custom-inp::placeholder, .custom-inp-sm::placeholder { color: var(--text-muted); }
+
+/* 已选动作列表（可编辑） */
+#selected-ex-list { margin-bottom: 20px; }
+#selected-ex-list .section-label { margin-bottom: 10px; }
+.sel-ex-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 14px; margin-bottom: 10px;
 }
-.selected-chip .chip-del {
-  cursor: pointer; color: var(--text-muted); font-weight: 700;
-  margin-left: 2px; font-size: 14px;
+.sel-ex-hdr {
+  display: flex; align-items: center; margin-bottom: 10px;
 }
-.selected-chip .chip-del:hover { color: var(--primary); }
+.sel-ex-icon { font-size: 20px; margin-right: 8px; }
+.sel-ex-name { flex: 1; font-size: 14px; font-weight: 600; }
+.sel-ex-hdr .chip-del { cursor: pointer; color: var(--text-muted); font-size: 18px; font-weight: 700; }
+.sel-ex-hdr .chip-del:hover { color: var(--primary); }
+.sel-ex-fields { display: flex; gap: 8px; }
+.fld { flex: 1; text-align: center; }
+.fld label { display: block; font-size: 10px; color: var(--text-muted); margin-bottom: 4px; letter-spacing: 0.5px; }
+.fld input {
+  width: 100%; height: 34px; text-align: center;
+  background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+  border-radius: 6px; color: var(--text); font-size: 13px; outline: none;
+}
+.fld input:focus { border-color: var(--accent); }
 
 .ex-card {
   background: var(--surface); border: 1px solid var(--border);
@@ -319,7 +331,7 @@ body::before {
 .member-row:last-child { border-bottom: none; }
 .member-avatar {
   width: 40px; height: 40px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary), #ff6b81);
+  background: var(--primary);
   display: flex; align-items: center; justify-content: center;
   font-size: 16px; font-weight: 600; margin-right: 12px; flex-shrink: 0;
 }
@@ -332,7 +344,7 @@ body::before {
 .ex-row:last-child { border-bottom: none; }
 .ex-num {
   width: 28px; height: 28px; border-radius: 50%;
-  background: rgba(255,71,87,0.15); color: var(--primary);
+  background: var(--primary-dim); color: var(--primary);
   display: flex; align-items: center; justify-content: center;
   font-size: 12px; font-weight: 700; margin-right: 12px; flex-shrink: 0;
 }
@@ -362,7 +374,7 @@ body::before {
   border-radius: 2px; overflow: hidden; margin-bottom: 8px;
 }
 .progress-fill {
-  height: 100%; background: linear-gradient(90deg, var(--primary), #ff6b81);
+  height: 100%; background: var(--primary);
   border-radius: 2px; transition: width 0.5s ease;
 }
 .progress-label { font-size: 12px; color: var(--text-dim); }
@@ -379,8 +391,8 @@ body::before {
   animation: timerPulse 2s ease-in-out infinite;
 }
 @keyframes timerPulse {
-  0%, 100% { box-shadow: 0 0 0 0 var(--primary-glow); }
-  50% { box-shadow: 0 0 0 16px transparent; }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,122,255,0.15); }
+  50% { box-shadow: 0 0 0 12px transparent; }
 }
 .timer-ring-inner { text-align: center; }
 .timer-num { font-size: 80px; font-weight: 800; line-height: 1; letter-spacing: -2px; font-variant-numeric: tabular-nums; }
@@ -472,8 +484,29 @@ body::before {
     <!-- 动作网格 -->
     <div id="ex-preset-grid"></div>
 
-    <!-- 已选动作 -->
-    <div class="selected-summary" id="selected-summary"></div>
+    <!-- 自定义动作 -->
+    <div class="custom-ex-section">
+      <div class="section-label">自定义动作</div>
+      <div id="custom-ex-form">
+        <div class="custom-ex-row">
+          <input id="custom-ex-name" class="custom-inp" placeholder="输入动作名称，如「波比跳」" />
+          <input id="custom-ex-sets" class="custom-inp-sm" type="number" value="5" min="1" placeholder="组数" title="训练组数" />
+          <input id="custom-ex-reps" class="custom-inp-sm" type="number" value="8" min="1" placeholder="次数" title="每组次数" />
+        </div>
+        <div class="custom-ex-row" style="align-items:center;">
+          <span style="font-size:11px;color:var(--text-muted);flex-shrink:0;">每组</span>
+          <input id="custom-ex-dur" class="custom-inp-sm" type="number" value="6" min="1" placeholder="秒" title="每组倒计时秒数" />
+          <span style="font-size:11px;color:var(--text-muted);flex-shrink:0;">秒</span>
+          <span style="font-size:11px;color:var(--text-muted);flex-shrink:0;margin-left:4px;">休息</span>
+          <input id="custom-ex-rest" class="custom-inp-sm" type="number" value="20" min="0" placeholder="秒" title="组间休息秒数" />
+          <span style="font-size:11px;color:var(--text-muted);flex-shrink:0;">秒</span>
+          <button class="btn btn-primary btn-sm" onclick="addCustomExercise()">添加</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 已选动作列表（可编辑） -->
+    <div id="selected-ex-list"></div>
 
     <button class="btn btn-primary btn-full" onclick="doCreate()" id="btn-create-room">创建房间（已选 0 个动作）</button>
     <div class="back-row"><button class="btn btn-ghost btn-sm btn-full" onclick="showHome()">返回首页</button></div>
@@ -657,9 +690,14 @@ async function loadRooms() {
     const rooms = await api('GET', '/api/rooms');
     if (!rooms.length) { $('room-list').innerHTML = '<div class="room-empty">暂无活跃房间，创建一个吧</div>'; return; }
     $('room-list').innerHTML = rooms.map(r =>
-      '<div class="room-item" onclick="enterRoom(\''+r.code+'\')">'+
-        '<div><div class="name">'+r.name+'</div><div class="code">房码 '+r.code+'</div></div>'+
-        '<span class="tag '+(r.status==='waiting'?'tag-green':'tag-red')+'">'+(r.status==='waiting'?'等待中':'训练中')+'</span>'+
+      '<div class="room-item">'+
+        '<div style="flex:1;" onclick="enterRoom(\''+r.code+'\')">'+
+          '<div class="name">'+r.name+'</div><div class="code">房码 '+r.code+'</div>'+
+        '</div>'+
+        '<span class="tag '+(r.status==='waiting'?'tag-green':'tag-red')+'" style="margin-right:8px;">'+(r.status==='waiting'?'等待中':'训练中')+'</span>'+
+        (r.status==='waiting'
+          ? '<button class="btn btn-primary btn-sm" style="height:32px;font-size:12px;padding:0 14px;" onclick="event.stopPropagation();joinAndEnter(\''+r.code+'\')">加入</button>'
+          : '')+
       '</div>'
     ).join('');
   } catch(e) { console.error(e); }
@@ -670,6 +708,12 @@ async function doJoin() {
   await api('POST', '/api/rooms/'+code+'/join', {});
   enterRoom(code);
 }
+// 直接加入房间（从列表按钮）
+async function joinAndEnter(code) {
+  await api('POST', '/api/rooms/'+code+'/join', {});
+  enterRoom(code);
+}
+
 async function enterRoom(code) {
   currentRoomCode = code;
   await showRoom();
@@ -678,34 +722,44 @@ async function enterRoom(code) {
 // ========== 动作预设库 ==========
 const EXERCISE_PRESETS = {
   '胸': [
-    { name:'俯卧撑', dur:60, icon:'💪' }, { name:'钻石俯卧撑', dur:40, icon:'💎' },
-    { name:'宽距俯卧撑', dur:45, icon:'↔️' }, { name:'下斜俯卧撑', dur:40, icon:'📐' },
-    { name:'上斜俯卧撑', dur:40, icon:'🔼' }, { name:'蜘蛛俯卧撑', dur:40, icon:'🕷️' },
-    { name:'击掌俯卧撑', dur:30, icon:'👏' }, { name:'哑铃卧推', dur:45, icon:'🏋️' },
+    { name:'俯卧撑', sets:5, reps:8, dur:6, rest:20, icon:'💪' },
+    { name:'钻石俯卧撑', sets:5, reps:8, dur:6, rest:20, icon:'💎' },
+    { name:'宽距俯卧撑', sets:5, reps:8, dur:6, rest:20, icon:'↔️' },
+    { name:'下斜俯卧撑', sets:5, reps:8, dur:6, rest:20, icon:'📐' },
+    { name:'上斜俯卧撑', sets:5, reps:8, dur:6, rest:20, icon:'🔼' },
+    { name:'哑铃卧推', sets:5, reps:8, dur:6, rest:20, icon:'🏋️' },
   ],
   '背': [
-    { name:'高位下拉', dur:45, icon:'🔽' }, { name:'引体向上', dur:40, icon:'🧗' },
-    { name:'哑铃划船', dur:45, icon:'🚣' }, { name:'俯身飞鸟', dur:40, icon:'🦅' },
-    { name:'硬拉', dur:50, icon:'🏋️' }, { name:'超人式', dur:30, icon:'🦸' },
-    { name:'反向划船', dur:45, icon:'⤴️' }, { name:'T 杆划船', dur:45, icon:'🏋️' },
+    { name:'高位下拉', sets:5, reps:8, dur:6, rest:20, icon:'🔽' },
+    { name:'引体向上', sets:5, reps:8, dur:6, rest:20, icon:'🧗' },
+    { name:'哑铃划船', sets:5, reps:8, dur:6, rest:20, icon:'🚣' },
+    { name:'俯身飞鸟', sets:5, reps:8, dur:6, rest:20, icon:'🦅' },
+    { name:'硬拉', sets:5, reps:8, dur:6, rest:20, icon:'🏋️' },
+    { name:'超人式', sets:5, reps:8, dur:6, rest:20, icon:'🦸' },
   ],
   '腿': [
-    { name:'深蹲', dur:60, icon:'🦵' }, { name:'弓步蹲', dur:45, icon:'🚶' },
-    { name:'臀桥', dur:45, icon:'🌉' }, { name:'跳跃深蹲', dur:40, icon:'⬆️' },
-    { name:'靠墙静蹲', dur:60, icon:'🧱' }, { name:'相扑深蹲', dur:50, icon:'🤼' },
-    { name:'单腿硬拉', dur:40, icon:'🦩' }, { name:'侧弓步', dur:40, icon:'↔️' },
+    { name:'深蹲', sets:5, reps:8, dur:6, rest:20, icon:'🦵' },
+    { name:'弓步蹲', sets:5, reps:8, dur:6, rest:20, icon:'🚶' },
+    { name:'臀桥', sets:5, reps:8, dur:6, rest:20, icon:'🌉' },
+    { name:'跳跃深蹲', sets:5, reps:8, dur:6, rest:20, icon:'⬆️' },
+    { name:'靠墙静蹲', sets:5, reps:8, dur:6, rest:20, icon:'🧱' },
+    { name:'相扑深蹲', sets:5, reps:8, dur:6, rest:20, icon:'🤼' },
   ],
   '手臂': [
-    { name:'弯举', dur:45, icon:'💪' }, { name:'锤式弯举', dur:40, icon:'🔨' },
-    { name:'三头臂屈伸', dur:45, icon:'⬇️' }, { name:'集中弯举', dur:40, icon:'🎯' },
-    { name:'腕弯举', dur:30, icon:'🤲' }, { name:'钻石俯卧撑', dur:40, icon:'💎' },
-    { name:'反握弯举', dur:40, icon:'🔄' }, { name:'过顶臂屈伸', dur:45, icon:'🙆' },
+    { name:'弯举', sets:5, reps:8, dur:6, rest:20, icon:'💪' },
+    { name:'锤式弯举', sets:5, reps:8, dur:6, rest:20, icon:'🔨' },
+    { name:'三头臂屈伸', sets:5, reps:8, dur:6, rest:20, icon:'⬇️' },
+    { name:'集中弯举', sets:5, reps:8, dur:6, rest:20, icon:'🎯' },
+    { name:'腕弯举', sets:5, reps:8, dur:6, rest:20, icon:'🤲' },
+    { name:'过顶臂屈伸', sets:5, reps:8, dur:6, rest:20, icon:'🙆' },
   ],
   '核心': [
-    { name:'平板支撑', dur:60, icon:'🪨' }, { name:'卷腹', dur:45, icon:'🔄' },
-    { name:'俄罗斯转体', dur:40, icon:'💫' }, { name:'仰卧抬腿', dur:45, icon:'🦶' },
-    { name:'登山者', dur:40, icon:'🏔️' }, { name:'侧平板', dur:30, icon:'↔️' },
-    { name:'死虫式', dur:40, icon:'🐛' }, { name:'V字卷腹', dur:40, icon:'🔺' },
+    { name:'平板支撑', sets:5, reps:8, dur:6, rest:20, icon:'🪨' },
+    { name:'卷腹', sets:5, reps:8, dur:6, rest:20, icon:'🔄' },
+    { name:'俄罗斯转体', sets:5, reps:8, dur:6, rest:20, icon:'💫' },
+    { name:'仰卧抬腿', sets:5, reps:8, dur:6, rest:20, icon:'🦶' },
+    { name:'登山者', sets:5, reps:8, dur:6, rest:20, icon:'🏔️' },
+    { name:'侧平板', sets:5, reps:8, dur:6, rest:20, icon:'↔️' },
   ],
 };
 const CATEGORIES = Object.keys(EXERCISE_PRESETS);
@@ -741,20 +795,20 @@ function renderPresetGrid() {
   const presets = EXERCISE_PRESETS[currentCategory] || [];
   $('ex-preset-grid').innerHTML = '<div class="ex-grid">' + presets.map(p => {
     const sel = !!selectedPresets[p.name];
-    return '<div class="ex-preset-card'+(sel?' selected':'')+'" onclick="togglePreset(\''+p.name+'\',\''+p.icon+'\','+p.dur+')">'+
+    return '<div class="ex-preset-card'+(sel?' selected':'')+'" onclick="togglePreset(\''+p.name+'\',\''+p.icon+'\','+p.sets+','+p.reps+','+p.dur+','+p.rest+')">'+
       '<div class="ex-check"></div>'+
       '<div class="ex-icon">'+p.icon+'</div>'+
       '<div class="ex-title">'+p.name+'</div>'+
-      '<div class="ex-time">'+p.dur+'s</div>'+
+      '<div class="ex-time">'+p.sets+'组 × '+p.reps+'次 · '+p.dur+'s | 休'+p.rest+'s</div>'+
     '</div>';
   }).join('') + '</div>';
 }
 
-function togglePreset(name, icon, dur) {
+function togglePreset(name, icon, sets, reps, dur, rest) {
   if (selectedPresets[name]) {
     delete selectedPresets[name];
   } else {
-    selectedPresets[name] = { name, icon, dur };
+    selectedPresets[name] = { name, icon, sets, reps, dur, rest };
   }
   renderPresetGrid();
   updateSelectedSummary();
@@ -766,19 +820,51 @@ function removePreset(name) {
   updateSelectedSummary();
 }
 
+// 渲染已选动作列表（可编辑）
 function updateSelectedSummary() {
   const keys = Object.keys(selectedPresets);
   if (keys.length === 0) {
-    $('selected-summary').innerHTML = '';
+    $('selected-ex-list').innerHTML = '';
   } else {
-    $('selected-summary').innerHTML =
+    $('selected-ex-list').innerHTML =
       '<div class="section-label">已选动作（'+keys.length+'）</div>'+
       keys.map(k => {
         const p = selectedPresets[k];
-        return '<span class="selected-chip">'+p.icon+' '+p.name+' · '+p.dur+'s <span class="chip-del" onclick="event.stopPropagation();removePreset(\''+p.name+'\')">×</span></span>';
+        return '<div class="sel-ex-card">'+
+          '<div class="sel-ex-hdr"><span class="sel-ex-icon">'+p.icon+'</span><span class="sel-ex-name">'+p.name+'</span><span class="chip-del" onclick="event.stopPropagation();removePreset(\''+p.name+'\')">×</span></div>'+
+          '<div class="sel-ex-fields">'+
+            '<div class="fld"><label>组数</label><input type="number" value="'+p.sets+'" min="1" onchange="updatePresetField(\''+p.name+'\',\'sets\',this.value)"></div>'+
+            '<div class="fld"><label>次数</label><input type="number" value="'+p.reps+'" min="1" onchange="updatePresetField(\''+p.name+'\',\'reps\',this.value)"></div>'+
+            '<div class="fld"><label>每组(s)</label><input type="number" value="'+p.dur+'" min="1" onchange="updatePresetField(\''+p.name+'\',\'dur\',this.value)"></div>'+
+            '<div class="fld"><label>休息(s)</label><input type="number" value="'+p.rest+'" min="0" onchange="updatePresetField(\''+p.name+'\',\'rest\',this.value)"></div>'+
+          '</div>'+
+        '</div>';
       }).join('');
   }
   $('btn-create-room').textContent = keys.length ? '创建房间（已选 '+keys.length+' 个动作）' : '创建房间（已选 0 个动作）';
+}
+
+// 手动添加自定义动作
+function addCustomExercise() {
+  const name = $('custom-ex-name').value.trim();
+  if (!name) return alert('请输入动作名称');
+  const sets = parseInt($('custom-ex-sets').value) || 5;
+  const reps = parseInt($('custom-ex-reps').value) || 8;
+  const dur  = parseInt($('custom-ex-dur').value) || 6;
+  const rest = parseInt($('custom-ex-rest').value) || 20;
+  selectedPresets[name] = { name, icon:'✏️', sets, reps, dur, rest };
+  // 清空输入框
+  $('custom-ex-name').value = '';
+  renderPresetGrid();
+  updateSelectedSummary();
+}
+
+// 编辑已选动作的字段
+function updatePresetField(name, field, val) {
+  const v = parseInt(val) || 1;
+  if (selectedPresets[name]) {
+    selectedPresets[name][field] = v;
+  }
 }
 
 async function doCreate() {
@@ -788,7 +874,7 @@ async function doCreate() {
   if (keys.length === 0) return alert('请至少选择一个动作');
   const exs = keys.map(k => {
     const p = selectedPresets[k];
-    return { name: p.name, duration_seconds: p.dur };
+    return { name: p.name, sets: p.sets, reps: p.reps, duration_seconds: p.dur, rest_seconds: p.rest };
   });
   const room = await api('POST', '/api/rooms', { name, exercises: exs });
   currentRoomCode = room.code;
@@ -815,7 +901,7 @@ async function refreshRoom() {
     (m.id===detail.room.owner_id ? '<span class="tag tag-red">房主</span>':'')+'</div>'
   ).join('');
   $('ex-plan').innerHTML = detail.exercises.map((e,i) =>
-    '<div class="ex-row"><div class="ex-num">'+(i+1)+'</div><div class="ex-name">'+e.name+'</div><div class="ex-dur">'+e.duration_seconds+'s</div></div>'
+    '<div class="ex-row"><div class="ex-num">'+(i+1)+'</div><div class="ex-name">'+e.name+'</div><div class="ex-dur">'+e.sets+'组 × '+e.reps+'次 · '+e.duration_seconds+'s/休'+e.rest_seconds+'s</div></div>'
   ).join('');
   const isOwner = detail.room.owner_id === userId;
   $('btn-start').style.display = isOwner ? '' : 'none';
@@ -876,8 +962,9 @@ function resumeTraining(data) {
   $('prog-fill').style.width = (data.current_index / data.exercises.length * 100)+'%';
   $('prog-text').textContent = (data.current_index+1)+' / '+data.exercises.length;
   $('timer-num').textContent = data.seconds_left;
-  $('cur-ex-name').textContent = data.exercises[data.current_index].name;
+  $('cur-ex-name').textContent = data.exercises[data.current_index].name + ' · 第 '+data.set_number+'/'+data.exercises[data.current_index].sets+' 组';
   $('cur-ex-dur').textContent = '目标 '+data.total_seconds+' 秒';
+  $('cur-ex-dur').style.color = data.phase === 'rest' ? 'var(--accent)' : '';
   updateNextHint(data.current_index, data.exercises);
 }
 
@@ -893,13 +980,27 @@ function startTraining(data) {
   showTrainingContent();
   $('prog-text').textContent = (data.current_index+1)+' / '+data.exercises.length;
   $('timer-num').textContent = cur.duration_seconds;
-  $('cur-ex-name').textContent = cur.name;
+  $('cur-ex-name').textContent = cur.name + ' · 第 1/'+cur.sets+' 组';
   $('cur-ex-dur').textContent = '目标 '+cur.duration_seconds+' 秒';
+  $('cur-ex-dur').style.color = '';
+  $('cur-ex-name').style.color = '';
   updateNextHint(data.current_index, data.exercises);
 }
 
 function updateTimer(data) {
   $('timer-num').textContent = data.seconds_left;
+  // 显示组数和阶段
+  const phaseLabel = data.phase === 'rest' ? '休息' : data.exercise_name;
+  const phaseColor = data.phase === 'rest' ? 'var(--accent)' : '';
+  const labelExtra = data.phase === 'rest' ? ' · 放松' : ' · 第 '+data.set_number+'/'+data.total_sets+' 组';
+  $('cur-ex-name').textContent = phaseLabel + labelExtra;
+  if (phaseColor) {
+    $('cur-ex-dur').style.color = phaseColor;
+    $('cur-ex-name').style.color = phaseColor;
+  } else {
+    $('cur-ex-dur').style.color = '';
+    $('cur-ex-name').style.color = '';
+  }
 }
 
 function changeExercise(data) {
@@ -918,7 +1019,8 @@ function changeExercise(data) {
 
 function updateNextHint(idx, exs) {
   if (idx < exs.length - 1) {
-    $('next-ex-hint').innerHTML = '下一个 <b>'+exs[idx+1].name+'</b> · '+exs[idx+1].duration_seconds+'s';
+    const nxt = exs[idx+1];
+    $('next-ex-hint').innerHTML = '下一个 <b>'+nxt.name+'</b> · '+nxt.sets+'组×'+nxt.duration_seconds+'s';
   } else {
     $('next-ex-hint').innerHTML = '';
   }
@@ -968,7 +1070,8 @@ function clearRoomAndGoHome() {
         const detail = await api('GET', '/api/rooms/' + roomCode);
         if (detail.room.status === 'active') {
           trainExercises = detail.exercises.map(e => ({
-            id: e.id, name: e.name, duration_seconds: e.duration_seconds, sort_order: e.sort_order
+            id: e.id, name: e.name, sets: e.sets, reps: e.reps,
+            duration_seconds: e.duration_seconds, rest_seconds: e.rest_seconds, sort_order: e.sort_order
           }));
           show('training');
           $('training-content').classList.add('hide');

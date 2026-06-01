@@ -8,7 +8,6 @@ Page({
     loggedIn: false,
     rooms: [],
     joinCode: '',
-    showJoin: false,
     showSwitch: false,
     recentUsers: []
   },
@@ -150,10 +149,6 @@ Page({
     })
   },
 
-  onJoinToggle() {
-    this.setData({ showJoin: !this.data.showJoin })
-  },
-
   onInputCode(e) {
     this.setData({ joinCode: e.detail.value.toUpperCase() })
   },
@@ -175,6 +170,16 @@ Page({
   onEnterRoom(e) {
     const code = e.currentTarget.dataset.code
     wx.navigateTo({ url: '/pages/room/room?code=' + code })
+  },
+
+  // 直接从列表加入房间
+  onJoinFromList(e) {
+    const code = e.currentTarget.dataset.code
+    api.joinRoom(code).then(() => {
+      wx.navigateTo({ url: '/pages/room/room?code=' + code })
+    }).catch(err => {
+      wx.showToast({ title: err.error || '加入失败', icon: 'none' })
+    })
   },
 
   onCreateRoom() {

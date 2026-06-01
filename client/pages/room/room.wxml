@@ -1,43 +1,35 @@
 <view class="container">
 
-  <!-- Room info -->
-  <view class="room-header">
-    <view class="room-name">{{room.name}}</view>
-    <view class="room-code-box" bindtap="onCopyCode">
+  <view class="waiting-header">
+    <view class="waiting-room-name">{{room.name}}</view>
+    <view class="code-display" bindtap="onCopyCode">
       <text class="code-label">房间码（点击复制）</text>
-      <text class="code-value">{{code}}</text>
+      <text class="code-val">{{code}}</text>
     </view>
   </view>
 
-  <!-- Exercise plan -->
-  <view class="section">
-    <view class="section-title">训练计划</view>
-    <view class="ex-list">
-      <view class="ex-row" wx:for="{{exercises}}" wx:key="id">
-        <view class="ex-order">{{index + 1}}</view>
-        <view class="ex-name">{{item.name}}</view>
-        <view class="ex-dur">{{item.duration_seconds}}秒</view>
-      </view>
+  <view class="card">
+    <view class="card-title">成员 ({{members.length}}人)</view>
+    <view class="member-row" wx:for="{{members}}" wx:key="id">
+      <view class="member-avatar">{{item.nickname[0] || '?'}}</view>
+      <view class="member-name">{{item.nickname}}</view>
+      <view class="owner-badge" wx:if="{{item.id === room.owner_id}}">房主</view>
     </view>
   </view>
 
-  <!-- Members -->
-  <view class="section">
-    <view class="section-title">成员 ({{members.length}}人)</view>
-    <view class="member-list">
-      <view class="member-row" wx:for="{{members}}" wx:key="id">
-        <view class="member-avatar"> {{item.nickname[0] || '?'}} </view>
-        <view class="member-name">{{item.nickname}}</view>
-        <view class="owner-tag" wx:if="{{item.id === room.owner_id}}">房主</view>
-      </view>
+  <view class="card">
+    <view class="card-title">训练计划</view>
+    <view class="ex-row" wx:for="{{exercises}}" wx:key="id">
+      <view class="ex-num">{{index + 1}}</view>
+      <view class="ex-name">{{item.name}}</view>
+      <view class="ex-dur">{{item.sets}}组×{{item.reps}}次·{{item.duration_seconds}}s/休{{item.rest_seconds}}s</view>
     </view>
   </view>
 
-  <!-- Actions -->
-  <view class="actions">
-    <button class="btn-leave" bindtap="onLeave">离开房间</button>
-    <button class="btn-start" wx:if="{{isOwner}}" bindtap="onStartTraining">开始训练</button>
-    <view class="waiting-tip" wx:if="{{!isOwner}}">等待房主开始训练...</view>
+  <view class="room-actions">
+    <button class="btn-leave-room" bindtap="onLeave">离开</button>
+    <button wx:if="{{isOwner}}" class="btn-start-train" bindtap="onStartTraining">开始训练</button>
+    <view wx:if="{{!isOwner}}" class="wait-tip">等待房主开始...</view>
   </view>
 
 </view>

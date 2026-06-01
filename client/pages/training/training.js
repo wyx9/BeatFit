@@ -13,7 +13,10 @@ Page({
     totalExercises: 0,
     completedExercises: [],
     finished: false,
-    nextExercise: null
+    nextExercise: null,
+    phaseLabel: '',
+    isRestPhase: false,
+    setInfo: ''
   },
 
   onLoad(options) {
@@ -41,19 +44,26 @@ Page({
         currentExercise: current,
         secondsLeft: current ? current.duration_seconds : 0,
         totalSeconds: current ? current.duration_seconds : 0,
-        nextExercise: next
+        nextExercise: next,
+        setInfo: current ? (current.name + ' · 第 1/' + current.sets + ' 组') : '',
+        isRestPhase: false
       })
     })
 
     this.ws.on('timer_tick', (msg) => {
       const data = msg.data
       const exercise = this.data.exercises[data.exercise_index]
+      const phaseLabel = data.phase === 'rest' ? '休息' : (data.exercise_name || '')
+      const nameWithSet = phaseLabel + (data.phase !== 'rest' ? ' · 第 ' + data.set_number + '/' + data.total_sets + ' 组' : ' · 放松')
       this.setData({
         secondsLeft: data.seconds_left,
         currentIndex: data.exercise_index,
         currentExercise: exercise,
         totalSeconds: data.total_seconds,
-        progress: exercise ? ((data.total_seconds - data.seconds_left) / data.total_seconds * 100) : 0
+        progress: exercise ? ((data.total_seconds - data.seconds_left) / data.total_seconds * 100) : 0,
+        phaseLabel: phaseLabel,
+        isRestPhase: data.phase === 'rest',
+        setInfo: nameWithSet
       })
     })
 
