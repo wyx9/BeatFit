@@ -3,8 +3,8 @@ package handler
 import (
 	"net/http"
 
-	"fitsync/model"
-	"fitsync/store"
+	"beatfit/model"
+	"beatfit/store"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"

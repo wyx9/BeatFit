@@ -3,8 +3,8 @@ package service
 import (
 	"fmt"
 
-	"fitsync/model"
-	"fitsync/store"
+	"beatfit/model"
+	"beatfit/store"
 
 	"github.com/google/uuid"
 )

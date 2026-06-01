@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"fitsync/model"
+	"beatfit/model"
 
 	_ "modernc.org/sqlite"
 )

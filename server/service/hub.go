@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"fitsync/model"
+	"beatfit/model"
 
 	"github.com/gorilla/websocket"
 )

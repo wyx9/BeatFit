@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"fitsync/model"
-	"fitsync/service"
+	"beatfit/model"
+	"beatfit/service"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"

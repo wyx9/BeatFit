@@ -1,4 +1,4 @@
-module fitsync
+module beatfit
 
 go 1.25
 

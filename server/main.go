@@ -12,9 +12,9 @@ import (
 	"syscall"
 	"time"
 
-	"fitsync/handler"
-	"fitsync/service"
-	"fitsync/store"
+	"beatfit/handler"
+	"beatfit/service"
+	"beatfit/store"
 
 	"github.com/gin-gonic/gin"
 )
