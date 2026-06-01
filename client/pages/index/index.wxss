@@ -1,0 +1,214 @@
+.container {
+  padding: 30rpx;
+}
+
+/* Login */
+.login-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 200rpx;
+}
+.logo {
+  font-size: 72rpx;
+  font-weight: bold;
+  color: #e94560;
+  margin-bottom: 20rpx;
+}
+.subtitle {
+  font-size: 28rpx;
+  color: #999;
+  margin-bottom: 80rpx;
+}
+.nickname-input {
+  width: 500rpx;
+  height: 80rpx;
+  background: #1a1a2e;
+  border: 2rpx solid #333;
+  border-radius: 16rpx;
+  color: #fff;
+  padding: 0 30rpx;
+  margin-bottom: 40rpx;
+}
+.btn-primary {
+  width: 500rpx;
+  height: 80rpx;
+  background: #e94560;
+  color: #fff;
+  border-radius: 40rpx;
+  font-size: 32rpx;
+  line-height: 80rpx;
+}
+
+/* 最近使用 */
+.recent-section {
+  margin-top: 60rpx;
+  width: 500rpx;
+}
+.recent-title {
+  font-size: 24rpx;
+  color: #666;
+  margin-bottom: 20rpx;
+  text-align: center;
+}
+.recent-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15rpx;
+  justify-content: center;
+}
+.recent-tag {
+  padding: 12rpx 30rpx;
+  background: #1a1a2e;
+  color: #ccc;
+  border-radius: 30rpx;
+  font-size: 26rpx;
+}
+
+/* 切换账号面板 */
+.switch-panel {
+  background: #1a1a2e;
+  border-radius: 16rpx;
+  padding: 25rpx 30rpx;
+  margin-bottom: 30rpx;
+}
+.switch-title {
+  font-size: 28rpx;
+  color: #ccc;
+  margin-bottom: 20rpx;
+}
+.switch-list {
+  margin-bottom: 20rpx;
+}
+.switch-item {
+  padding: 20rpx 0;
+  font-size: 28rpx;
+  color: #fff;
+  border-bottom: 1rpx solid #0f3460;
+}
+.switch-hint {
+  color: #999;
+  font-size: 24rpx;
+}
+.switch-actions {
+  display: flex;
+  gap: 20rpx;
+}
+.btn-logout {
+  flex: 1;
+  background: transparent;
+  color: #e94560;
+  border: 2rpx solid #e94560;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  height: 56rpx;
+  line-height: 56rpx;
+}
+.btn-cancel {
+  flex: 1;
+  background: #0f3460;
+  color: #999;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  height: 56rpx;
+  line-height: 56rpx;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+.greeting {
+  font-size: 36rpx;
+  color: #fff;
+}
+.btn-create {
+  background: #e94560;
+  color: #fff;
+  border-radius: 30rpx;
+  font-size: 26rpx;
+  padding: 0 30rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+}
+
+/* Join bar */
+.join-bar {
+  background: #1a1a2e;
+  border-radius: 16rpx;
+  margin-bottom: 30rpx;
+  overflow: hidden;
+}
+.join-toggle {
+  display: flex;
+  justify-content: space-between;
+  padding: 25rpx 30rpx;
+  color: #ccc;
+  font-size: 28rpx;
+}
+.join-form {
+  display: flex;
+  padding: 0 30rpx 25rpx;
+  gap: 20rpx;
+}
+.code-input {
+  flex: 1;
+  height: 70rpx;
+  background: #0f3460;
+  border-radius: 12rpx;
+  color: #fff;
+  padding: 0 20rpx;
+  font-size: 32rpx;
+  text-align: center;
+  letter-spacing: 8rpx;
+}
+.btn-join {
+  background: #0f3460;
+  color: #e94560;
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  padding: 0 30rpx;
+  height: 70rpx;
+  line-height: 70rpx;
+}
+
+/* Room list */
+.section-title {
+  font-size: 30rpx;
+  color: #ccc;
+  margin-bottom: 20rpx;
+}
+.empty {
+  text-align: center;
+  color: #666;
+  padding: 60rpx 0;
+  font-size: 26rpx;
+}
+.room-card {
+  background: #1a1a2e;
+  border-radius: 16rpx;
+  padding: 25rpx 30rpx;
+  margin-bottom: 20rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.room-name {
+  font-size: 30rpx;
+  color: #fff;
+  font-weight: bold;
+}
+.room-code {
+  font-size: 24rpx;
+  color: #999;
+}
+.room-status {
+  font-size: 24rpx;
+  color: #4ecca3;
+  padding: 6rpx 20rpx;
+  background: rgba(78, 204, 163, 0.15);
+  border-radius: 20rpx;
+}

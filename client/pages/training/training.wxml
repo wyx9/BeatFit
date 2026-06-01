@@ -1,0 +1,68 @@
+<view class="container">
+
+  <!-- Training active -->
+  <view class="training-active" wx:if="{{!finished}}">
+
+    <!-- Progress bar -->
+    <view class="progress-bar">
+      <view class="progress-fill" style="width: {{(currentIndex / totalExercises) * 100}}%"></view>
+    </view>
+    <view class="progress-text">{{currentIndex + 1}} / {{totalExercises}}</view>
+
+    <!-- Timer circle -->
+    <view class="timer-section">
+      <view class="timer-ring">
+        <view class="timer-inner">
+          <text class="timer-text">{{secondsLeft}}</text>
+          <text class="timer-unit">秒</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Current exercise -->
+    <view class="current-ex">
+      <view class="ex-label">当前动作</view>
+      <view class="ex-title">{{currentExercise.name}}</view>
+      <view class="ex-duration">目标 {{currentExercise.duration_seconds}} 秒</view>
+    </view>
+
+    <!-- 终止训练按钮 -->
+    <button class="btn-terminate" bindtap="onTerminate">终止训练</button>
+
+    <!-- Next exercise preview -->
+    <view class="next-ex" wx:if="{{nextExercise}}">
+      <text class="next-label">下一个：</text>
+      <text class="next-name">{{nextExercise.name}}</text>
+      <text class="next-dur">{{nextExercise.duration_seconds}}秒</text>
+    </view>
+
+    <!-- Completed list -->
+    <view class="completed-section" wx:if="{{completedExercises.length > 0}}">
+      <view class="completed-title">已完成</view>
+      <view class="completed-list">
+        <view class="completed-item" wx:for="{{completedExercises}}" wx:key="index">
+          <text class="check">✓</text>
+          <text>{{item}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Training finished -->
+  <view class="training-finished" wx:if="{{finished}}">
+    <view class="finish-icon">🎉</view>
+    <view class="finish-title">训练完成！</view>
+    <view class="finish-subtitle">太棒了，大家都完成了训练</view>
+
+    <view class="completed-all">
+      <view class="completed-label">完成的动作</view>
+      <view class="completed-item" wx:for="{{exercises}}" wx:key="id">
+        <text class="check">✓</text>
+        <text>{{item.name}} - {{item.duration_seconds}}秒</text>
+      </view>
+    </view>
+
+    <button class="btn-home" bindtap="onBackHome">返回首页</button>
+  </view>
+
+</view>

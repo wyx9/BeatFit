@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>一起健身</title>
+<style>
+/* ===== 基础变量 & 重置 ===== */
+:root {
+  --bg: #0a0a0f;
+  --surface: rgba(255,255,255,0.04);
+  --surface-hover: rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.06);
+  --primary: #ff4757;
+  --primary-glow: rgba(255,71,87,0.25);
+  --accent: #7c5cfc;
+  --success: #2ed573;
+  --text: #f0f0f5;
+  --text-dim: rgba(255,255,255,0.55);
+  --text-muted: rgba(255,255,255,0.3);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* 背景氛围光 */
+body::before {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at 30% 20%, rgba(124,92,252,0.06) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 60%, rgba(255,71,87,0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 20px 20px 40px;
+  position: relative;
+  z-index: 1;
+}
+
+.hide { display: none !important; }
+
+/* ===== 通用组件 ===== */
+.inp {
+  width: 100%;
+  height: 52px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  padding: 0 16px;
+  font-size: 15px;
+  outline: none;
+  transition: var(--transition);
+}
+.inp:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
+.inp::placeholder { color: var(--text-muted); }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 50px; padding: 0 28px;
+  border: none; border-radius: 25px;
+  font-size: 15px; font-weight: 600;
+  cursor: pointer; transition: var(--transition);
+  position: relative; overflow: hidden;
+}
+.btn:active { transform: scale(0.96); }
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 4px 20px var(--primary-glow);
+}
+.btn-primary:hover { box-shadow: 0 6px 30px var(--primary-glow); transform: translateY(-1px); }
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--text-dim);
+}
+.btn-outline:hover { border-color: rgba(255,255,255,0.25); color: var(--text); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-dim);
+  padding: 0 16px; height: 40px;
+}
+.btn-ghost:hover { color: var(--text); }
+
+.btn-sm { height: 40px; padding: 0 20px; font-size: 13px; border-radius: 20px; }
+.btn-full { width: 100%; }
+
+/* 卡片 */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: 12px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: var(--transition);
+}
+
+/* 标签 */
+.tag {
+  display: inline-flex; align-items: center;
+  padding: 4px 12px; border-radius: 20px;
+  font-size: 12px; font-weight: 500;
+}
+.tag-green { color: var(--success); background: rgba(46,213,115,0.1); }
+.tag-red { color: var(--primary); background: rgba(255,71,87,0.1); }
+
+/* ===== 页面切换动画 ===== */
+.page-enter {
+  animation: fadeSlideIn 0.3s ease;
+}
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== 登录页 ===== */
+.login-box { text-align: center; padding-top: 100px; }
+.login-icon {
+  width: 72px; height: 72px; margin: 0 auto 24px;
+  background: linear-gradient(135deg, var(--primary), #ff6b81);
+  border-radius: 22px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px;
+  box-shadow: 0 12px 40px var(--primary-glow);
+  animation: float 3s ease-in-out infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.login-title { font-size: 28px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.5px; }
+.login-sub { font-size: 14px; color: var(--text-dim); margin-bottom: 40px; }
+
+.recent-section { margin-top: 32px; }
+.recent-title { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; letter-spacing: 0.5px; }
+.recent-tags { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.recent-tag {
+  padding: 8px 18px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px; font-size: 13px; color: var(--text-dim);
+  cursor: pointer; transition: var(--transition);
+}
+.recent-tag:hover { border-color: var(--primary); color: var(--text); }
+
+/* ===== 首页 ===== */
+.home-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 24px;
+}
+.home-greeting { font-size: 22px; font-weight: 700; cursor: pointer; }
+.home-greeting span { font-size: 13px; color: var(--text-dim); }
+
+/* 切换面板 */
+.switch-panel { margin-bottom: 16px; }
+.switch-panel .switch-user {
+  padding: 14px 0; font-size: 15px; border-bottom: 1px solid var(--border);
+  cursor: pointer; transition: var(--transition);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.switch-user:hover { color: var(--primary); }
+.switch-user .current { font-size: 12px; color: var(--text-muted); }
+.switch-actions { display: flex; gap: 10px; margin-top: 14px; }
+
+/* 加入栏 */
+.join-section { margin-bottom: 20px; }
+.join-label { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; letter-spacing: 0.5px; }
+.join-body { display: flex; gap: 10px; }
+.code-inp {
+  flex: 1; height: 46px; background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  color: var(--text); padding: 0 12px; font-size: 20px;
+  text-align: center; letter-spacing: 8px; outline: none;
+  text-transform: uppercase; font-weight: 600;
+}
+.code-inp:focus { border-color: var(--accent); }
+
+/* 房间列表 */
+.section-label {
+  font-size: 12px; color: var(--text-muted); margin-bottom: 12px;
+  letter-spacing: 0.5px; text-transform: uppercase;
+}
+.room-empty { text-align: center; color: var(--text-muted); padding: 40px 0; font-size: 14px; }
+.room-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 18px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); margin-bottom: 8px;
+  cursor: pointer; transition: var(--transition);
+}
+.room-item:hover { border-color: rgba(255,255,255,0.15); background: var(--surface-hover); transform: translateX(4px); }
+.room-item .name { font-size: 15px; font-weight: 600; }
+.room-item .code { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+
+/* ===== 创建房间页 ===== */
+.create-title { font-size: 22px; font-weight: 700; margin-bottom: 24px; }
+
+/* 分类标签 */
+.category-tabs {
+  display: flex; gap: 8px; margin-bottom: 20px;
+  overflow-x: auto; padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+.category-tabs::-webkit-scrollbar { display: none; }
+.cat-tab {
+  padding: 8px 18px; border-radius: 20px;
+  font-size: 13px; font-weight: 500; white-space: nowrap;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text-dim); cursor: pointer; transition: var(--transition);
+}
+.cat-tab:hover { border-color: rgba(255,255,255,0.2); }
+.cat-tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* 动作网格 */
+.ex-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  margin-bottom: 16px; animation: fadeSlideIn 0.2s ease;
+}
+.ex-preset-card {
+  padding: 14px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition);
+  position: relative; text-align: center;
+}
+.ex-preset-card:hover { border-color: rgba(255,255,255,0.18); }
+.ex-preset-card.selected { border-color: var(--primary); background: rgba(255,71,87,0.06); }
+.ex-preset-card .ex-icon { font-size: 28px; margin-bottom: 6px; }
+.ex-preset-card .ex-title { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
+.ex-preset-card .ex-time { font-size: 11px; color: var(--text-dim); }
+.ex-preset-card .ex-check {
+  position: absolute; top: 8px; right: 8px;
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 2px solid var(--border); transition: var(--transition);
+}
+.ex-preset-card.selected .ex-check {
+  background: var(--primary); border-color: var(--primary);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+  background-size: 12px; background-position: center; background-repeat: no-repeat;
+}
+
+/* 已选动作摘要 */
+.selected-summary { margin-bottom: 20px; }
+.selected-summary .section-label { margin-bottom: 8px; }
+.selected-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; margin: 0 6px 6px 0;
+  background: rgba(255,71,87,0.08); border: 1px solid rgba(255,71,87,0.15);
+  border-radius: 20px; font-size: 12px;
+}
+.selected-chip .chip-del {
+  cursor: pointer; color: var(--text-muted); font-weight: 700;
+  margin-left: 2px; font-size: 14px;
+}
+.selected-chip .chip-del:hover { color: var(--primary); }
+
+.ex-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px; margin-bottom: 10px;
+  transition: var(--transition);
+  animation: fadeSlideIn 0.2s ease;
+}
+.ex-card-header { display: flex; justify-content: space-between; margin-bottom: 12px; }
+.ex-card-index { font-size: 12px; font-weight: 700; color: var(--primary); }
+.ex-card-del { font-size: 13px; color: var(--text-muted); cursor: pointer; }
+.ex-card-del:hover { color: var(--primary); }
+.ex-inp { width: 100%; height: 42px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 0 12px; font-size: 14px; outline: none; margin-bottom: 8px; }
+.ex-inp:focus { border-color: var(--accent); }
+.ex-dur-row { display: flex; align-items: center; gap: 10px; }
+.ex-dur-lbl { font-size: 13px; color: var(--text-dim); white-space: nowrap; }
+.ex-dur-inp { width: 100px; height: 38px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 0 10px; font-size: 14px; outline: none; }
+.ex-dur-inp:focus { border-color: var(--accent); }
+
+.btn-add-ex {
+  width: 100%; height: 46px; margin-bottom: 20px;
+  background: transparent; border: 1.5px dashed rgba(255,255,255,0.12);
+  border-radius: var(--radius-sm); color: var(--text-dim);
+  font-size: 14px; cursor: pointer; transition: var(--transition);
+}
+.btn-add-ex:hover { border-color: var(--primary); color: var(--primary); }
+
+/* ===== 等待室 ===== */
+.waiting-header { text-align: center; margin-bottom: 28px; }
+.waiting-room-name { font-size: 26px; font-weight: 700; margin-bottom: 16px; }
+.code-display {
+  display: inline-block; padding: 18px 32px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); cursor: pointer;
+  transition: var(--transition); min-width: 240px;
+}
+.code-display:hover { border-color: rgba(255,255,255,0.2); }
+.code-display-label { font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 6px; letter-spacing: 1px; }
+.code-display-val { font-size: 40px; font-weight: 800; color: var(--primary); letter-spacing: 14px; font-variant-numeric: tabular-nums; }
+
+.member-row {
+  display: flex; align-items: center; padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.member-row:last-child { border-bottom: none; }
+.member-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), #ff6b81);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 600; margin-right: 12px; flex-shrink: 0;
+}
+.member-name { flex: 1; font-size: 14px; }
+
+.ex-row {
+  display: flex; align-items: center; padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.ex-row:last-child { border-bottom: none; }
+.ex-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(255,71,87,0.15); color: var(--primary);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; margin-right: 12px; flex-shrink: 0;
+}
+.ex-name { flex: 1; font-size: 14px; }
+.ex-dur { font-size: 13px; color: var(--success); font-weight: 500; }
+
+.room-actions { display: flex; gap: 12px; margin-top: 32px; }
+.room-actions .btn { flex: 1; }
+
+/* ===== 训练页 ===== */
+.training-wrap { text-align: center; }
+
+.training-loading { padding-top: 100px; text-align: center; }
+.loading-spinner {
+  width: 40px; height: 40px; margin: 0 auto 20px;
+  border: 3px solid var(--border); border-top-color: var(--primary);
+  border-radius: 50%; animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.training-content { animation: fadeSlideIn 0.35s ease; }
+
+/* 进度 */
+.progress-section { margin-bottom: 28px; }
+.progress-bar {
+  width: 100%; height: 3px; background: rgba(255,255,255,0.06);
+  border-radius: 2px; overflow: hidden; margin-bottom: 8px;
+}
+.progress-fill {
+  height: 100%; background: linear-gradient(90deg, var(--primary), #ff6b81);
+  border-radius: 2px; transition: width 0.5s ease;
+}
+.progress-label { font-size: 12px; color: var(--text-dim); }
+
+/* 计时器 */
+.timer-section { margin-bottom: 32px; }
+.timer-ring {
+  width: 220px; height: 220px; margin: 0 auto;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  animation: timerPulse 2s ease-in-out infinite;
+}
+@keyframes timerPulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--primary-glow); }
+  50% { box-shadow: 0 0 0 16px transparent; }
+}
+.timer-ring-inner { text-align: center; }
+.timer-num { font-size: 80px; font-weight: 800; line-height: 1; letter-spacing: -2px; font-variant-numeric: tabular-nums; }
+.timer-unit { font-size: 15px; color: var(--text-dim); display: block; margin-top: 4px; }
+
+/* 当前动作 */
+.current-ex-card {
+  display: inline-block; padding: 16px 36px; margin-bottom: 16px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); min-width: 260px;
+}
+.current-ex-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; letter-spacing: 1px; }
+.current-ex-name { font-size: 26px; font-weight: 700; }
+.current-ex-dur { font-size: 13px; color: var(--success); margin-top: 2px; }
+
+.next-ex-hint { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+.next-ex-hint b { color: var(--text-dim); font-weight: 500; }
+
+/* 完成 */
+.completed-item {
+  display: flex; align-items: center; padding: 10px 0;
+  font-size: 14px; color: var(--success);
+  border-bottom: 1px solid var(--border);
+}
+.completed-item .check { margin-right: 10px; font-weight: 700; }
+
+/* 训练结束 */
+.finish-section { text-align: center; padding-top: 60px; animation: fadeSlideIn 0.4s ease; }
+.finish-icon { font-size: 64px; margin-bottom: 16px; }
+.finish-title { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+.finish-sub { font-size: 14px; color: var(--text-dim); margin-bottom: 36px; }
+
+/* 返回按钮 */
+.back-row { margin-top: 20px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ===== 登录 ===== -->
+  <div id="page-login" class="login-box">
+    <div class="login-icon">💪</div>
+    <div class="login-title">一起健身</div>
+    <div class="login-sub">和朋友同步完成每一次训练</div>
+    <input id="login-nickname" class="inp" placeholder="输入你的昵称" autofocus />
+    <button class="btn btn-primary btn-full" style="margin-top:16px;" onclick="doLogin()">进入</button>
+    <div id="recent-login" class="recent-section"></div>
+  </div>
+
+  <!-- ===== 首页 ===== -->
+  <div id="page-home" class="hide">
+    <div class="home-header">
+      <div class="home-greeting" onclick="toggleSwitch()">
+        <span id="home-nickname"></span> <span style="font-size:14px;">▾</span>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="showCreate()">+ 创建房间</button>
+    </div>
+
+    <div id="switch-panel" class="card switch-panel hide">
+      <div class="section-label" style="margin-bottom:0;">切换账号</div>
+      <div id="switch-list"></div>
+      <div class="switch-actions">
+        <button class="btn btn-outline btn-sm" style="flex:1;" onclick="doLogout()">登出</button>
+        <button class="btn btn-ghost btn-sm" style="flex:1;" onclick="toggleSwitch()">取消</button>
+      </div>
+    </div>
+
+    <div class="join-section">
+      <div class="join-label">加入房间</div>
+      <div class="join-body">
+        <input id="join-code" class="code-inp" placeholder="6位房码" maxlength="6" oninput="this.value=this.value.toUpperCase()" />
+        <button class="btn btn-primary btn-sm" onclick="doJoin()">加入</button>
+      </div>
+    </div>
+
+    <div class="section-label">活跃房间</div>
+    <div id="room-list"><div class="room-empty">暂无活跃房间，创建一个吧</div></div>
+  </div>
+
+  <!-- ===== 创建房间 ===== -->
+  <div id="page-create" class="hide">
+    <div class="create-title">创建房间</div>
+    <input id="create-name" class="inp" placeholder="房间名称，如「晨间 HIIT」" style="margin-bottom:20px;" />
+
+    <!-- 分类标签 -->
+    <div class="category-tabs" id="category-tabs"></div>
+
+    <!-- 动作网格 -->
+    <div id="ex-preset-grid"></div>
+
+    <!-- 已选动作 -->
+    <div class="selected-summary" id="selected-summary"></div>
+
+    <button class="btn btn-primary btn-full" onclick="doCreate()" id="btn-create-room">创建房间（已选 0 个动作）</button>
+    <div class="back-row"><button class="btn btn-ghost btn-sm btn-full" onclick="showHome()">返回首页</button></div>
+  </div>
+
+  <!-- ===== 等待室 ===== -->
+  <div id="page-room" class="hide">
+    <div class="waiting-header">
+      <div class="waiting-room-name" id="room-name"></div>
+      <div class="code-display" onclick="copyCode()">
+        <span class="code-display-label">房间码（点击复制）</span>
+        <span class="code-display-val" id="room-code"></span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-label">成员 <span id="member-count"></span></div>
+      <div id="member-list"></div>
+    </div>
+    <div class="card">
+      <div class="section-label">训练计划</div>
+      <div id="ex-plan"></div>
+    </div>
+    <div class="room-actions">
+      <button class="btn btn-outline" onclick="doLeave()">离开</button>
+      <button id="btn-start" class="btn btn-primary" onclick="doStart()">开始训练</button>
+      <span id="wait-tip" style="flex:1;text-align:center;line-height:50px;color:var(--text-dim);">等待房主开始...</span>
+    </div>
+  </div>
+
+  <!-- ===== 训练页 ===== -->
+  <div id="page-training" class="hide training-wrap">
+    <!-- 加载中 -->
+    <div id="training-loading" class="training-loading hide">
+      <div class="loading-spinner"></div>
+      <div style="font-size:15px;color:var(--text-dim);">正在恢复训练...</div>
+      <button class="btn btn-outline btn-sm" style="margin-top:28px;" onclick="clearRoomAndGoHome()">返回首页</button>
+    </div>
+
+    <!-- 训练内容 -->
+    <div id="training-content" class="training-content hide">
+      <div class="progress-section">
+        <div class="progress-bar"><div id="prog-fill" class="progress-fill" style="width:0%"></div></div>
+        <div class="progress-label" id="prog-text">1 / 3</div>
+      </div>
+
+      <div class="timer-section">
+        <div class="timer-ring">
+          <div class="timer-ring-inner">
+            <span class="timer-num" id="timer-num">--</span>
+            <span class="timer-unit">秒</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="current-ex-card">
+        <div class="current-ex-label">当前动作</div>
+        <div class="current-ex-name" id="cur-ex-name">---</div>
+        <div class="current-ex-dur" id="cur-ex-dur"></div>
+      </div>
+
+      <div class="next-ex-hint" id="next-ex-hint"></div>
+
+      <button class="btn btn-outline btn-sm" style="margin:0 auto 16px;" onclick="doTerminate()">终止训练</button>
+
+      <div class="card" id="completed-box" style="display:none;">
+        <div class="section-label">已完成</div>
+        <div id="completed-list"></div>
+      </div>
+    </div>
+
+    <!-- 训练完成 -->
+    <div id="finish-section" class="finish-section hide">
+      <div class="finish-icon">🎉</div>
+      <div class="finish-title">训练完成！</div>
+      <div class="finish-sub">太棒了，大家都完成了训练</div>
+      <button class="btn btn-primary btn-full" onclick="showHome()">返回首页</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ========== 全局状态 ==========
+const API = '';
+let lobbyWs = null;
+let userId = '', nickname = '', token = '';
+let ws = null;
+let currentRoomCode = '';
+let currentPage = '';
+let trainExercises = [];
+
+// ========== 工具 ==========
+function $(id) { return document.getElementById(id); }
+
+function show(id) {
+  document.querySelectorAll('[id^="page-"]').forEach(el => el.classList.add('hide'));
+  const el = $('page-'+id);
+  el.classList.remove('hide');
+  el.classList.add('page-enter');
+  setTimeout(() => el.classList.remove('page-enter'), 300);
+}
+
+async function api(method, path, body) {
+  let url = API + path;
+  if (!url.includes('user_id=')) url += (url.includes('?')?'&':'?') + 'user_id=' + userId;
+  const opts = { method, headers:{'Content-Type':'application/json'} };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(url, opts);
+  if (!res.ok) { const e = await res.json().catch(()=>({})); throw e; }
+  const j = await res.json();
+  return j;
+}
+
+// ========== 最近用户 ==========
+function getRecent() { return JSON.parse(localStorage.getItem('recent_users')||'[]'); }
+function saveRecent(name) {
+  let arr = getRecent().filter(u => u !== name);
+  arr.unshift(name); if (arr.length > 5) arr = arr.slice(0,5);
+  localStorage.setItem('recent_users', JSON.stringify(arr));
+}
+function renderRecentLogin() {
+  const arr = getRecent();
+  if (!arr.length) return;
+  $('recent-login').innerHTML = '<div class="recent-title">最近使用</div><div class="recent-tags">' +
+    arr.map(n => '<span class="recent-tag" onclick="quickLogin(\''+n+'\')">'+n+'</span>').join('') + '</div>';
+}
+
+// ========== 登录 ==========
+async function doLogin() {
+  const name = $('login-nickname').value.trim();
+  if (!name) return alert('请输入昵称');
+  await quickLogin(name);
+}
+async function quickLogin(name) {
+  const data = await api('POST', '/api/login', { nickname: name });
+  userId = data.user_id; nickname = data.nickname; token = data.token;
+  saveRecent(nickname);
+  localStorage.setItem('sport_user', JSON.stringify({userId, nickname, token}));
+  showHome();
+}
+
+// ========== 登出/切换 ==========
+function doLogout() {
+  userId = ''; nickname = ''; token = '';
+  localStorage.removeItem('sport_user');
+  localStorage.removeItem('sport_current_room');
+  show('login'); renderRecentLogin();
+}
+function toggleSwitch() {
+  const panel = $('switch-panel');
+  panel.classList.toggle('hide');
+  if (!panel.classList.contains('hide')) {
+    const arr = getRecent();
+    $('switch-list').innerHTML = arr.map(n =>
+      '<div class="switch-user" onclick="quickLogin(\''+n+'\')">'+n+
+      (n===nickname ? '<span class="current">当前</span>':'')+'</div>'
+    ).join('');
+  }
+}
+
+// ========== 首页 ==========
+async function showHome() {
+  currentPage = 'home';
+  if (ws) { ws.close(); ws = null; }
+  show('home');
+  $('home-nickname').textContent = 'Hi, '+nickname;
+  loadRooms();
+  connectLobbyWS();
+}
+function connectLobbyWS() {
+  if (lobbyWs) lobbyWs.close();
+  const url = (location.protocol==='https:'?'wss:':'ws:')+'//'+location.host+'/ws/lobby?user_id='+userId;
+  lobbyWs = new WebSocket(url);
+  lobbyWs.onmessage = function(e) {
+    const msg = JSON.parse(e.data);
+    if (msg.type === 'room_list_changed') loadRooms();
+  };
+}
+async function loadRooms() {
+  try {
+    const rooms = await api('GET', '/api/rooms');
+    if (!rooms.length) { $('room-list').innerHTML = '<div class="room-empty">暂无活跃房间，创建一个吧</div>'; return; }
+    $('room-list').innerHTML = rooms.map(r =>
+      '<div class="room-item" onclick="enterRoom(\''+r.code+'\')">'+
+        '<div><div class="name">'+r.name+'</div><div class="code">房码 '+r.code+'</div></div>'+
+        '<span class="tag '+(r.status==='waiting'?'tag-green':'tag-red')+'">'+(r.status==='waiting'?'等待中':'训练中')+'</span>'+
+      '</div>'
+    ).join('');
+  } catch(e) { console.error(e); }
+}
+async function doJoin() {
+  const code = $('join-code').value.trim();
+  if (!code) return alert('请输入房间码');
+  await api('POST', '/api/rooms/'+code+'/join', {});
+  enterRoom(code);
+}
+async function enterRoom(code) {
+  currentRoomCode = code;
+  await showRoom();
+}
+
+// ========== 动作预设库 ==========
+const EXERCISE_PRESETS = {
+  '胸': [
+    { name:'俯卧撑', dur:60, icon:'💪' }, { name:'钻石俯卧撑', dur:40, icon:'💎' },
+    { name:'宽距俯卧撑', dur:45, icon:'↔️' }, { name:'下斜俯卧撑', dur:40, icon:'📐' },
+    { name:'上斜俯卧撑', dur:40, icon:'🔼' }, { name:'蜘蛛俯卧撑', dur:40, icon:'🕷️' },
+    { name:'击掌俯卧撑', dur:30, icon:'👏' }, { name:'哑铃卧推', dur:45, icon:'🏋️' },
+  ],
+  '背': [
+    { name:'高位下拉', dur:45, icon:'🔽' }, { name:'引体向上', dur:40, icon:'🧗' },
+    { name:'哑铃划船', dur:45, icon:'🚣' }, { name:'俯身飞鸟', dur:40, icon:'🦅' },
+    { name:'硬拉', dur:50, icon:'🏋️' }, { name:'超人式', dur:30, icon:'🦸' },
+    { name:'反向划船', dur:45, icon:'⤴️' }, { name:'T 杆划船', dur:45, icon:'🏋️' },
+  ],
+  '腿': [
+    { name:'深蹲', dur:60, icon:'🦵' }, { name:'弓步蹲', dur:45, icon:'🚶' },
+    { name:'臀桥', dur:45, icon:'🌉' }, { name:'跳跃深蹲', dur:40, icon:'⬆️' },
+    { name:'靠墙静蹲', dur:60, icon:'🧱' }, { name:'相扑深蹲', dur:50, icon:'🤼' },
+    { name:'单腿硬拉', dur:40, icon:'🦩' }, { name:'侧弓步', dur:40, icon:'↔️' },
+  ],
+  '手臂': [
+    { name:'弯举', dur:45, icon:'💪' }, { name:'锤式弯举', dur:40, icon:'🔨' },
+    { name:'三头臂屈伸', dur:45, icon:'⬇️' }, { name:'集中弯举', dur:40, icon:'🎯' },
+    { name:'腕弯举', dur:30, icon:'🤲' }, { name:'钻石俯卧撑', dur:40, icon:'💎' },
+    { name:'反握弯举', dur:40, icon:'🔄' }, { name:'过顶臂屈伸', dur:45, icon:'🙆' },
+  ],
+  '核心': [
+    { name:'平板支撑', dur:60, icon:'🪨' }, { name:'卷腹', dur:45, icon:'🔄' },
+    { name:'俄罗斯转体', dur:40, icon:'💫' }, { name:'仰卧抬腿', dur:45, icon:'🦶' },
+    { name:'登山者', dur:40, icon:'🏔️' }, { name:'侧平板', dur:30, icon:'↔️' },
+    { name:'死虫式', dur:40, icon:'🐛' }, { name:'V字卷腹', dur:40, icon:'🔺' },
+  ],
+};
+const CATEGORIES = Object.keys(EXERCISE_PRESETS);
+
+// ========== 创建房间 ==========
+let selectedPresets = {};   // { '俯卧撑': {name,dur,icon}, ... }
+let currentCategory = CATEGORIES[0];
+
+function showCreate() {
+  currentPage = 'create';
+  selectedPresets = {};
+  currentCategory = CATEGORIES[0];
+  show('create');
+  $('create-name').value = '';
+  renderCategoryTabs();
+  renderPresetGrid();
+  updateSelectedSummary();
+}
+
+function renderCategoryTabs() {
+  $('category-tabs').innerHTML = CATEGORIES.map(c =>
+    '<span class="cat-tab'+(c===currentCategory?' active':'')+'" onclick="switchCategory(\''+c+'\')">'+c+'</span>'
+  ).join('');
+}
+
+function switchCategory(cat) {
+  currentCategory = cat;
+  renderCategoryTabs();
+  renderPresetGrid();
+}
+
+function renderPresetGrid() {
+  const presets = EXERCISE_PRESETS[currentCategory] || [];
+  $('ex-preset-grid').innerHTML = '<div class="ex-grid">' + presets.map(p => {
+    const sel = !!selectedPresets[p.name];
+    return '<div class="ex-preset-card'+(sel?' selected':'')+'" onclick="togglePreset(\''+p.name+'\',\''+p.icon+'\','+p.dur+')">'+
+      '<div class="ex-check"></div>'+
+      '<div class="ex-icon">'+p.icon+'</div>'+
+      '<div class="ex-title">'+p.name+'</div>'+
+      '<div class="ex-time">'+p.dur+'s</div>'+
+    '</div>';
+  }).join('') + '</div>';
+}
+
+function togglePreset(name, icon, dur) {
+  if (selectedPresets[name]) {
+    delete selectedPresets[name];
+  } else {
+    selectedPresets[name] = { name, icon, dur };
+  }
+  renderPresetGrid();
+  updateSelectedSummary();
+}
+
+function removePreset(name) {
+  delete selectedPresets[name];
+  renderPresetGrid();
+  updateSelectedSummary();
+}
+
+function updateSelectedSummary() {
+  const keys = Object.keys(selectedPresets);
+  if (keys.length === 0) {
+    $('selected-summary').innerHTML = '';
+  } else {
+    $('selected-summary').innerHTML =
+      '<div class="section-label">已选动作（'+keys.length+'）</div>'+
+      keys.map(k => {
+        const p = selectedPresets[k];
+        return '<span class="selected-chip">'+p.icon+' '+p.name+' · '+p.dur+'s <span class="chip-del" onclick="event.stopPropagation();removePreset(\''+p.name+'\')">×</span></span>';
+      }).join('');
+  }
+  $('btn-create-room').textContent = keys.length ? '创建房间（已选 '+keys.length+' 个动作）' : '创建房间（已选 0 个动作）';
+}
+
+async function doCreate() {
+  const name = $('create-name').value.trim();
+  if (!name) return alert('请输入房间名称');
+  const keys = Object.keys(selectedPresets);
+  if (keys.length === 0) return alert('请至少选择一个动作');
+  const exs = keys.map(k => {
+    const p = selectedPresets[k];
+    return { name: p.name, duration_seconds: p.dur };
+  });
+  const room = await api('POST', '/api/rooms', { name, exercises: exs });
+  currentRoomCode = room.code;
+  showRoom();
+}
+
+// ========== 等待室 ==========
+async function showRoom() {
+  currentPage = 'room';
+  if (lobbyWs) { lobbyWs.close(); lobbyWs = null; }
+  localStorage.setItem('sport_current_room', currentRoomCode);
+  show('room');
+  await refreshRoom();
+  connectWS(currentRoomCode);
+}
+async function refreshRoom() {
+  if (currentPage !== 'room') return;
+  const detail = await api('GET', '/api/rooms/'+currentRoomCode);
+  $('room-name').textContent = detail.room.name;
+  $('room-code').textContent = detail.room.code;
+  $('member-count').textContent = '('+detail.members.length+'人)';
+  $('member-list').innerHTML = detail.members.map(m =>
+    '<div class="member-row"><div class="member-avatar">'+(m.nickname[0]||'?')+'</div><div class="member-name">'+m.nickname+'</div>'+
+    (m.id===detail.room.owner_id ? '<span class="tag tag-red">房主</span>':'')+'</div>'
+  ).join('');
+  $('ex-plan').innerHTML = detail.exercises.map((e,i) =>
+    '<div class="ex-row"><div class="ex-num">'+(i+1)+'</div><div class="ex-name">'+e.name+'</div><div class="ex-dur">'+e.duration_seconds+'s</div></div>'
+  ).join('');
+  const isOwner = detail.room.owner_id === userId;
+  $('btn-start').style.display = isOwner ? '' : 'none';
+  $('wait-tip').style.display = isOwner ? 'none' : '';
+}
+function copyCode() {
+  navigator.clipboard.writeText(currentRoomCode);
+  alert('房间码 '+currentRoomCode+' 已复制');
+}
+async function doStart() {
+  await api('POST', '/api/rooms/'+currentRoomCode+'/start', {});
+}
+async function doLeave() {
+  try { await api('POST', '/api/rooms/'+currentRoomCode+'/leave', {}); } catch(e) {}
+  if (ws) { ws.close(); ws = null; }
+  localStorage.removeItem('sport_current_room');
+  currentRoomCode = '';
+  showHome();
+}
+
+// ========== WebSocket ==========
+function connectWS(code) {
+  if (ws) ws.close();
+  const url = (location.protocol==='https:'?'wss:':'ws:')+'//'+location.host+'/ws/room/'+code+'?user_id='+userId;
+  ws = new WebSocket(url);
+  ws.onmessage = function(e) {
+    const msg = JSON.parse(e.data);
+    switch(msg.type) {
+      case 'user_joined': case 'user_left': case 'members':
+        if (currentPage === 'room') refreshRoom();
+        break;
+      case 'training_started': startTraining(msg.data); break;
+      case 'timer_tick': updateTimer(msg.data); break;
+      case 'exercise_change': changeExercise(msg.data); break;
+      case 'training_resume': resumeTraining(msg.data); break;
+      case 'training_terminated': goHomeAfterTerminate(); break;
+      case 'training_complete': finishTraining(); break;
+    }
+  };
+  ws.onclose = function() { console.log('WS closed'); };
+}
+
+// ========== 训练 ==========
+function showTrainingContent() {
+  if (window._reconnectTimer) { clearTimeout(window._reconnectTimer); }
+  $('training-loading').classList.add('hide');
+  $('training-content').classList.remove('hide');
+}
+
+function resumeTraining(data) {
+  currentPage = 'training';
+  trainExercises = data.exercises;
+  $('finish-section').classList.add('hide');
+  $('completed-box').style.display = 'none';
+  $('completed-list').innerHTML = '';
+  show('training');
+  showTrainingContent();
+  $('prog-fill').style.width = (data.current_index / data.exercises.length * 100)+'%';
+  $('prog-text').textContent = (data.current_index+1)+' / '+data.exercises.length;
+  $('timer-num').textContent = data.seconds_left;
+  $('cur-ex-name').textContent = data.exercises[data.current_index].name;
+  $('cur-ex-dur').textContent = '目标 '+data.total_seconds+' 秒';
+  updateNextHint(data.current_index, data.exercises);
+}
+
+function startTraining(data) {
+  currentPage = 'training';
+  trainExercises = data.exercises;
+  $('finish-section').classList.add('hide');
+  $('prog-fill').style.width = '0%';
+  $('completed-box').style.display = 'none';
+  $('completed-list').innerHTML = '';
+  const cur = data.exercises[data.current_index];
+  show('training');
+  showTrainingContent();
+  $('prog-text').textContent = (data.current_index+1)+' / '+data.exercises.length;
+  $('timer-num').textContent = cur.duration_seconds;
+  $('cur-ex-name').textContent = cur.name;
+  $('cur-ex-dur').textContent = '目标 '+cur.duration_seconds+' 秒';
+  updateNextHint(data.current_index, data.exercises);
+}
+
+function updateTimer(data) {
+  $('timer-num').textContent = data.seconds_left;
+}
+
+function changeExercise(data) {
+  $('timer-num').textContent = data.total_duration;
+  $('cur-ex-name').textContent = data.exercise.name;
+  $('cur-ex-dur').textContent = '目标 '+data.total_duration+' 秒';
+  $('prog-fill').style.width = (data.exercise_index / trainExercises.length * 100)+'%';
+  $('prog-text').textContent = (data.exercise_index+1)+' / '+trainExercises.length;
+  updateNextHint(data.exercise_index, trainExercises);
+  if (data.exercise_index > 0) {
+    $('completed-box').style.display = '';
+    const prev = trainExercises[data.exercise_index - 1];
+    $('completed-list').innerHTML += '<div class="completed-item"><span class="check">✓</span>'+prev.name+'</div>';
+  }
+}
+
+function updateNextHint(idx, exs) {
+  if (idx < exs.length - 1) {
+    $('next-ex-hint').innerHTML = '下一个 <b>'+exs[idx+1].name+'</b> · '+exs[idx+1].duration_seconds+'s';
+  } else {
+    $('next-ex-hint').innerHTML = '';
+  }
+}
+
+function finishTraining() {
+  $('timer-num').textContent = '0';
+  $('prog-fill').style.width = '100%';
+  $('finish-section').classList.remove('hide');
+  $('training-content').classList.add('hide');
+  localStorage.removeItem('sport_current_room');
+  if (ws) { ws.close(); ws = null; }
+}
+
+// 房主主动终止训练
+async function doTerminate() {
+  if (!confirm('确定终止训练吗？所有成员将返回大厅。')) return;
+  await api('POST', '/api/rooms/'+currentRoomCode+'/terminate', {});
+}
+
+// 收到服务端 training_terminated 消息后，返回首页
+function goHomeAfterTerminate() {
+  localStorage.removeItem('sport_current_room');
+  if (ws) { ws.close(); ws = null; }
+  currentRoomCode = '';
+  showHome();
+}
+
+function clearRoomAndGoHome() {
+  localStorage.removeItem('sport_current_room');
+  if (ws) { ws.close(); ws = null; }
+  if (window._reconnectTimer) { clearTimeout(window._reconnectTimer); }
+  showHome();
+}
+
+// ========== 页面初始化 ==========
+(async function init() {
+  const saved = localStorage.getItem('sport_user');
+  if (saved) {
+    const u = JSON.parse(saved);
+    userId = u.userId; nickname = u.nickname; token = u.token;
+    saveRecent(nickname);
+    const roomCode = localStorage.getItem('sport_current_room');
+    if (roomCode) {
+      currentRoomCode = roomCode;
+      try {
+        const detail = await api('GET', '/api/rooms/' + roomCode);
+        if (detail.room.status === 'active') {
+          trainExercises = detail.exercises.map(e => ({
+            id: e.id, name: e.name, duration_seconds: e.duration_seconds, sort_order: e.sort_order
+          }));
+          show('training');
+          $('training-content').classList.add('hide');
+          $('training-loading').classList.remove('hide');
+          $('finish-section').classList.add('hide');
+          connectWS(roomCode);
+          window._reconnectTimer = setTimeout(() => clearRoomAndGoHome(), 5000);
+          return;
+        }
+        if (detail.room.status === 'waiting') { showRoom(); return; }
+      } catch(e) { localStorage.removeItem('sport_current_room'); }
+    }
+    showHome();
+  } else {
+    renderRecentLogin();
+  }
+})();
+</script>
+</body>
+</html>

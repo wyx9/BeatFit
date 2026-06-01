@@ -1,0 +1,21 @@
+# 二进制
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# 数据库
+sport.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 日志
+*.log
+
+# 测试
+/tmp/

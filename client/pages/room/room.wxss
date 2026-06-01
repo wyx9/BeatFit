@@ -1,0 +1,153 @@
+.container {
+  padding: 30rpx;
+}
+
+/* Room header */
+.room-header {
+  text-align: center;
+  margin-bottom: 40rpx;
+}
+.room-name {
+  font-size: 44rpx;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 20rpx;
+}
+.room-code-box {
+  background: #1a1a2e;
+  border-radius: 20rpx;
+  padding: 25rpx;
+  display: inline-block;
+  min-width: 400rpx;
+}
+.code-label {
+  display: block;
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 10rpx;
+}
+.code-value {
+  font-size: 56rpx;
+  font-weight: bold;
+  color: #e94560;
+  letter-spacing: 16rpx;
+}
+
+/* Sections */
+.section {
+  margin-bottom: 35rpx;
+}
+.section-title {
+  font-size: 30rpx;
+  color: #ccc;
+  margin-bottom: 20rpx;
+}
+
+/* Exercise list */
+.ex-list {
+  background: #1a1a2e;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+.ex-row {
+  display: flex;
+  align-items: center;
+  padding: 22rpx 30rpx;
+  border-bottom: 1rpx solid #0f3460;
+}
+.ex-row:last-child {
+  border-bottom: none;
+}
+.ex-order {
+  width: 44rpx;
+  height: 44rpx;
+  background: #e94560;
+  color: #fff;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 44rpx;
+  font-size: 24rpx;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+.ex-name {
+  flex: 1;
+  font-size: 28rpx;
+  color: #fff;
+}
+.ex-dur {
+  font-size: 26rpx;
+  color: #4ecca3;
+}
+
+/* Members */
+.member-list {
+  background: #1a1a2e;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+.member-row {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  border-bottom: 1rpx solid #0f3460;
+}
+.member-row:last-child {
+  border-bottom: none;
+}
+.member-avatar {
+  width: 56rpx;
+  height: 56rpx;
+  background: #e94560;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 56rpx;
+  color: #fff;
+  font-size: 26rpx;
+  margin-right: 20rpx;
+}
+.member-name {
+  flex: 1;
+  font-size: 28rpx;
+  color: #fff;
+}
+.owner-tag {
+  font-size: 22rpx;
+  color: #e94560;
+  padding: 4rpx 16rpx;
+  background: rgba(233, 69, 96, 0.15);
+  border-radius: 10rpx;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 60rpx;
+}
+.btn-leave {
+  flex: 1;
+  height: 80rpx;
+  line-height: 80rpx;
+  background: transparent;
+  color: #999;
+  border: 2rpx solid #444;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+}
+.btn-start {
+  flex: 2;
+  height: 80rpx;
+  line-height: 80rpx;
+  background: #e94560;
+  color: #fff;
+  border-radius: 40rpx;
+  font-size: 30rpx;
+}
+.waiting-tip {
+  flex: 2;
+  text-align: center;
+  color: #999;
+  font-size: 28rpx;
+  line-height: 80rpx;
+}

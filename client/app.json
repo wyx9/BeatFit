@@ -1,0 +1,17 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/create/create",
+    "pages/room/room",
+    "pages/training/training"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#1a1a2e",
+    "navigationBarTitleText": "一起健身",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#16213e"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

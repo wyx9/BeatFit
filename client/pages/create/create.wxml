@@ -1,0 +1,43 @@
+<view class="container">
+
+  <view class="section">
+    <view class="label">房间名称</view>
+    <input class="name-input" placeholder="给房间起个名字" value="{{roomName}}" bindinput="onInputRoomName" />
+  </view>
+
+  <!-- 分类标签 -->
+  <scroll-view class="cat-scroll" scroll-x enable-flex>
+    <view class="cat-tab {{item === currentCategory ? 'active' : ''}}"
+      wx:for="{{categories}}" wx:key="index"
+      bindtap="onSwitchCategory" data-cat="{{item}}">{{item}}</view>
+  </scroll-view>
+
+  <!-- 动作网格 -->
+  <view class="ex-grid">
+    <view class="ex-preset-card {{selectedPresets[item.name] ? 'selected' : ''}}"
+      wx:for="{{presets}}" wx:key="name"
+      bindtap="onTogglePreset"
+      data-name="{{item.name}}" data-icon="{{item.icon}}" data-dur="{{item.dur}}">
+      <view class="ex-icon">{{item.icon}}</view>
+      <view class="ex-name">{{item.name}}</view>
+      <view class="ex-time">{{item.dur}}s</view>
+      <view wx:if="{{selectedPresets[item.name]}}" class="ex-check-on">✓</view>
+    </view>
+  </view>
+
+  <!-- 已选动作 -->
+  <view class="section" wx:if="{{Object.keys(selectedPresets).length > 0}}">
+    <view class="label">已选动作</view>
+    <view class="chip-wrap">
+      <view class="chip" wx:for="{{selectedPresets}}" wx:key="name">
+        <text>{{item.icon}} {{item.name}} · {{item.dur}}s</text>
+        <text class="chip-close" bindtap="onRemovePreset" data-name="{{item.name}}">×</text>
+      </view>
+    </view>
+  </view>
+
+  <button class="btn-create" bindtap="onCreate">
+    创建房间（已选 {{Object.keys(selectedPresets).length}} 个动作）
+  </button>
+
+</view>
