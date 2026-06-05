@@ -1,0 +1,248 @@
+/* ===== 游客登录页 - 1:1 还原 _4/code.html ===== */
+
+.guest-page {
+  min-height: 100vh;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40rpx;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+/* === Background Blobs === */
+.bg-blob {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-blob-top {
+  top: -15%;
+  left: -15%;
+  width: 60%;
+  height: 60%;
+  background: rgba(34, 197, 94, 0.05);
+  filter: blur(240rpx);
+}
+
+.bg-blob-bottom {
+  bottom: -15%;
+  right: -15%;
+  width: 60%;
+  height: 60%;
+  background: rgba(59, 130, 246, 0.05);
+  filter: blur(240rpx);
+}
+
+/* === Main Container === */
+.guest-main {
+  width: 100%;
+  max-width: 640rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+}
+
+/* === Branding === */
+.branding {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 64rpx;
+  animation: fadeIn 0.6s ease-out;
+  gap: 32rpx;
+}
+
+.logo-square {
+  width: 160rpx;
+  height: 160rpx;
+  background: var(--color-primary);
+  border-radius: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 16rpx 48rpx rgba(34, 197, 94, 0.2);
+}
+
+.logo-icon {
+  width: 96rpx;
+  height: 96rpx;
+}
+
+.brand-text {
+  text-align: center;
+}
+
+.brand-title {
+  display: block;
+  font-size: 56rpx;
+  line-height: 72rpx;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -1rpx;
+}
+
+.brand-subtitle {
+  display: block;
+  font-size: 28rpx;
+  color: #64748b;
+  margin-top: 4rpx;
+}
+
+/* === Login Card === */
+.login-card {
+  width: 100%;
+  background: #fff;
+  border: 2rpx solid #f1f5f9;
+  box-shadow: 0 24rpx 80rpx rgba(0, 0, 0, 0.04);
+  border-radius: 48rpx;
+  padding: 64rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 48rpx;
+  animation: slideUp 0.8s ease-out;
+  box-sizing: border-box;
+}
+
+.card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.card-title {
+  font-size: 40rpx;
+  line-height: 56rpx;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.card-desc {
+  font-size: 28rpx;
+  line-height: 40rpx;
+  color: #64748b;
+}
+
+/* === Input === */
+.input-group {
+  position: relative;
+}
+
+.input-label-wrap {
+  position: absolute;
+  top: -20rpx;
+  left: 48rpx;
+  z-index: 2;
+  background: #fff;
+  padding: 0 16rpx;
+}
+
+.input-label {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #64748b;
+  letter-spacing: 0.02em;
+}
+
+.input-wrap {
+  position: relative;
+}
+
+.nickname-input {
+  width: 100%;
+  height: 128rpx;
+  padding: 0 120rpx 0 48rpx;
+  border: 4rpx solid #e2e8f0;
+  border-radius: 9999rpx;
+  background: #f8fafc;
+  font-size: 32rpx;
+  color: #0f172a;
+  box-sizing: border-box;
+}
+
+.nickname-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 8rpx rgba(34, 197, 94, 0.1);
+}
+
+.input-placeholder {
+  color: rgba(100, 116, 139, 0.4);
+  font-size: 32rpx;
+}
+
+.input-icon {
+  position: absolute;
+  right: 48rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48rpx;
+  height: 48rpx;
+  opacity: 0.4;
+}
+
+/* === Continue Button === */
+.btn-continue {
+  width: 100%;
+  height: 128rpx;
+  border-radius: 9999rpx;
+  background: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16rpx;
+  box-shadow: 0 16rpx 48rpx rgba(34, 197, 94, 0.25);
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-continue-pressed {
+  transform: scale(0.98);
+}
+
+.btn-continue-text {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #fff;
+  position: relative;
+  z-index: 2;
+}
+
+.btn-continue-icon {
+  width: 40rpx;
+  height: 40rpx;
+  position: relative;
+  z-index: 2;
+}
+
+/* === Footer === */
+.guest-footer {
+  padding-top: 64rpx;
+  text-align: center;
+}
+
+.footer-text {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: rgba(100, 116, 139, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 8rpx;
+}
+
+/* === Animations === */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20rpx); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40rpx); }
+  to   { opacity: 1; transform: translateY(0); }
+}

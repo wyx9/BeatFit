@@ -1,0 +1,67 @@
+<!-- 启动页 - 1:1 还原 _3/code.html -->
+<view class="splash-page">
+  <!-- Background Atmospheric Elements -->
+  <view class="bg-blob bg-blob-top"></view>
+  <view class="bg-blob bg-blob-bottom"></view>
+
+  <!-- Main Content Canvas -->
+  <view class="splash-main">
+    <!-- Branding Area -->
+    <view class="branding">
+      <view class="logo-wrap">
+        <view class="logo-circle">
+          <view class="logo-shine"></view>
+          <image class="logo-icon" src="/images/icon-pause.svg" mode="aspectFit" />
+          <view class="logo-pulse"></view>
+        </view>
+      </view>
+      <text class="brand-title">律动健身</text>
+      <text class="brand-subtitle">在高能量健身社区中释放你的潜能</text>
+    </view>
+
+    <!-- Dynamic Visual Asset -->
+    <view class="hero-visual">
+      <view class="hero-img-wrap">
+        <view class="hero-img-placeholder">
+          <image class="hero-img" src="/images/avatar-placeholder.svg" mode="aspectFill" />
+          <view class="hero-gradient"></view>
+          <view class="hero-overlay-content">
+            <view class="hero-avatars">
+              <view class="hero-avatar-item">
+                <image class="hero-avatar-img" src="/images/avatar-placeholder.svg" mode="aspectFill" />
+              </view>
+              <view class="hero-avatar-item">
+                <image class="hero-avatar-img" src="/images/avatar-placeholder.svg" mode="aspectFill" />
+              </view>
+              <view class="hero-avatar-item">
+                <image class="hero-avatar-img" src="/images/avatar-placeholder.svg" mode="aspectFill" />
+              </view>
+            </view>
+            <text class="hero-members">已有 2,400+ 人加入</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- Action Area -->
+    <view class="actions">
+      <view class="btn-wechat" hover-class="btn-wechat-pressed" bindtap="handleWechatLogin">
+        <image class="btn-wechat-icon" src="/images/icon-chat.svg" mode="aspectFit" />
+        <text class="btn-wechat-text">微信登录</text>
+        <view class="btn-shimmer"></view>
+      </view>
+      <view class="btn-guest" hover-class="btn-guest-pressed" bindtap="goGuestLogin">
+        <text class="btn-guest-text">游客登录</text>
+        <view class="btn-shimmer-dark"></view>
+      </view>
+    </view>
+
+    <!-- Legal Disclaimer -->
+    <view class="legal">
+      <text class="legal-text">
+        登录即代表您同意我们的 \n
+        <text class="legal-link">服务条款</text> 和 <text class="legal-link">隐私政策</text>
+      </text>
+    </view>
+  </view>
+</view>

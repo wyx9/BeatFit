@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pulse Fitness - Guest Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#f0f4f8",
+                    "on-secondary-fixed": "#191c1e",
+                    "secondary-container": "#f1f5f9",
+                    "on-tertiary": "#ffffff",
+                    "on-surface-variant": "#64748b",
+                    "on-tertiary-fixed": "#001f28",
+                    "secondary-fixed": "#e2e8f0",
+                    "primary-fixed-dim": "#b3c5ff",
+                    "primary-fixed": "#dbe1ff",
+                    "surface-variant": "#f1f5f9",
+                    "surface-container-highest": "#e2e8f0",
+                    "on-primary-fixed-variant": "#003ea6",
+                    "on-surface": "#0f172a",
+                    "outline-variant": "#e2e8f0",
+                    "error-container": "#fee2e2",
+                    "tertiary": "#0d9488",
+                    "tertiary-fixed-dim": "#5eead4",
+                    "inverse-surface": "#1e293b",
+                    "tertiary-container": "#ccfbf1",
+                    "surface-dim": "#f1f5f9",
+                    "on-secondary": "#ffffff",
+                    "surface": "#ffffff",
+                    "on-tertiary-fixed-variant": "#134e4a",
+                    "on-secondary-container": "#475569",
+                    "inverse-on-surface": "#f8fafc",
+                    "error": "#ef4444",
+                    "secondary-fixed-dim": "#cbd5e1",
+                    "surface-container-low": "#f8fafc",
+                    "on-error": "#ffffff",
+                    "inverse-primary": "#b3c5ff",
+                    "surface-tint": "#22c55e",
+                    "primary": "#1e40af",
+                    "on-tertiary-container": "#115e59",
+                    "on-secondary-fixed-variant": "#334155",
+                    "on-primary": "#ffffff",
+                    "on-primary-fixed": "#1e3a8a",
+                    "tertiary-fixed": "#99f6e4",
+                    "outline": "#94a3b8",
+                    "on-background": "#0f172a",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#dbe1ff",
+                    "surface-container": "#f8fafc",
+                    "on-error-container": "#7f1d1d",
+                    "secondary": "#64748b",
+                    "on-primary-container": "#1e3a8a",
+                    "background": "#ffffff",
+                    "surface-bright": "#ffffff",
+                    "brand-accent": "#22c55e" 
+            },
+            "borderRadius": {
+                    "DEFAULT": "9999px",
+                    "lg": "12px",
+                    "xl": "16px",
+                    "2xl": "24px",
+                    "3xl": "32px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "sm": "8px",
+                    "xl": "32px",
+                    "xs": "4px",
+                    "md": "16px",
+                    "margin-mobile": "20px",
+                    "lg": "24px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "headline-sm": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "body-lg": ["Inter"],
+                    "label-lg": ["Inter"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "label-md": ["Inter"],
+                    "display-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: #ffffff;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0px 12px 40px rgba(0, 0, 0, 0.04);
+        }
+        .pulse-accent {
+            background: #22c55e;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .input-focus-ring:focus {
+            outline: none;
+            border-color: #22c55e;
+            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen items-center justify-center p-margin-mobile">
+<main class="w-full max-w-md flex flex-col items-center space-y-xl">
+<!-- App Logo & Branding Section -->
+<header class="flex flex-col items-center space-y-md animate-[fadeIn_0.6s_ease-out]">
+<div class="relative w-20 h-20 flex items-center justify-center pulse-accent rounded-3xl shadow-xl shadow-brand-accent/20">
+<span class="material-symbols-outlined text-white text-[48px]" style="font-variation-settings: 'FILL' 1;">fitness_center</span>
+</div>
+<div class="text-center">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface tracking-tight">Pulse Fitness</h1>
+<p class="font-body-sm text-body-sm text-secondary">释放潜能，挑战自我</p>
+</div>
+</header>
+<!-- Login Card -->
+<section class="w-full glass-card p-xl rounded-3xl flex flex-col space-y-lg animate-[slideUp_0.8s_ease-out]">
+<div class="space-y-sm">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">欢迎，新伙伴</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">请输入一个昵称开始您的健身之旅</p>
+</div>
+<!-- Nickname Input -->
+<div class="relative group">
+<label class="absolute -top-2.5 left-6 px-2 bg-white text-label-md text-secondary font-label-md transition-colors group-focus-within:text-brand-accent" for="nickname">输入您的昵称</label>
+<input class="w-full h-16 px-6 rounded-full border-2 border-outline-variant bg-surface-container-lowest text-on-surface font-body-md input-focus-ring transition-all duration-300 placeholder:opacity-40" id="nickname" placeholder="例如: 运动达人" type="text"/>
+<span class="material-symbols-outlined absolute right-6 top-1/2 -translate-y-1/2 text-secondary opacity-40 group-focus-within:text-brand-accent group-focus-within:opacity-100 transition-all">
+                    face
+                </span>
+</div>
+<!-- CTA Button -->
+<button class="w-full h-16 rounded-full bg-brand-accent text-white font-headline-sm flex items-center justify-center space-x-sm shadow-lg shadow-brand-accent/25 active:scale-[0.98] transition-all duration-200" id="continueBtn">
+<span>以游客身份继续</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'wght' 600;">arrow_forward</span>
+</button>
+</section>
+<!-- Footer / Brand Aesthetic -->
+<footer class="pt-xl text-center">
+<p class="font-label-md text-label-md text-secondary/50 uppercase tracking-[0.2em]">High-End Minimalism • Athletic Elegance</p>
+</footer>
+</main>
+<!-- Background Decoration Elements (Subtle High-Energy Fitness style) -->
+<div class="fixed top-[-15%] left-[-15%] w-[60%] h-[60%] bg-brand-accent/5 blur-[120px] rounded-full -z-10"></div>
+<div class="fixed bottom-[-15%] right-[-15%] w-[60%] h-[60%] bg-blue-500/5 blur-[120px] rounded-full -z-10"></div>
+<script>
+        // Micro-interactions
+        const input = document.getElementById('nickname');
+        const button = document.getElementById('continueBtn');
+
+        input.addEventListener('input', (e) => {
+            if (e.target.value.length > 0) {
+                button.classList.add('scale-[1.01]');
+            } else {
+                button.classList.remove('scale-[1.01]');
+            }
+        });
+
+        // Simple animation entry sequence
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes slideUp {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body></html>

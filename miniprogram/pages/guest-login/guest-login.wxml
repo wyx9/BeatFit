@@ -1,0 +1,56 @@
+<!-- 游客登录页 - 1:1 还原 _4/code.html -->
+<view class="guest-page">
+  <!-- Background Decoration -->
+  <view class="bg-blob bg-blob-top"></view>
+  <view class="bg-blob bg-blob-bottom"></view>
+
+  <view class="guest-main">
+    <!-- App Logo & Branding -->
+    <view class="branding">
+      <view class="logo-square">
+        <image class="logo-icon" src="/images/icon-fitness.svg" mode="aspectFit" />
+      </view>
+      <view class="brand-text">
+        <text class="brand-title">律动健身</text>
+        <text class="brand-subtitle">释放潜能，挑战自我</text>
+      </view>
+    </view>
+
+    <!-- Login Card -->
+    <view class="login-card">
+      <view class="card-header">
+        <text class="card-title">欢迎，新伙伴</text>
+        <text class="card-desc">请输入一个昵称开始您的健身之旅</text>
+      </view>
+
+      <!-- Nickname Input -->
+      <view class="input-group">
+        <view class="input-label-wrap">
+          <text class="input-label">输入您的昵称</text>
+        </view>
+        <view class="input-wrap">
+          <input
+            class="nickname-input"
+            placeholder="例如: 运动达人"
+            placeholder-class="input-placeholder"
+            value="{{nickname}}"
+            bindinput="onNickInput"
+          />
+          <image class="input-icon" src="/images/icon-person.svg" mode="aspectFit" />
+        </view>
+      </view>
+
+      <!-- CTA Button -->
+      <view class="btn-continue" hover-class="btn-continue-pressed" bindtap="goLobby">
+        <text class="btn-continue-text">以游客身份继续</text>
+        <image class="btn-continue-icon" src="/images/icon-arrow-forward.svg" mode="aspectFit" />
+        <view class="btn-shimmer"></view>
+      </view>
+    </view>
+
+    <!-- Footer -->
+    <view class="guest-footer">
+      <text class="footer-text">极简美学 · 运动优雅</text>
+    </view>
+  </view>
+</view>

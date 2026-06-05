@@ -1,0 +1,126 @@
+<!-- 训练中页面 -->
+<view class="page">
+  <!-- TopAppBar -->
+  <view class="header" style="padding-top: {{statusBarHeight}}px;">
+    <view class="header-inner">
+      <view class="header-left">
+        <view class="header-avatar">
+          <image wx:if="{{userAvatar}}" class="header-avatar-img" src="{{userAvatar}}" mode="aspectFill" />
+          <view wx:else class="header-avatar-placeholder">
+            <text class="avatar-initial">{{userInitial || '?'}}</text>
+          </view>
+        </view>
+        <text class="header-title">训练中</text>
+      </view>
+      <image class="header-settings" src="/images/icon-settings.svg" mode="aspectFit" />
+    </view>
+  </view>
+
+  <view class="main">
+    <!-- Timer Section: conic-gradient 圆环进度 -->
+    <view class="timer-section">
+      <view class="timer-ring-wrap">
+        <view class="timer-ring" style="background: conic-gradient(#22c55e 0deg {{ringDeg}}deg, #e5eeff {{ringDeg}}deg 360deg);">
+          <view class="timer-ring-hole">
+            <text class="timer-time">{{displayTime}}</text>
+            <text class="timer-phase">{{isPaused ? '已暂停' : phaseLabel}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 总时间进度条 -->
+    <view class="total-time-bar">
+      <view class="total-time-row">
+        <text class="total-time-label">总时长</text>
+        <text class="total-time-value">{{totalDisplayTime}}</text>
+      </view>
+      <view class="total-progress-track">
+        <view class="total-progress-fill" style="width: {{totalProgress}}%;"></view>
+      </view>
+    </view>
+
+    <!-- 当前动作卡片 -->
+    <view class="exercise-card">
+      <view class="card-header">
+        <view class="card-header-left">
+          <text class="card-badge">当前动作</text>
+          <text class="card-exercise-name">{{currentExercise.name}}</text>
+          <text class="card-set-info">第 {{currentExercise.currentSet}}/{{currentExercise.totalSets}} 组</text>
+        </view>
+        <view class="card-thumb">
+          <image class="card-thumb-img" src="/images/avatar-placeholder.svg" mode="aspectFill" />
+        </view>
+      </view>
+      <view class="card-stats">
+        <view class="stat-item">
+          <view class="stat-icon-wrap">
+            <image class="stat-icon" src="/images/icon-fitness.svg" mode="aspectFit" />
+          </view>
+          <view class="stat-text">
+            <text class="stat-label">目标次数</text>
+            <text class="stat-value">{{currentExercise.targetReps}}次</text>
+          </view>
+        </view>
+        <view class="stat-item stat-item-active">
+          <view class="stat-icon-wrap stat-icon-wrap-active">
+            <text class="stat-icon-text">{{currentExercise.currentReps}}/{{currentExercise.targetReps}}</text>
+          </view>
+          <view class="stat-text">
+            <text class="stat-label">当前次数</text>
+            <text class="stat-value stat-value-active">0/{{currentExercise.targetReps}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 下一个动作预览 -->
+    <view class="next-section" wx:if="{{nextExercise}}">
+      <text class="next-label">下一个动作</text>
+      <view class="next-card">
+        <view class="next-card-left">
+          <view class="next-thumb">
+            <image class="next-thumb-img" src="/images/avatar-placeholder.svg" mode="aspectFill" />
+          </view>
+          <view class="next-info">
+            <text class="next-name">{{nextExercise.name}}</text>
+            <text class="next-duration">预计耗时 {{nextExercise.duration}} 分钟</text>
+          </view>
+        </view>
+        <image class="next-arrow" src="/images/icon-chevron-right.svg" mode="aspectFit" />
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="controls">
+      <view class="btn-pause" hover-class="btn-pause-pressed" bindtap="togglePause">
+        <image class="btn-pause-icon" src="/images/icon-{{isPaused ? 'play-arrow' : 'pause'}}.svg" mode="aspectFit" />
+        <text class="btn-pause-text">{{isPaused ? '继续' : '暂停'}}</text>
+      </view>
+      <view class="btn-stop" hover-class="btn-stop-pressed" bindtap="handleStop">
+        <image class="btn-stop-icon" src="/images/icon-stop.svg" mode="aspectFit" />
+        <text class="btn-stop-text">结束</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部导航栏 -->
+  <view class="bottom-nav">
+    <view class="nav-item" bindtap="goLobby">
+      <image class="nav-icon" src="/images/icon-grid.svg" mode="aspectFit" />
+      <text class="nav-label">大厅</text>
+    </view>
+    <view class="nav-item nav-active">
+      <image class="nav-icon" src="/images/icon-fitness.svg" mode="aspectFit" />
+      <text class="nav-label nav-label-active">训练中</text>
+    </view>
+    <view class="nav-item" bindtap="goLeaderboard">
+      <image class="nav-icon" src="/images/icon-leaderboard-gray.svg" mode="aspectFit" />
+      <text class="nav-label">排行榜</text>
+    </view>
+    <view class="nav-item" bindtap="goProfile">
+      <image class="nav-icon" src="/images/icon-person.svg" mode="aspectFit" />
+      <text class="nav-label">我的</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,22 @@
+# 编译产物
+*.exe
+*.out
+server/beat_fit_server
+
+# 敏感配置
+.env
+*.pem
+*.key
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 微信小程序
+miniprogram/node_modules/

@@ -1,0 +1,458 @@
+/* ===== 大厅页面 - 1:1 还原 _2/code.html ===== */
+
+/* === Top AppBar === */
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 50;
+  background: transparent;
+}
+
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 128rpx;
+  padding: 0 40rpx;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.header-bolt {
+  width: 48rpx;
+  height: 48rpx;
+}
+
+.header-title {
+  font-size: 48rpx;
+  line-height: 64rpx;
+  font-weight: 600;
+  color: var(--color-primary);
+  letter-spacing: -1rpx;
+}
+
+.header-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4rpx solid rgba(34, 197, 94, 0.1);
+}
+
+.header-avatar-img {
+  width: 100%;
+  height: 100%;
+}
+
+.header-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-initial {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* === Main Content === */
+.main {
+  padding-top: 192rpx;
+  padding-bottom: 256rpx;
+  padding-left: 40rpx;
+  padding-right: 40rpx;
+}
+
+/* === Room Code Input Section === */
+.code-section {
+  margin-bottom: 32rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24rpx;
+}
+
+.code-label {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #454747;
+  letter-spacing: 2rpx;
+}
+
+.code-inputs {
+  display: flex;
+  gap: 24rpx;
+}
+
+.code-digit {
+  width: 120rpx;
+  height: 140rpx;
+  background: #fff;
+  border: 4rpx solid rgba(226, 232, 240, 0.6);
+  border-radius: 32rpx;
+  text-align: center;
+  font-size: 56rpx;
+  font-weight: 700;
+  color: #131313;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.03);
+  transition: all 0.2s;
+}
+
+.code-digit:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 8rpx rgba(34, 197, 94, 0.1);
+}
+
+.code-digit:not([value=""]) {
+  border-color: var(--color-primary);
+  background: rgba(34, 197, 94, 0.03);
+}
+
+/* === Action Buttons (加入 + 创建) === */
+.action-buttons {
+  display: flex;
+  gap: 24rpx;
+  margin-bottom: 48rpx;
+}
+
+.btn-action {
+  flex: 1;
+  height: 96rpx;
+  border-radius: 9999rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-action-join {
+  background: #fff;
+  border: 4rpx solid var(--color-primary);
+}
+
+.btn-action-join-pressed {
+  transform: scale(0.96);
+  background: rgba(34, 197, 94, 0.05);
+}
+
+.btn-action-create {
+  background: var(--color-primary);
+  box-shadow: 0 8rpx 30rpx rgba(34, 197, 94, 0.3);
+}
+
+.btn-action-create-pressed {
+  transform: scale(0.96);
+  box-shadow: 0 4rpx 10rpx rgba(34, 197, 94, 0.2);
+}
+
+.btn-action-icon {
+  width: 36rpx;
+  height: 36rpx;
+  position: relative;
+  z-index: 2;
+}
+
+.btn-action-text {
+  font-size: 28rpx;
+  font-weight: 700;
+  letter-spacing: 2rpx;
+  position: relative;
+  z-index: 2;
+}
+
+.btn-action-join .btn-action-text {
+  color: var(--color-primary);
+}
+
+.btn-action-create .btn-action-text {
+  color: #fff;
+}
+
+/* === Rooms Section === */
+.rooms-section {
+  display: flex;
+  flex-direction: column;
+  gap: 48rpx;
+}
+
+.rooms-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rooms-title {
+  font-size: 40rpx;
+  line-height: 56rpx;
+  font-weight: 600;
+  color: #111827;
+}
+
+.rooms-see-all {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.rooms-see-all-text {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: var(--color-primary);
+}
+
+.rooms-see-all-icon {
+  width: 32rpx;
+  height: 32rpx;
+}
+
+/* === Room Cards Grid === */
+.rooms-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 32rpx;
+}
+
+.room-card {
+  background: #fff;
+  border: 2rpx solid #f3f4f6;
+  box-shadow: 0 8rpx 40rpx rgba(0, 0, 0, 0.05);
+  border-radius: 64rpx;
+  padding: 48rpx;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.1s;
+}
+
+.room-card-pressed {
+  transform: scale(0.98);
+}
+
+.room-live-badge {
+  position: absolute;
+  top: 32rpx;
+  right: 32rpx;
+}
+
+.room-live-text {
+  font-size: 20rpx; font-weight: 700;
+  padding: 8rpx 24rpx; border-radius: 9999rpx;
+}
+.room-status-1 { background: #fbbf24; color: #92400e; }
+.room-status-2 { background: var(--color-primary); color: #fff; }
+.room-status-0 { background: #e5e7eb; color: #6b7280; }
+
+.room-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 32rpx;
+  margin-bottom: 8rpx;
+}
+
+.room-icon-wrap {
+  width: 128rpx;
+  height: 128rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.room-icon-green {
+  background: rgba(34, 197, 94, 0.1);
+}
+
+.room-icon-teal {
+  background: rgba(13, 148, 136, 0.1);
+}
+
+.room-icon-red {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.room-icon-img {
+  width: 64rpx;
+  height: 64rpx;
+}
+
+.room-info {
+  flex: 1;
+  padding-top: 16rpx;
+}
+
+.room-name {
+  display: block;
+  font-size: 40rpx;
+  line-height: 56rpx;
+  font-weight: 600;
+  color: #111827;
+}
+
+.room-desc {
+  display: block;
+  font-size: 28rpx;
+  color: #6b7280;
+}
+
+.room-card-mid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32rpx;
+}
+
+.room-members-avatars {
+  display: flex;
+}
+
+.room-member-avatar {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  border: 4rpx solid #fff;
+  margin-right: -20rpx;
+}
+
+.room-member-count {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  border: 4rpx solid #fff;
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.room-member-count-text {
+  font-size: 20rpx;
+  font-weight: 700;
+  color: #6b7280;
+}
+
+.room-member-stats {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+  color: #6b7280;
+}
+
+.room-groups-icon {
+  width: 36rpx;
+  height: 36rpx;
+}
+
+.room-member-stats-text {
+  font-size: 24rpx;
+  font-weight: 500;
+}
+
+/* === Join Buttons === */
+.btn-join {
+  width: 100%;
+  height: 96rpx;
+  border-radius: 9999rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition: all 0.3s;
+}
+
+.btn-join-filled {
+  background: var(--color-primary);
+  box-shadow: 0 8rpx 30rpx rgba(34, 197, 94, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-join-filled-pressed {
+  transform: scale(0.96);
+  box-shadow: 0 4rpx 10rpx rgba(34, 197, 94, 0.2);
+}
+
+.btn-join-text-filled {
+  color: #fff;
+  position: relative;
+  z-index: 2;
+}
+
+.btn-join-outline {
+  background: #fff;
+  border: 4rpx solid var(--color-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-join-outline-pressed {
+  transform: scale(0.96);
+  background: rgba(34, 197, 94, 0.05);
+}
+
+.btn-join-text-outline {
+  color: var(--color-primary);
+  position: relative;
+  z-index: 2;
+}
+
+/* === Bottom Navigation Bar === */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 32rpx 32rpx calc(64rpx + env(safe-area-inset-bottom));
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1rpx solid rgba(226, 232, 240, 0.3);
+  box-shadow: 0 -16rpx 60rpx rgba(0, 0, 0, 0.02);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12rpx 48rpx;
+  color: #454747;
+  transition: all 0.2s;
+}
+
+.nav-active {
+  color: var(--color-primary);
+}
+
+.nav-icon {
+  width: 48rpx;
+  height: 48rpx;
+}
+
+.nav-label {
+  font-size: 22rpx;
+  font-weight: 700;
+  margin-top: 2rpx;
+  color: #454747;
+}
+
+.nav-label-active {
+  color: var(--color-primary);
+}

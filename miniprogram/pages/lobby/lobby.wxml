@@ -1,0 +1,116 @@
+<!-- 大厅页面 -->
+<view class="page">
+  <!-- TopAppBar -->
+  <view class="header" style="padding-top: {{statusBarHeight}}px;">
+    <view class="header-inner">
+      <view class="header-brand">
+        <image class="header-bolt" src="/images/icon-bolt.svg" mode="aspectFit" />
+        <text class="header-title">律动健身</text>
+      </view>
+      <view class="header-avatar">
+        <image wx:if="{{userAvatar}}" class="header-avatar-img" src="{{userAvatar}}" mode="aspectFill" />
+        <view wx:else class="header-avatar-placeholder">
+          <text class="avatar-initial">{{userInitial || '?'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="main">
+    <!-- 输入房间号 -->
+    <view class="code-section">
+      <text class="code-label">输入房间号</text>
+      <view class="code-inputs">
+        <input class="code-digit" type="number" maxlength="1" value="{{code0}}" bindinput="onCodeInput" data-index="0" focus="{{focusIndex === 0}}" />
+        <input class="code-digit" type="number" maxlength="1" value="{{code1}}" bindinput="onCodeInput" data-index="1" focus="{{focusIndex === 1}}" />
+        <input class="code-digit" type="number" maxlength="1" value="{{code2}}" bindinput="onCodeInput" data-index="2" focus="{{focusIndex === 2}}" />
+        <input class="code-digit" type="number" maxlength="1" value="{{code3}}" bindinput="onCodeInput" data-index="3" focus="{{focusIndex === 3}}" />
+      </view>
+    </view>
+
+    <!-- 加入 / 创建 -->
+    <view class="action-buttons">
+      <view class="btn-action btn-action-join" hover-class="btn-action-join-pressed" bindtap="focusCodeInput">
+        <image class="btn-action-icon" src="/images/icon-keyboard.svg" mode="aspectFit" />
+        <text class="btn-action-text">加入房间</text>
+        <view class="btn-shimmer-dark"></view>
+      </view>
+      <view class="btn-action btn-action-create" hover-class="btn-action-create-pressed" bindtap="goCreateRoom">
+        <image class="btn-action-icon" src="/images/icon-add.svg" mode="aspectFit" />
+        <text class="btn-action-text">创建房间</text>
+        <view class="btn-shimmer"></view>
+      </view>
+    </view>
+
+    <!-- 活跃房间 -->
+    <view class="rooms-section">
+      <view class="rooms-header">
+        <text class="rooms-title">活跃房间</text>
+        <view class="rooms-see-all">
+          <text class="rooms-see-all-text">查看全部</text>
+          <image class="rooms-see-all-icon" src="/images/icon-chevron-right.svg" mode="aspectFit" />
+        </view>
+      </view>
+
+      <view class="rooms-grid">
+        <view class="empty-hint" wx:if="{{rooms.length === 0 && !loading}}">
+          <text>暂无活跃房间，快去创建一个吧</text>
+        </view>
+        <view
+          class="room-card"
+          hover-class="room-card-pressed"
+          wx:for="{{rooms}}"
+          wx:key="id"
+        >
+          <view class="room-live-badge">
+            <text class="room-live-text room-status-{{item.status}}">{{item.status === 2 ? '进行中' : '等待中'}}</text>
+          </view>
+          <view class="room-card-top">
+            <view class="room-icon-wrap room-icon-green">
+              <image class="room-icon-img" src="/images/icon-fitness.svg" mode="aspectFit" />
+            </view>
+            <view class="room-info">
+              <text class="room-name">{{item.name}}</text>
+              <text class="room-desc">邀请码: {{item.invite_code}}</text>
+            </view>
+          </view>
+          <view class="room-card-mid">
+            <view class="room-member-stats">
+              <image class="room-groups-icon" src="/images/icon-groups.svg" mode="aspectFit" />
+              <text class="room-member-stats-text">{{item.member_count || 0}}/{{item.max_members}} 人</text>
+            </view>
+          </view>
+          <view
+            class="btn-join btn-join-filled"
+            hover-class="btn-join-filled-pressed"
+            bindtap="joinThisRoom"
+            data-code="{{item.invite_code}}"
+          >
+            <text class="btn-join-text-filled">立即加入</text>
+            <view class="btn-shimmer"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部导航栏 - 与排行榜一致 -->
+  <view class="bottom-nav">
+    <view class="nav-item nav-active">
+      <image class="nav-icon" src="/images/icon-grid.svg" mode="aspectFit" />
+      <text class="nav-label nav-label-active">大厅</text>
+    </view>
+    <view class="nav-item" bindtap="goLeaderboard">
+      <image class="nav-icon" src="/images/icon-leaderboard-gray.svg" mode="aspectFit" />
+      <text class="nav-label">排行榜</text>
+    </view>
+    <view class="nav-item">
+      <image class="nav-icon" src="/images/icon-history.svg" mode="aspectFit" />
+      <text class="nav-label">记录</text>
+    </view>
+    <view class="nav-item" bindtap="goProfile">
+      <image class="nav-icon" src="/images/icon-person.svg" mode="aspectFit" />
+      <text class="nav-label">我的</text>
+    </view>
+  </view>
+</view>

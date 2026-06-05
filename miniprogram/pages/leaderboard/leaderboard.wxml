@@ -1,0 +1,144 @@
+<!-- 排行榜页面 - 1:1 还原 _1/code.html -->
+<view class="page">
+  <!-- Top AppBar -->
+  <view class="header" style="padding-top: {{statusBarHeight}}px;">
+    <view class="header-inner">
+      <view class="header-left">
+        <view class="avatar avatar-sm ring-primary">
+          <image wx:if="{{userAvatar}}" class="avatar-img" src="{{userAvatar}}" mode="aspectFill" />
+          <view wx:else class="avatar-placeholder-sm">
+            <text class="avatar-initial-sm">{{userInitial || '?'}}</text>
+          </view>
+        </view>
+      </view>
+      <text class="header-title">健身空间</text>
+      <image class="icon icon-settings" src="/images/icon-settings.svg" mode="aspectFit" />
+    </view>
+  </view>
+
+  <!-- Main Content -->
+  <view class="main">
+    <!-- Hero Section -->
+    <view class="hero">
+      <text class="hero-title">今日排行</text>
+      <text class="hero-subtitle">谁是今天的卷王？</text>
+
+      <!-- Podium Layout -->
+      <view class="podium">
+        <!-- 2nd Place -->
+        <view class="podium-item">
+          <view class="podium-avatar-wrap">
+            <view class="podium-avatar podium-avatar-2nd">
+              <image class="podium-avatar-img" src="/images/avatar-placeholder.svg" mode="aspectFill" />
+            </view>
+            <view class="rank-badge rank-badge-2">2</view>
+          </view>
+          <view class="podium-bar podium-bar-2nd">
+            <text class="podium-name">{{podium.second.name}}</text>
+            <view class="podium-value-wrap">
+              <text class="podium-value">{{podium.second.value}}</text>
+              <text class="podium-unit">{{unit}}</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 1st Place -->
+        <view class="podium-item">
+          <view class="podium-avatar-wrap">
+            <view class="podium-avatar podium-avatar-1st">
+              <image class="podium-avatar-img" src="/images/avatar-placeholder.svg" mode="aspectFill" />
+            </view>
+            <view class="rank-badge rank-badge-1">1</view>
+            <view class="crown-icon">
+              <image class="icon-crown" src="/images/icon-crown.svg" mode="aspectFit" />
+            </view>
+          </view>
+          <view class="podium-bar podium-bar-1st">
+            <text class="podium-name podium-name-1st">{{podium.first.name}}</text>
+            <view class="podium-value-wrap">
+              <text class="podium-value podium-value-1st">{{podium.first.value}}</text>
+              <text class="podium-unit">{{unit}}</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 3rd Place -->
+        <view class="podium-item">
+          <view class="podium-avatar-wrap">
+            <view class="podium-avatar podium-avatar-3rd">
+              <image class="podium-avatar-img" src="/images/avatar-placeholder.svg" mode="aspectFill" />
+            </view>
+            <view class="rank-badge rank-badge-3">3</view>
+          </view>
+          <view class="podium-bar podium-bar-3rd">
+            <text class="podium-name">{{podium.third.name}}</text>
+            <view class="podium-value-wrap">
+              <text class="podium-value">{{podium.third.value}}</text>
+              <text class="podium-unit">{{unit}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- Tab Switcher -->
+    <view class="tab-bar">
+      <view
+        class="tab-item {{activeTab === 'duration' ? 'tab-active' : ''}}"
+        bindtap="switchTab"
+        data-tab="duration"
+      >时长</view>
+      <view
+        class="tab-item {{activeTab === 'calories' ? 'tab-active' : ''}}"
+        bindtap="switchTab"
+        data-tab="calories"
+      >消耗</view>
+      <view
+        class="tab-item {{activeTab === 'count' ? 'tab-active' : ''}}"
+        bindtap="switchTab"
+        data-tab="count"
+      >次数</view>
+    </view>
+
+    <!-- Rankings List -->
+    <view class="ranking-list">
+      <view class="rank-item" hover-class="rank-item-pressed" wx:for="{{rankingList}}" wx:key="rank">
+        <text class="rank-num">{{item.rank < 10 ? '0' + item.rank : item.rank}}</text>
+        <view class="rank-avatar-wrap">
+          <image class="rank-avatar-img" src="/images/avatar-placeholder.svg" mode="aspectFill" />
+        </view>
+        <view class="rank-info">
+          <text class="rank-name">{{item.name}}</text>
+          <text class="rank-level">{{item.level}}</text>
+        </view>
+        <view class="rank-stats">
+          <text class="rank-stats-value">{{item.value}}</text>
+          <text class="rank-stats-unit">{{unit}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Bottom Navigation Bar -->
+  <view class="bottom-nav">
+    <view class="nav-item" bindtap="goLobby">
+      <image class="nav-icon" src="/images/icon-grid.svg" mode="aspectFit" />
+      <text class="nav-label">大厅</text>
+    </view>
+    <view class="nav-item nav-active">
+      <view class="nav-icon-wrap">
+        <image class="nav-icon" src="/images/icon-leaderboard.svg" mode="aspectFit" />
+        <view class="nav-dot"></view>
+      </view>
+      <text class="nav-label nav-label-active">排行榜</text>
+    </view>
+    <view class="nav-item">
+      <image class="nav-icon" src="/images/icon-history.svg" mode="aspectFit" />
+      <text class="nav-label">记录</text>
+    </view>
+    <view class="nav-item" bindtap="goProfile">
+      <image class="nav-icon" src="/images/icon-person.svg" mode="aspectFit" />
+      <text class="nav-label">我的</text>
+    </view>
+  </view>
+</view>

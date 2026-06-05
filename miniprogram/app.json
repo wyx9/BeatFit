@@ -1,0 +1,18 @@
+{
+  "pages": [
+    "pages/splash/splash",
+    "pages/guest-login/guest-login",
+    "pages/lobby/lobby",
+    "pages/leaderboard/leaderboard",
+    "pages/create-room/create-room",
+    "pages/profile/profile",
+    "pages/training/training",
+    "pages/room-waiting/room-waiting"
+  ],
+  "window": {
+    "navigationStyle": "custom",
+    "backgroundColor": "#ffffff",
+    "backgroundTextStyle": "dark"
+  },
+  "sitemapLocation": "sitemap.json"
+}

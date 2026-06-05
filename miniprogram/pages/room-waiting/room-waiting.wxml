@@ -1,0 +1,85 @@
+<!-- 房间等待页 -->
+<view class="page">
+  <view class="header" style="padding-top: {{statusBarHeight}}px;">
+    <view class="header-inner">
+      <image class="header-back" src="/images/icon-arrow-back.svg" mode="aspectFit" bindtap="goBack" />
+      <text class="header-title">{{room.name || '房间'}}</text>
+      <view class="header-spacer"></view>
+    </view>
+  </view>
+
+  <view class="main">
+    <!-- 邀请码 + 状态 -->
+    <view class="invite-section">
+      <view class="invite-top">
+        <text class="invite-label">邀请码</text>
+        <text class="status-badge status-{{room.status}}">{{statusLabel}}</text>
+      </view>
+      <text class="invite-hint">分享给好友，一起加入训练</text>
+      <view class="invite-code-row">
+        <view class="code-box" wx:for="{{codeDigits}}" wx:key="*this">{{item}}</view>
+      </view>
+    </view>
+
+    <!-- 房间成员 -->
+    <view class="members-section">
+      <text class="section-label">房间成员 ({{members.length}})</text>
+      <view class="member-list">
+        <view class="member-item" wx:for="{{members}}" wx:key="user_id">
+          <view class="member-avatar-wrap">
+            <image wx:if="{{item.avatar_url}}" class="member-avatar" src="{{item.avatar_url}}" mode="aspectFill" />
+            <view wx:else class="member-avatar-placeholder"><text>{{item.nickname ? item.nickname[0] : '?'}}</text></view>
+          </view>
+          <text class="member-name">{{item.nickname}}</text>
+          <text class="member-badge" wx:if="{{item.user_id === room.owner_id}}">房主</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 训练动作详情 -->
+    <view class="exercises-section">
+      <text class="section-label">训练内容</text>
+      <view class="category-block" wx:for="{{groupedExercises}}" wx:key="category">
+        <text class="cat-name">{{item.category}}</text>
+        <view class="ex-row" wx:for="{{item.exercises}}" wx:for-item="ex" wx:key="name">
+          <view class="ex-left">
+            <text class="ex-name">{{ex.name}}</text>
+            <text class="ex-tag">{{ex.tag}}</text>
+          </view>
+          <text class="ex-detail">{{ex.sets}}组×{{ex.reps}}次 | {{ex.duration_sec}}秒/组 | 休息{{ex.rest_sec}}秒</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 房间信息 -->
+    <view class="room-info">
+      <view class="info-row">
+        <text class="info-label">房主</text>
+        <text class="info-value">{{ownerName}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">状态</text>
+        <text class="info-value info-status">{{statusLabel}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">存活时间</text>
+        <text class="info-value info-expire">4小时后自动解散</text>
+      </view>
+    </view>
+
+    <!-- 操作按钮：房主 / 成员 -->
+    <view class="actions" wx:if="{{isOwner}}">
+      <view class="btn-dissolve" hover-class="btn-dissolve-pressed" bindtap="handleDissolve">
+        <text class="btn-dissolve-text">解散房间</text>
+      </view>
+      <view class="btn-start" hover-class="btn-start-pressed" bindtap="handleStart">
+        <image class="btn-start-icon" src="/images/icon-play-arrow.svg" mode="aspectFit" />
+        <text class="btn-start-text">开始训练</text>
+        <view class="btn-shimmer"></view>
+      </view>
+    </view>
+    <view class="waiting-hint" wx:else>
+      <text class="waiting-text">等待房主开始训练...</text>
+    </view>
+  </view>
+</view>

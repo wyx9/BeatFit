@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #ffffff;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-tab {
+            background-color: #22c55e;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+        }
+        /* Custom scrollbar suppression */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        .rank-gradient-1 {
+            background: linear-gradient(180deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.02) 100%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#22c55e",
+                        "on-primary": "#ffffff",
+                        "background": "#ffffff",
+                        "surface": "#ffffff",
+                        "surface-variant": "#f8f9ff",
+                        "on-surface": "#131313",
+                        "on-surface-variant": "#454747",
+                        "outline": "#e2e8f0",
+                        "secondary": "#22c55e",
+                        "secondary-container": "#ccf200",
+                        "on-secondary-container": "#5a6c00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "9999px",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-margin": "24px",
+                        "lg": "40px",
+                        "sm": "12px",
+                        "base": "8px",
+                        "md": "24px",
+                        "gutter": "16px",
+                        "xs": "4px",
+                        "xl": "64px"
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface antialiased overflow-x-hidden">
+<!-- Top AppBar -->
+<header class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-outline/30">
+<div class="flex justify-between items-center px-container-margin py-base w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-base active:scale-95 transition-transform">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-slate-100 ring-2 ring-primary/10">
+<img alt="User Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9TbUoBMC2Tpl5bEi8l2v1mqxyBNavnDNk3xUe5StRhBGN8RKebLerIBX-rTlh-wYqVf6L8IcYjbLAgtUT1_lfkPzgPt9fHaIiS08Jvt0axU-78MxAH7YQY9q3H6I6u-XLkvWhNTxetE6ClHlqpXIh4JfjPbatL719M8NmQXW_iRe-CxYIUaEoz1oVAy5BmvJsId1-Xldq3yJCh6liJvNeeMJbd-amDuAbwR3ihTuYibB5aakJtrfFOsVjUuN0YNUngcXKYwMU8I8"/>
+</div>
+</div>
+<h1 class="text-lg font-bold text-on-surface tracking-tight">健身空间</h1>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary active:scale-95 transition-all" data-icon="settings">settings</button>
+</div>
+</header>
+<main class="pt-24 pb-32 px-container-margin max-w-lg mx-auto">
+<!-- Hero Section -->
+<div class="mb-lg">
+<h2 class="text-2xl font-bold text-on-surface mb-1">今日排行</h2>
+<p class="text-sm text-on-surface-variant mb-md">谁是今天的卷王？</p>
+<!-- Podium Layout -->
+<div class="grid grid-cols-3 gap-sm items-end h-64 mb-md">
+<!-- 2nd Place -->
+<div class="flex flex-col items-center gap-xs">
+<div class="relative mb-2">
+<div class="w-16 h-16 rounded-full border-2 border-slate-100 p-0.5 bg-white shadow-sm">
+<img alt="Rank 2" class="w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAFW6pqrOxh0CHvZtng55zAqUJgw7ziIUBFF6JOgBgL3edFVg4yRez6kBkD-AawqVndpsy3sBQ9O9iKVOBVNr3ipcVu-ZzlqZrLsAhQGV4cc6CLVHSXzFf8ol3MWUjb7satFD3YJM-dgwC7G48kQhfiO6aYZ3jf_RHTGUvDwyta82jUTLj8-Ia9unwHn1VZtQkkyn5wWvt7oaHNqLhUmmZKkJnwTL98TtFW37ln8UiNH1EMW-kQAvtfD6xrRRz7j1aNdfCoBEcBxk"/>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-slate-400 text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold text-white shadow-sm">2</div>
+</div>
+<div class="bg-surface-variant h-24 w-full rounded-t-lg flex flex-col items-center justify-center p-xs border-x border-t border-outline/20">
+<span class="text-xs text-on-surface-variant font-medium truncate w-full text-center">李晓华</span>
+<span class="text-lg font-bold text-on-surface">145<span class="text-[10px] ml-0.5 font-normal text-on-surface-variant">min</span></span>
+</div>
+</div>
+<!-- 1st Place -->
+<div class="flex flex-col items-center gap-xs">
+<div class="relative mb-2">
+<div class="w-20 h-20 rounded-full border-4 border-primary p-0.5 bg-white shadow-md">
+<img alt="Rank 1" class="w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAu9elZ81FNiOvfDE_WSXUXO1fGDc9JLCSdgVlNN6eUYPY6Gndpo2rP8hGol3jJQoaTYTEgJAWxtS__bdaUdk67cryPxTW38EQsN7yNgQBcLgsGfLBk0xBpEcMT83aGwWX3lsYcxHRCUUd17fr0WhVgjQMG7Fx_alSMIsrkykx-nLCnaOCEOwbLk1Y9i1J5se3pFP9RDgcvv48izhRfVK9N_-yaChj35VH45dEDRwE0hL4fQ6Smnm4t8n_cqE94K1moaWlL7eb9GY"/>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-primary text-white text-xs w-6 h-6 rounded-full flex items-center justify-center font-bold shadow-lg">1</div>
+<div class="absolute -top-7 left-1/2 -translate-x-1/2">
+<span class="material-symbols-outlined text-primary text-3xl drop-shadow-sm" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</div>
+</div>
+<div class="rank-gradient-1 h-32 w-full rounded-t-lg flex flex-col items-center justify-center p-xs border-x border-t border-primary/20">
+<span class="text-xs text-primary font-bold truncate w-full text-center">王大锤</span>
+<span class="text-2xl font-bold text-on-surface">182<span class="text-xs ml-0.5 font-normal text-on-surface-variant">min</span></span>
+</div>
+</div>
+<!-- 3rd Place -->
+<div class="flex flex-col items-center gap-xs">
+<div class="relative mb-2">
+<div class="w-16 h-16 rounded-full border-2 border-slate-100 p-0.5 bg-white shadow-sm">
+<img alt="Rank 3" class="w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdMxnFRfLoZSqQf7KfrSBaX2UYUhfq1j85vkJCBe5EyIvozpMAt36ApHWwyxgeG-unqMQFdgkh3LdtXE0xx6gXqkiFgu9k8TbO1BFvAq0J3tmuk5CwsE722G0UhyQKWZ7T3w0APd3bkLzFupzW3NKxi7eMk-rhey-hQFq9rOhABlzbkPXa8ZJZhScFgSth_-mgw_7uUGlMfTixenSfiTdLYyeK36twLp8tKnWcvkWDairFKA0d0haM2VvuAnyDxswf30p71xuZ2Eg"/>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-orange-400 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold shadow-sm">3</div>
+</div>
+<div class="bg-surface-variant h-20 w-full rounded-t-lg flex flex-col items-center justify-center p-xs border-x border-t border-outline/20">
+<span class="text-xs text-on-surface-variant font-medium truncate w-full text-center">陈小美</span>
+<span class="text-lg font-bold text-on-surface">120<span class="text-[10px] ml-0.5 font-normal text-on-surface-variant">min</span></span>
+</div>
+</div>
+</div>
+</div>
+<!-- Tab Switcher -->
+<div class="bg-surface-variant p-1.5 rounded-full flex gap-1 mb-md sticky top-20 z-40 border border-outline/30 backdrop-blur-md">
+<button class="flex-1 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 active-tab" onclick="switchTab(this, 'duration')">时长</button>
+<button class="flex-1 py-2.5 rounded-full text-sm font-medium transition-all duration-300 text-on-surface-variant hover:bg-white/50" onclick="switchTab(this, 'calories')">消耗</button>
+<button class="flex-1 py-2.5 rounded-full text-sm font-medium transition-all duration-300 text-on-surface-variant hover:bg-white/50" onclick="switchTab(this, 'count')">次数</button>
+</div>
+<!-- Rankings List -->
+<div class="space-y-3" id="leaderboard-list">
+<!-- Item 4 -->
+<div class="flex items-center gap-md p-md bg-white border border-outline/30 rounded-lg transition-all hover:shadow-sm active:scale-[0.98] group">
+<span class="text-lg font-bold text-slate-300 w-8">04</span>
+<div class="w-12 h-12 rounded-full overflow-hidden ring-2 ring-surface-variant">
+<img alt="Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOyl2tebgbDJ2I8Qp-RNw3izJsAY1ixLIz5GrYgNZZHkIVR96WR1EGeTOi3zkzsM7nheS3DkIoDbiWUapDrcBWaKboKP4RhDvZXMWT7Z5THqhyI6HHJkOCvgwG-XvoJa4nDgtM-gqZYQ6YuXqqx1bgq6IFzFqppkMtXt6m3D8xyv79kUqmUzRItuGW12nESzEamTX6WnzauCqLY_MSxDmu3v7ap6cRGzs6Rm-9rPCByy5B1deRG5wFlbs9MfDqWHe_yOJ8CbztfJU"/>
+</div>
+<div class="flex-1">
+<h4 class="text-sm font-bold text-on-surface">林克</h4>
+<p class="text-[11px] font-medium text-on-surface-variant">Lv.12 健身达人</p>
+</div>
+<div class="text-right">
+<span class="text-lg font-bold text-on-surface">98<span class="text-xs ml-1 font-normal text-on-surface-variant">min</span></span>
+</div>
+</div>
+<!-- Item 5 -->
+<div class="flex items-center gap-md p-md bg-white border border-outline/30 rounded-lg transition-all hover:shadow-sm active:scale-[0.98] group">
+<span class="text-lg font-bold text-slate-300 w-8">05</span>
+<div class="w-12 h-12 rounded-full overflow-hidden ring-2 ring-surface-variant">
+<img alt="Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjz2tCCgPE5Od6NcNWklr4FT2k1vGDbZ8DgLhuwjVpVhWGd_-KaIqM5osx7qaZSV0ln72VrkPc-3G6EFQ6rS5SwrSFopKrYzC-tMb5Ag2rHBlHE3Z3E_7VVhBUr7G1TGF0CnCrjJY2mHCOPJDrujal9VCn0MiIp92DlDfULSe6IXlrCrvYPlvAp7Qkj1jYzi0XoI3Dq-vSlawauOaYLiOFtpHI5vprdBcjiSLGFzhY65_W_O3IySNbyfsuMFK4X9ltj3zNltNHPOE"/>
+</div>
+<div class="flex-1">
+<h4 class="text-sm font-bold text-on-surface">赵云</h4>
+<p class="text-[11px] font-medium text-on-surface-variant">Lv.08 核心力量</p>
+</div>
+<div class="text-right">
+<span class="text-lg font-bold text-on-surface">85<span class="text-xs ml-1 font-normal text-on-surface-variant">min</span></span>
+</div>
+</div>
+<!-- Item 6 -->
+<div class="flex items-center gap-md p-md bg-white border border-outline/30 rounded-lg transition-all hover:shadow-sm active:scale-[0.98] group">
+<span class="text-lg font-bold text-slate-300 w-8">06</span>
+<div class="w-12 h-12 rounded-full overflow-hidden ring-2 ring-surface-variant">
+<img alt="Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBldmHG31PEt948jzPofQ5AB9GkoF0QP7LZJLYWpDnjxOOXa8ejkQyAJDmJPWtD62NYlHQvT8MFwJ1tk9wGOpSU4zKWN6voorwaHdJ-CZMWox-YwvMHdPHy3cgqhFAPUgqzfhuWO4JikZ9I9WKXtT8ovCsgIzmxtLPuU28pKM1tft6jgDwkn-0lCMta06HhMkxnZrAT8k8JnCL8hdzZl2AFT26ryIfexE0efCHAEeKG58M_jAZ175BP0Fbww6Y5iLuP_d9nzY3-nBs"/>
+</div>
+<div class="flex-1">
+<h4 class="text-sm font-bold text-on-surface">张三</h4>
+<p class="text-[11px] font-medium text-on-surface-variant">Lv.15 资深训练者</p>
+</div>
+<div class="text-right">
+<span class="text-lg font-bold text-on-surface">74<span class="text-xs ml-1 font-normal text-on-surface-variant">min</span></span>
+</div>
+</div>
+<!-- Item 7 -->
+<div class="flex items-center gap-md p-md bg-white border border-outline/30 rounded-lg transition-all hover:shadow-sm active:scale-[0.98] group">
+<span class="text-lg font-bold text-slate-300 w-8">07</span>
+<div class="w-12 h-12 rounded-full overflow-hidden ring-2 ring-surface-variant">
+<img alt="Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBszx3fAI461gnZnmTc51nQqMgoKbD7Goy7jO8axUqPKeXzd5NeluIXpxovpZpGsLSxJ7p-DA77r5QD5FzCDmyOWuoH939A-q6IkKGXjrvbPJDKy1DxeULtFLIv6_Vr00nhwcFDQM5xHW3J6ySCXNoHZ_zXnb28Sfb-LCtqQyeS52OzwYzCDwWQ1UXMiEJ5ydQBFPB_bFpKftMhepY4FB3y7uyjfJsBuICqIGVd4OkDdb4DWfdsuiy2s7OWUFf0FUnFri4pkA24huk"/>
+</div>
+<div class="flex-1">
+<h4 class="text-sm font-bold text-on-surface">刘亦菲</h4>
+<p class="text-[11px] font-medium text-on-surface-variant">Lv.05 有氧萌新</p>
+</div>
+<div class="text-right">
+<span class="text-lg font-bold text-on-surface">62<span class="text-xs ml-1 font-normal text-on-surface-variant">min</span></span>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter pb-8 pt-4 bg-white/95 backdrop-blur-2xl border-t border-outline/30 shadow-[0_-8px_30px_rgb(0,0,0,0.02)]">
+<!-- Hall -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-6 py-2 hover:text-primary active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="text-[11px] font-bold mt-0.5">大厅</span>
+</button>
+<!-- Leaderboard (Active) -->
+<button class="flex flex-col items-center justify-center text-primary px-6 py-2 active:scale-90 transition-all duration-200">
+<div class="relative">
+<span class="material-symbols-outlined" data-icon="leaderboard" style="font-variation-settings: 'FILL' 1;">leaderboard</span>
+<div class="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full border-2 border-white"></div>
+</div>
+<span class="text-[11px] font-bold mt-0.5">排行榜</span>
+</button>
+<!-- History -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-6 py-2 hover:text-primary active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="text-[11px] font-bold mt-0.5">记录</span>
+</button>
+<!-- Me -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-6 py-2 hover:text-primary active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-[11px] font-bold mt-0.5">我的</span>
+</button>
+</nav>
+<script>
+    function switchTab(el, type) {
+        // Update Tab Styling
+        const buttons = el.parentElement.querySelectorAll('button');
+        buttons.forEach(btn => {
+            btn.classList.remove('active-tab');
+            btn.classList.add('text-on-surface-variant');
+        });
+        el.classList.add('active-tab');
+        el.classList.remove('text-on-surface-variant');
+
+        // Simulate Data Change
+        const list = document.getElementById('leaderboard-list');
+        list.style.opacity = '0';
+        list.style.transform = 'translateY(10px)';
+        
+        const units = {
+            'duration': 'min',
+            'calories': 'kcal',
+            'count': '次'
+        };
+        
+        const data = {
+            'duration': [98, 85, 74, 62],
+            'calories': [840, 720, 680, 590],
+            'count': [24, 21, 18, 15]
+        };
+
+        setTimeout(() => {
+            const items = list.querySelectorAll('.text-right span');
+            items.forEach((span, index) => {
+                span.innerHTML = `${data[type][index]}<span class="text-xs ml-1 font-normal text-on-surface-variant">${units[type]}</span>`;
+            });
+            
+            // Update top 3 stats as well
+            const top3Values = {
+                'duration': [182, 145, 120],
+                'calories': [1250, 1100, 980],
+                'count': [45, 42, 38]
+            };
+            
+            const podiumValueWrappers = document.querySelectorAll('.grid > div .text-lg, .grid > div .text-2xl');
+            // Index 0 is 2nd place value
+            podiumValueWrappers[0].innerHTML = `${top3Values[type][1]}<span class="text-[10px] ml-0.5 font-normal text-on-surface-variant">${units[type]}</span>`;
+            // Index 1 is 1st place value
+            podiumValueWrappers[1].innerHTML = `${top3Values[type][0]}<span class="text-xs ml-0.5 font-normal text-on-surface-variant">${units[type]}</span>`;
+            // Index 2 is 3rd place value
+            podiumValueWrappers[2].innerHTML = `${top3Values[type][2]}<span class="text-[10px] ml-0.5 font-normal text-on-surface-variant">${units[type]}</span>`;
+
+            list.style.opacity = '1';
+            list.style.transform = 'translateY(0)';
+            list.style.transition = 'all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1)';
+        }, 250);
+    }
+</script>
+</body></html>

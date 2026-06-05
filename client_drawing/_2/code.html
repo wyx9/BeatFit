@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Pulse Fitness - Lobby</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-highest": "#e5e7eb",
+                    "tertiary-fixed": "#dcfce7",
+                    "on-tertiary-container": "#14532d",
+                    "on-secondary-fixed-variant": "#4b5563",
+                    "error-container": "#fee2e2",
+                    "tertiary-container": "#dcfce7",
+                    "on-primary-fixed": "#ffffff",
+                    "outline-variant": "#e5e7eb",
+                    "secondary-fixed-dim": "#d1d5db",
+                    "surface": "#ffffff",
+                    "surface-variant": "#f3f4f6",
+                    "on-primary-container": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed-dim": "#86efac",
+                    "secondary-container": "#f3f4f6",
+                    "tertiary-fixed-dim": "#86efac",
+                    "on-secondary-fixed": "#111827",
+                    "inverse-on-surface": "#f9fafb",
+                    "tertiary": "#166534",
+                    "secondary-fixed": "#f3f4f6",
+                    "on-error-container": "#991b1b",
+                    "inverse-surface": "#111827",
+                    "inverse-primary": "#86efac",
+                    "on-secondary": "#ffffff",
+                    "on-surface": "#111827",
+                    "secondary": "#4b5563",
+                    "surface-bright": "#ffffff",
+                    "primary": "#22c55e",
+                    "on-background": "#111827",
+                    "surface-dim": "#f3f4f6",
+                    "error": "#ef4444",
+                    "on-tertiary-fixed-variant": "#14532d",
+                    "on-error": "#ffffff",
+                    "outline": "#e5e7eb",
+                    "on-surface-variant": "#6b7280",
+                    "on-primary": "#ffffff",
+                    "surface-container-high": "#f9fafb",
+                    "surface-container-low": "#ffffff",
+                    "on-tertiary-fixed": "#14532d",
+                    "primary-fixed": "#22c55e",
+                    "primary-container": "#22c55e",
+                    "surface-tint": "#22c55e",
+                    "on-primary-fixed-variant": "#14532d",
+                    "background": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-container": "#374151",
+                    "surface-container": "#f3f4f6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "9999px",
+                    "lg": "9999px",
+                    "xl": "9999px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "md": "16px",
+                    "gutter": "16px",
+                    "lg": "24px",
+                    "xs": "4px",
+                    "margin-mobile": "20px",
+                    "sm": "8px",
+                    "unit": "4px",
+                    "xl": "32px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "label-lg": ["Inter"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "body-sm": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-sm": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .full-round-card {
+            background: #ffffff;
+            border: 1px solid #f3f4f6;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+            border-radius: 2rem;
+        }
+        .glow-button {
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+            transition: all 0.3s ease;
+        }
+        .glow-button:active {
+            transform: scale(0.96);
+            box-shadow: 0 2px 5px rgba(34, 197, 94, 0.2);
+        }
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background min-h-screen font-body-md text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-xl border-b border-gray-100 h-16 flex items-center justify-between px-margin-mobile">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style='font-variation-settings: "FILL" 1;'>bolt</span>
+<h1 class="font-headline-md text-headline-md text-primary tracking-tight">Pulse Fitness</h1>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/10">
+<img alt="User" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0CnlOBYuTLvUaBYVuxJhONtlyMfGorRGktlppXp6Do3qmkulIT5G6qGiaLNurQrq4nOPDy2K6Y3LHRL4n2A-HQg5ju8wEJb72aPcfiQEcThZ8UF7XofSKrGDRUApNcGQvvZxxlaDzhc-aAD5Hh9dGZcXhhs2HanE9_6dgQugiwrSZ8UzqXwQtiD1yMkgkFpO4A3Rnwc5BsD21nMIeX4JS639kxXPZz49peioiYb2o05niURW8_d83B9Jv8JSDgLekcScg9PkiiLI"/>
+</div>
+</header>
+<main class="pt-24 pb-32 px-margin-mobile space-y-xl">
+<!-- Search & Join Section -->
+<section class="space-y-md">
+<button class="w-full h-14 bg-primary/5 text-primary font-label-lg rounded-full flex items-center justify-center gap-2 transition-all duration-300 active:scale-95 border-2 border-primary/20">
+<span class="material-symbols-outlined">keyboard</span>
+                Enter Room Code
+            </button>
+</section>
+<!-- Active Rooms Bento Grid -->
+<section class="space-y-lg">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-on-surface">Active Rooms</h2>
+<button class="text-primary font-label-md flex items-center gap-1">
+                    See All <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+<div class="grid grid-cols-1 gap-md">
+<!-- Room Card 1 -->
+<div class="full-round-card p-lg flex flex-col gap-lg relative overflow-hidden group">
+<div class="absolute top-4 right-4">
+<span class="bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Live</span>
+</div>
+<div class="flex items-start gap-md">
+<div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[32px]" style='font-variation-settings: "FILL" 1;'>fitness_center</span>
+</div>
+<div class="flex-1 pt-1">
+<h3 class="font-headline-sm text-on-surface leading-tight">Iron Core</h3>
+<p class="text-on-surface-variant font-body-sm">Back Workout</p>
+</div>
+</div>
+<div class="flex items-center justify-between mt-unit">
+<div class="flex -space-x-2">
+<img class="w-8 h-8 rounded-full border-2 border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUkLyngU5xZeAKFcHFoZWTrfnfGA-YcvhXaB8BB6RlIsKD_CUj3VlroCxwfcO4EXj6rfHFpiqtrc93Z4a2q2vP_iKLz8XuUZWo6li36L23xQD2JwPp_kyUseID-wu1EadYbzvA7Gvfrqe9A4YnmyFvLec5eSZrjIYYDbf1xFt9znNE74kV9_vZX0DeNReClbfairKcxfKvVNj0Kfblvo3QNbaY0rkEo2BBhRKdQblz0gb7ivXuK3n1E4otlBaKmaNPTSKv2i6BIoo"/>
+<img class="w-8 h-8 rounded-full border-2 border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD31whwjfDFElXWh64bTpdUHZ1SF8MjmKeOR1sVx1-Eo6mzcEZJXyUm19fqtj5Q1TJBhYcwztieZd-MNTXRu3m0PKj5nwXv87IJOFIWwdghLxZ0JOSEeEZs7gIUo-ZS4j223Fe8Sm8fiuIwHqefSaYvvli41un8Sl70ZPWzKsZAAa-SNKB4qQaBvGy-Mm_8Vs9592LT6rJDURu6AkizIImSvCjK2p5uzISePMrFmSqweIMjf8kJXSB7uCHS0CJurpZx54-JwQ13UJ4"/>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-surface-variant flex items-center justify-center text-[10px] font-bold text-on-surface-variant">+12</div>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">groups</span>
+<span class="font-label-md">15/20</span>
+</div>
+</div>
+<button class="w-full py-3 bg-primary text-white font-label-lg rounded-full glow-button mt-2">
+                        Join Now
+                    </button>
+</div>
+<!-- Room Card 2 -->
+<div class="full-round-card p-lg flex flex-col gap-lg relative overflow-hidden group">
+<div class="flex items-start gap-md">
+<div class="w-16 h-16 rounded-full bg-tertiary-container/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary text-[32px]" style='font-variation-settings: "FILL" 1;'>self_improvement</span>
+</div>
+<div class="flex-1 pt-1">
+<h3 class="font-headline-sm text-on-surface leading-tight">Zen Flow</h3>
+<p class="text-on-surface-variant font-body-sm">Morning Yoga</p>
+</div>
+</div>
+<div class="flex items-center justify-between mt-unit">
+<div class="flex -space-x-2">
+<img class="w-8 h-8 rounded-full border-2 border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvtQHUkuIYQkn3-RT-8nmYd8d9hpDXTEJnW2nlIFeF5K88X0YPX5sGhJSDxGjo3NZTOJAbQwSkMNmj_nd4OKPN2ouqLGUBVII2WJ9OSdteMBuwvAMLw0P4ig8bIW1YcyhBRll-DROiVZasTCsXy-1uCilMYBdLP4vQxRgWInlVkPsslWvqfKUQ1Vk6V6A1nl2ZUnIgC6ltoW6iq3hK_RExfQ6dRvjmakbzqChxR7GEbCLNoFg3xPU91xGjGUnIhPmamE7GpAXYFb0"/>
+<img class="w-8 h-8 rounded-full border-2 border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpCntmy7CYtBqb57ALxkKL5xqZVY_bvccROAFs7JZkG4ck4M1bKsizS1_0xmHRyHt18aH3N5Oy1xEePmlAUljgJIVFdIU6dOwIXaDmE4_7YzrzYRp6ZkroBb_AYqz5aLGc5LANtUh2onKL2pJgn8-xZS6Yo9vCJcAGsSIpQetGCbYeiDOAIS2gPaklcyL77_45j5_N0uSR3FraXx8H_CxrQJ_mUkaki-qSdD56ksOMoZ89YcXV2il4wL6RofetaUJw4JIa47lkdHI"/>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-surface-variant flex items-center justify-center text-[10px] font-bold text-on-surface-variant">+5</div>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">groups</span>
+<span class="font-label-md">8/12</span>
+</div>
+</div>
+<button class="w-full py-3 border-2 border-primary text-primary font-label-lg rounded-full hover:bg-primary/5 transition-colors">
+                        Join Now
+                    </button>
+</div>
+<!-- Room Card 3 -->
+<div class="full-round-card p-lg flex flex-col gap-lg relative overflow-hidden group">
+<div class="flex items-start gap-md">
+<div class="w-16 h-16 rounded-full bg-error-container/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-error text-[32px]" style='font-variation-settings: "FILL" 1;'>avg_pace</span>
+</div>
+<div class="flex-1 pt-1">
+<h3 class="font-headline-sm text-on-surface leading-tight">HIIT Blitz</h3>
+<p class="text-on-surface-variant font-body-sm">Cardio &amp; Burn</p>
+</div>
+</div>
+<div class="flex items-center justify-between mt-unit">
+<div class="flex -space-x-2">
+<img class="w-8 h-8 rounded-full border-2 border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATnOiorM9WqJiubZDumf3CgohinnZltAPKidESFCH8xABNXgwSM6ykgBh5pbhMX5ZIeE_c-Az_0Pmf_IIR2lI2zBJ_OZBcW4lDMTJ6rXhBOuWeo_Z_M6zmwntGiK12hA7Ci88j54PJ9Wn-_lMRlxSNhe7sGctCo6W8l5KHrTNwu2haXDjrJ1escmSus-AsfxPaREbVjxsvlxXqOXkH7EkukkpJ0i5r0yf58n4ho0R4XuYHu7l4KWMhHrRuWz_7og0qTJeBF9Smz3o"/>
+<img class="w-8 h-8 rounded-full border-2 border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMv46TBrFrQLeoM7sLPTaGyst2ydrSoxufi02wjTftaKaIMgb1EJZHTVZCcTZs8DX3UwRaf5uJVPu1hWSgo77uGB5MwykKFi2kqb2XQPESV2T34qNqTLZFGN1Up2JccWDpniaBUoOjWnO3uuWJL-65lpk3KQjJBMW-PU-Ie8ymE91Xk3K-x8FNqVuGhuEpP8AGfP3rHfwCIfg55A0P1SAimiR_gjbEe1lrJaGZ5sF2n2q-NABoINEzeVTqyHZ4XREAceIwvekmy_k"/>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-surface-variant flex items-center justify-center text-[10px] font-bold text-on-surface-variant">+24</div>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">groups</span>
+<span class="font-label-md">27/30</span>
+</div>
+</div>
+<button class="w-full py-3 border-2 border-primary text-primary font-label-lg rounded-full hover:bg-primary/5 transition-colors">
+                        Join Now
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full rounded-t-3xl z-50 bg-white/95 backdrop-blur-lg shadow-[0px_-10px_30px_rgba(0,0,0,0.05)] flex justify-around items-center h-20 pb-safe px-md border-t border-gray-50">
+<!-- Lobby (Active) -->
+<button class="flex flex-col items-center justify-center text-primary font-bold active:scale-90 transition-transform duration-200">
+<span class="material-symbols-outlined" style='font-variation-settings: "FILL" 1;'>grid_view</span>
+<span class="font-label-md">Lobby</span>
+</button>
+<!-- History -->
+<button class="flex flex-col items-center justify-center text-secondary opacity-60 hover:text-primary transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md">History</span>
+</button>
+<!-- Profile -->
+<button class="flex flex-col items-center justify-center text-secondary opacity-60 hover:text-primary transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md">Profile</span>
+</button>
+</nav>
+<script>
+        // Micro-interaction for room cards
+        document.querySelectorAll('.full-round-card').forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.style.transform = 'scale(0.98)';
+                card.style.transition = 'transform 0.1s ease';
+            });
+            card.addEventListener('touchend', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

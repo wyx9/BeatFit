@@ -1,0 +1,97 @@
+<!-- 个人中心 -->
+<view class="page">
+  <view class="header" style="padding-top: {{statusBarHeight}}px;">
+    <view class="header-inner">
+      <text class="header-title">我的</text>
+    </view>
+  </view>
+
+  <view class="main">
+    <!-- 用户信息卡片 -->
+    <view class="user-card">
+      <view class="user-avatar-wrap">
+        <image wx:if="{{userInfo.avatar_url}}" class="user-avatar" src="{{userInfo.avatar_url}}" mode="aspectFill" />
+        <view wx:else class="user-avatar-placeholder">
+          <text class="user-avatar-initial">{{userInfo.nickname ? userInfo.nickname[0] : '?'}}</text>
+        </view>
+      </view>
+      <view class="user-text">
+        <text class="user-name">{{userInfo.nickname || '未设置昵称'}}</text>
+        <view class="user-badge">
+          <text class="user-level">Lv.{{userInfo.level || 1}}</text>
+          <text class="user-title">{{userInfo.title || '初来乍到'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 运动数据 -->
+    <view class="stats-row">
+      <view class="stat-card">
+        <text class="stat-value">{{userInfo.total_min || 0}}</text>
+        <text class="stat-unit">分钟</text>
+        <text class="stat-label">累计时长</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-value">{{userInfo.total_kcal || 0}}</text>
+        <text class="stat-unit">千卡</text>
+        <text class="stat-label">累计消耗</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-value">{{userInfo.total_count || 0}}</text>
+        <text class="stat-unit">次</text>
+        <text class="stat-label">累计运动</text>
+      </view>
+    </view>
+
+    <!-- 菜单列表 -->
+    <view class="menu-section">
+      <view class="menu-item" hover-class="menu-item-pressed">
+        <image class="menu-icon" src="/images/icon-fitness.svg" mode="aspectFit" />
+        <text class="menu-text">我的训练记录</text>
+        <image class="menu-arrow" src="/images/icon-chevron-right.svg" mode="aspectFit" />
+      </view>
+      <view class="menu-item" hover-class="menu-item-pressed">
+        <image class="menu-icon" src="/images/icon-leaderboard.svg" mode="aspectFit" />
+        <text class="menu-text">成就徽章</text>
+        <image class="menu-arrow" src="/images/icon-chevron-right.svg" mode="aspectFit" />
+      </view>
+      <view class="menu-item" hover-class="menu-item-pressed">
+        <image class="menu-icon" src="/images/icon-settings.svg" mode="aspectFit" />
+        <text class="menu-text">设置</text>
+        <image class="menu-arrow" src="/images/icon-chevron-right.svg" mode="aspectFit" />
+      </view>
+      <view class="menu-item" hover-class="menu-item-pressed">
+        <image class="menu-icon" src="/images/icon-bolt.svg" mode="aspectFit" />
+        <text class="menu-text">关于律动健身</text>
+        <image class="menu-arrow" src="/images/icon-chevron-right.svg" mode="aspectFit" />
+      </view>
+    </view>
+
+    <!-- 退出登录 -->
+    <view class="logout-section">
+      <view class="btn-logout" hover-class="btn-logout-pressed" bindtap="handleLogout">
+        <text class="btn-logout-text">退出登录</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部导航栏 -->
+  <view class="bottom-nav">
+    <view class="nav-item" bindtap="goLobby">
+      <image class="nav-icon" src="/images/icon-grid.svg" mode="aspectFit" />
+      <text class="nav-label">大厅</text>
+    </view>
+    <view class="nav-item" bindtap="goLeaderboard">
+      <image class="nav-icon" src="/images/icon-leaderboard-gray.svg" mode="aspectFit" />
+      <text class="nav-label">排行榜</text>
+    </view>
+    <view class="nav-item">
+      <image class="nav-icon" src="/images/icon-history.svg" mode="aspectFit" />
+      <text class="nav-label">记录</text>
+    </view>
+    <view class="nav-item nav-active">
+      <image class="nav-icon" src="/images/icon-person.svg" mode="aspectFit" />
+      <text class="nav-label nav-label-active">我的</text>
+    </view>
+  </view>
+</view>

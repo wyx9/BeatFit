@@ -1,0 +1,66 @@
+/* ===== Design Tokens ===== */
+page {
+  --color-primary: #22c55e;
+  --color-on-primary: #ffffff;
+  --color-background: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-variant: #f8f9ff;
+  --color-on-surface: #131313;
+  --color-on-surface-variant: #454747;
+  --color-outline: #e2e8f0;
+  --color-secondary-container: #ccf200;
+  --color-on-secondary-container: #5a6c00;
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-orange-400: #fb923c;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 12px;
+  --spacing-base: 8px;
+  --spacing-gutter: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 40px;
+  --spacing-container-margin: 24px;
+
+  --radius-pill: 9999px;
+  --radius-lg: 2rem;
+  --radius-xl: 3rem;
+
+  --font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif;
+
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+  font-family: var(--font-family);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ===== Global Shimmer Animation ===== */
+@keyframes shimmerFlow {
+  0%   { left: -60%; }
+  100% { left: 120%; }
+}
+
+.btn-shimmer {
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), rgba(255,255,255,0.22), rgba(255,255,255,0.12), transparent);
+  animation: shimmerFlow 2.5s infinite ease-in-out;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.btn-shimmer-dark {
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(34,197,94,0.08), rgba(34,197,94,0.15), rgba(34,197,94,0.08), transparent);
+  animation: shimmerFlow 2.5s infinite ease-in-out;
+  pointer-events: none;
+  z-index: 1;
+}
