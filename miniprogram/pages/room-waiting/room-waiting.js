@@ -53,9 +53,7 @@ Page({
     const code = room.invite_code || '----'
     this.setData({
       room, codeDigits: code.split(''), ownerName, isOwner,
-      groupedExercises: grouped.length > 0 ? grouped : [
-        { category: '背部', exercises: [{ name: '高位下拉', tag: '力量', sets: 4, reps: 12, duration_sec: 30, rest_sec: 60 }] }
-      ],
+      groupedExercises: grouped,
       statusLabel: this.getStatusLabel(room.status)
     })
 
@@ -97,15 +95,14 @@ Page({
         that.loadMembers(that.data.room.id)
       }
       if (msg.type === 'training_started') {
-        // 房主开始了训练，带训练数据跳转
-        wx.showToast({ title: '训练已开始！', icon: 'success' })
         const app = getApp()
         app.globalData = app.globalData || {}
         if (msg.data) {
           app.globalData.roomExercises = msg.data.exercises
           app.globalData.startedAt = msg.data.started_at
         }
-        setTimeout(() => wx.redirectTo({ url: '/pages/training/training' }), 500)
+        app.globalData.currentRoom = that.data.room  // 保存房间，训练完后解散用
+        wx.redirectTo({ url: '/pages/training/training' })
       }
     })
     this.setData({ roomWs: ws })
@@ -128,12 +125,12 @@ Page({
   handleStart() {
     const roomId = this.data.room.id
     wx.showLoading({ title: '开始中...' })
+    // 调后端开始训练，WS 会广播 training_started → 驱动所有人跳转
     api.startRoom(roomId).then(() => {
       wx.hideLoading()
-      wx.redirectTo({ url: '/pages/training/training' })
     }).catch(() => {
       wx.hideLoading()
-      wx.redirectTo({ url: '/pages/training/training' })
+      wx.showToast({ title: '开始失败', icon: 'none' })
     })
   },
 

@@ -164,13 +164,16 @@ Page({
       return
     }
 
-    // 收集所有动作
-    const exercises = []
-    this.data.categories.forEach(cat => {
-      cat.exercises.forEach(ex => {
-        exercises.push({ category: cat.name, name: ex.name, tag: ex.tag, sets: ex.sets, reps: ex.reps, duration_sec: ex.duration_sec, rest_sec: ex.rest_sec })
-      })
-    })
+    // 只收集当前选中页签下已选择的动作
+    const activeCat = this.data.categories.find(c => c.key === this.data.activePart)
+    if (!activeCat || activeCat.exercises.length === 0) {
+      wx.showToast({ title: '请先添加训练动作', icon: 'none' })
+      return
+    }
+    const exercises = activeCat.exercises.map(ex => ({
+      category: activeCat.name, name: ex.name, tag: ex.tag,
+      sets: ex.sets, reps: ex.reps, duration_sec: ex.duration_sec, rest_sec: ex.rest_sec
+    }))
 
     this.setData({ creating: true })
     wx.showLoading({ title: '创建中...' })

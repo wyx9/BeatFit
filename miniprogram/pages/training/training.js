@@ -70,6 +70,9 @@ Page({
     if (exIndex >= list.length) {
       this.clearTimer()
       this.setData({ phase: 'complete', phaseLabel: '训练完成', displayTime: '00:00', ringDeg: 0, totalProgress: 100 })
+      const app = getApp()
+      const roomId = (app.globalData && app.globalData.currentRoom && app.globalData.currentRoom.id)
+      if (roomId) { api.dissolveRoom(roomId).catch(() => {}) }
       wx.showModal({
         title: '训练完成',
         content: '恭喜你完成了本次训练！',
