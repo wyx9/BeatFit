@@ -1,23 +1,30 @@
 const api = require('./utils/api')
 
+// 包装 Page()，每个页面的 onShow 自动隐藏 loading 遮罩
+const _Page = Page
+Page = function(config) {
+  const origOnShow = config.onShow
+  config.onShow = function() {
+    wx.hideLoading()
+    if (origOnShow) origOnShow.apply(this, arguments)
+  }
+  return _Page(config)
+}
+
 App({
   globalData: {},
 
   onLaunch() {},
 
   onShow() {
-    // 用户重新进入小程序时，检查是否有活跃房间需要重连
     this.reconnectIfNeeded()
   },
 
   async reconnectIfNeeded() {
     const token = api.getToken()
-    if (!token) return // 未登录，不检查
-
-    // 跳过启动页（启动页不需要重连）
+    if (!token) return
     const pages = getCurrentPages()
     if (pages.length > 0 && pages[0].route === 'pages/splash/splash') return
-
     try {
       const data = await api.getActiveRoom()
       if (data.room) {
@@ -27,8 +34,6 @@ App({
           : '/pages/room-waiting/room-waiting?roomId=' + room.id
         wx.reLaunch({ url: url })
       }
-    } catch(e) {
-      // 查询失败，忽略
-    }
+    } catch(e) {}
   }
 })

@@ -2,12 +2,15 @@
 
 // 后端服务地址（自动适配模拟器和真机）
 // 模拟器用 127.0.0.1，真机用电脑局域网 IP
+// ★ IP 地址从 DHCP 动态分配，如果变了需要改这里的 DEVICE_IP
+const DEVICE_IP = '192.168.1.23'  // ← PC 局域网 IP（用 ipconfig 查看）
+
 function getBaseUrl() {
   const platform = wx.getSystemInfoSync().platform
   if (platform === 'devtools') {
-    return 'http://127.0.0.1:8080'       // 模拟器
+    return 'http://127.0.0.1:8080'
   }
-  return 'http://192.168.1.19:8080'       // 真机（确保手机和电脑同一 WiFi）
+  return 'http://' + DEVICE_IP + ':8080'
 }
 
 // ===== Token 管理 =====
@@ -117,6 +120,13 @@ function startRoom(roomId) {
   return request('POST', '/api/room/start', { room_id: roomId })
 }
 
+// 带过渡动画的页面跳转（半透明遮罩 → 新页面 onShow 自动清除）
+function navTo(url, method) {
+  method = method || 'navigateTo'
+  wx.showLoading({ mask: true, title: '' })
+  wx[method]({ url: url, fail: () => wx.hideLoading() })
+}
+
 // 解散房间
 function dissolveRoom(roomId) {
   return request('POST', '/api/room/dissolve', { room_id: roomId })
@@ -200,6 +210,7 @@ module.exports = {
   reportWorkout,
   startRoom,
   getActiveRoom,
+  navTo,
   getRoomMembers,
   connectWS,
   closeWS
