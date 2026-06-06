@@ -65,21 +65,6 @@
   margin-top: 4rpx;
   position: relative; z-index: 2;
 }
-/* 中心文字 */
-.timer-center {
-  z-index: 10; text-align: center;
-}
-.timer-time {
-  display: block;
-  font-size: 128rpx; font-weight: 800; color: #0b1c30;
-  letter-spacing: -4rpx; line-height: 1;
-}
-.timer-phase {
-  display: block;
-  font-size: 26rpx; font-weight: 600; color: #565e74;
-  margin-top: 4rpx;
-}
-
 /* === 总时间进度条 === */
 .total-time-bar {
   background: #fff; border-radius: 9999rpx;
@@ -106,32 +91,14 @@
   height: 100%; background: #22c55e; border-radius: 9999rpx;
   transition: width 0.5s ease;
 }
-.timer-text {
-  text-align: center; z-index: 10;
-}
-.timer-time {
-  display: block;
-  font-size: 128rpx; font-weight: 800; color: #0b1c30;
-  letter-spacing: -4rpx; line-height: 1;
-}
-.timer-label {
-  display: block;
-  font-size: 28rpx; font-weight: 600; color: #565e74;
-  letter-spacing: 4rpx; margin-top: 8rpx;
-}
-
 /* === Current Exercise Card === */
 .exercise-card {
   background: #fff;
   box-shadow: 0 8rpx 40rpx rgba(0,0,0,0.04);
-  border-radius: 64rpx; border: 2rpx solid #eff4ff;
-  padding: 48rpx; display: flex; flex-direction: column; gap: 32rpx;
+  border-radius: 48rpx; border: 2rpx solid #eff4ff;
+  padding: 40rpx; display: flex; flex-direction: column; gap: 20rpx;
   margin-bottom: 48rpx;
 }
-.card-header {
-  display: flex; justify-content: space-between; align-items: flex-start;
-}
-.card-header-left { display: flex; flex-direction: column; gap: 8rpx; }
 .card-badge {
   background: rgba(34,197,94,0.1); color: #006e2f;
   font-size: 24rpx; font-weight: 600;
@@ -141,39 +108,23 @@
 .card-exercise-name {
   font-size: 40rpx; font-weight: 700; color: #0b1c30;
 }
+.card-meta-row {
+  display: flex; justify-content: space-between; align-items: center;
+}
 .card-set-info {
-  font-size: 28rpx; color: #565e74;
+  font-size: 26rpx; color: #565e74; font-weight: 500;
 }
-.card-thumb {
-  width: 128rpx; height: 128rpx; border-radius: 32rpx;
-  background: #e5eeff; overflow: hidden;
+.card-reps {
+  display: flex; align-items: center; gap: 10rpx;
+  background: rgba(34,197,94,0.06);
+  padding: 14rpx 28rpx; border-radius: 9999rpx;
 }
-.card-thumb-img { width: 100%; height: 100%; opacity: 0.5; }
-
-.card-stats {
-  display: flex; gap: 32rpx;
+.card-reps-icon {
+  width: 36rpx; height: 36rpx;
 }
-.stat-item {
-  flex: 1; display: flex; align-items: center; gap: 24rpx;
-  background: #eff4ff; border-radius: 32rpx; padding: 24rpx;
+.card-reps-text {
+  font-size: 26rpx; font-weight: 700; color: #006e2f;
 }
-.stat-item-active {
-  background: rgba(34,197,94,0.08); border: 2rpx solid rgba(34,197,94,0.2);
-}
-.stat-icon-wrap {
-  width: 80rpx; height: 80rpx; border-radius: 50%;
-  background: #fff; display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
-}
-.stat-icon-wrap-active {
-  background: #fff; min-width: 96rpx;
-}
-.stat-icon { width: 40rpx; height: 40rpx; }
-.stat-icon-text { font-size: 28rpx; font-weight: 700; color: #006e2f; }
-.stat-text { display: flex; flex-direction: column; }
-.stat-label { font-size: 22rpx; color: #565e74; font-weight: 500; }
-.stat-value { font-size: 40rpx; font-weight: 700; color: #0b1c30; line-height: 1.1; }
-.stat-value-active { color: #006e2f; }
 
 /* === Next Exercise === */
 .next-section { margin-bottom: 64rpx; }
