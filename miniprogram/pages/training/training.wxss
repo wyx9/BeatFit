@@ -105,11 +105,16 @@
   padding: 4rpx 24rpx; border-radius: 9999rpx;
   display: inline-block; width: fit-content;
 }
+.card-top {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 24rpx;
+}
+.card-top-text { flex: 1; }
 .card-exercise-name {
   font-size: 40rpx; font-weight: 700; color: #0b1c30;
+  margin-bottom: 16rpx;
 }
 .card-meta-row {
-  display: flex; justify-content: space-between; align-items: center;
+  display: flex; align-items: center; gap: 20rpx;
 }
 .card-set-info {
   font-size: 26rpx; color: #565e74; font-weight: 500;
@@ -119,12 +124,18 @@
   background: rgba(34,197,94,0.06);
   padding: 14rpx 28rpx; border-radius: 9999rpx;
 }
-.card-reps-icon {
-  width: 36rpx; height: 36rpx;
+.card-reps-icon { width: 36rpx; height: 36rpx; }
+.card-reps-text { font-size: 26rpx; font-weight: 700; color: #006e2f; }
+.card-exercise-img {
+  width: 160rpx; height: 160rpx; border-radius: 32rpx;
+  flex-shrink: 0;
 }
-.card-reps-text {
-  font-size: 26rpx; font-weight: 700; color: #006e2f;
+.card-exercise-placeholder {
+  width: 160rpx; height: 160rpx; border-radius: 32rpx;
+  background: #e5eeff; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
 }
+.card-placeholder-icon { width: 64rpx; height: 64rpx; opacity: 0.3; }
 
 /* === Next Exercise === */
 .next-section { margin-bottom: 64rpx; }

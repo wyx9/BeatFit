@@ -105,6 +105,23 @@ function createRoom(name, maxMembers = 20, exercises = []) {
   return request('POST', '/api/room', { name: name, max_members: maxMembers, exercises: exercises })
 }
 
+// 获取用户信息
+function getProfile() {
+  return request('GET', '/api/user/profile')
+}
+
+// 更新用户信息
+function updateProfile(nickname, avatarUrl) {
+  return request('PUT', '/api/user/profile', { nickname: nickname, avatar_url: avatarUrl })
+}
+
+// 获取训练历史
+function getWorkoutHistory(page, size) {
+  if (!page) page = 1
+  if (!size) size = 20
+  return request('GET', '/api/user/workouts?page=' + page + '&size=' + size)
+}
+
 // 查询当前用户活跃房间（断线重连用）
 function getActiveRoom() {
   return request('GET', '/api/user/active-room')
@@ -212,6 +229,9 @@ module.exports = {
   getActiveRoom,
   navTo,
   getRoomMembers,
+  getProfile,
+  updateProfile,
+  getWorkoutHistory,
   connectWS,
   closeWS
 }

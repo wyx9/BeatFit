@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 
+	"beat_fit_server/internal/model"
 	"beat_fit_server/internal/service"
 
 	"github.com/gin-gonic/gin"
@@ -53,11 +54,24 @@ func (h *LeaderboardHandler) Report(c *gin.Context) {
 	}
 
 	userID := getUserID(c)
-	log, err := service.ReportWorkout(h.db, userID, req.RoomID, req.Minutes, req.Kcal, req.Count)
+
+	// 校验房间成员身份（room_id=0 表示个人训练，跳过）
+	if req.RoomID != 0 {
+		var memberCount int64
+		h.db.Model(&model.RoomMember{}).
+			Where("room_id = ? AND user_id = ?", req.RoomID, userID).
+			Count(&memberCount)
+		if memberCount == 0 {
+			c.JSON(http.StatusForbidden, gin.H{"error": "你不是该房间的成员"})
+			return
+		}
+	}
+
+	wlog, err := service.ReportWorkout(h.db, userID, req.RoomID, req.Minutes, req.Kcal, req.Count)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "上报训练数据失败"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"log": log})
+	c.JSON(http.StatusOK, gin.H{"log": wlog})
 }

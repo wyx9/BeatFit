@@ -6,10 +6,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"time"
 
 	"beat_fit_server/config"
+	"beat_fit_server/internal/cache"
 	"beat_fit_server/internal/model"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -34,6 +36,11 @@ func Login(db *gorm.DB, cfg *config.Config, code string) (string, *model.User, e
 	token, err := generateJWT(cfg.JWTSecret, user.ID, user.Openid)
 	if err != nil {
 		return "", nil, err
+	}
+
+	// 4. 缓存 token 到 Redis（用于登出校验）
+	if err := cache.SetToken(user.ID, token); err != nil {
+		log.Printf("[WARN] 缓存token失败 user=%d err=%v", user.ID, err)
 	}
 
 	return token, user, nil
@@ -90,6 +97,11 @@ func GuestLogin(db *gorm.DB, cfg *config.Config, nickname string) (string, *mode
 	token, err := generateJWT(cfg.JWTSecret, user.ID, user.Openid)
 	if err != nil {
 		return "", nil, err
+	}
+
+	// 缓存 token 到 Redis（用于登出校验）
+	if err := cache.SetToken(user.ID, token); err != nil {
+		log.Printf("[WARN] 缓存token失败 user=%d err=%v", user.ID, err)
 	}
 
 	return token, user, nil

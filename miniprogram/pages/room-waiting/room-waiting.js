@@ -126,8 +126,17 @@ Page({
     const roomId = this.data.room.id
     wx.showLoading({ title: '开始中...' })
     // 调后端开始训练，WS 会广播 training_started → 驱动所有人跳转
-    api.startRoom(roomId).then(() => {
+    api.startRoom(roomId).then((res) => {
       wx.hideLoading()
+      // 房主直接跳转训练页（兜底：即使 WS 失败也能进入训练）
+      const app = getApp()
+      app.globalData = app.globalData || {}
+      app.globalData.currentRoom = this.data.room
+      // 优先用 WS 广播中的 exercises，降级用本地数据
+      const exercises = this.data.groupedExercises.reduce((arr, g) => arr.concat(g.exercises), [])
+      app.globalData.roomExercises = exercises
+      app.globalData.startedAt = new Date().toISOString()
+      wx.redirectTo({ url: '/pages/training/training' })
     }).catch(() => {
       wx.hideLoading()
       wx.showToast({ title: '开始失败', icon: 'none' })

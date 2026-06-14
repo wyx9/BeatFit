@@ -1,6 +1,7 @@
 package service
 
 import (
+	"log"
 	"strconv"
 
 	"beat_fit_server/internal/cache"
@@ -69,47 +70,62 @@ func GetLeaderboard(db *gorm.DB, typ string, date string) ([]LeaderboardEntry, e
 
 // redisToEntries 将 Redis ZSET 结果转换为排行条目列表
 func redisToEntries(db *gorm.DB, results []redis.Z) []LeaderboardEntry {
-	entries := make([]LeaderboardEntry, len(results))
+	entries := make([]LeaderboardEntry, 0, len(results))
 	for i, z := range results {
-		userID, _ := strconv.ParseUint(z.Member.(string), 10, 64)
-		entries[i] = LeaderboardEntry{Rank: i + 1, UserID: userID, Value: int(z.Score)}
-		if user, err := model.FindByID(db, userID); err == nil {
-			entries[i].Nickname = user.Nickname
-			entries[i].AvatarURL = user.AvatarUrl
-			entries[i].Level = user.Level
-			entries[i].Title = user.Title
+		memberStr, ok := z.Member.(string)
+		if !ok {
+			log.Printf("[WARN] Redis ZSET member 类型异常 (期望 string)，跳过该条")
+			continue
 		}
+		userID, err := strconv.ParseUint(memberStr, 10, 64)
+		if err != nil {
+			log.Printf("[WARN] Redis ZSET member 解析失败: %v，跳过该条", err)
+			continue
+		}
+		entry := LeaderboardEntry{Rank: i + 1, UserID: userID, Value: int(z.Score)}
+		if user, err := model.FindByID(db, userID); err == nil {
+			entry.Nickname = user.Nickname
+			entry.AvatarURL = user.AvatarUrl
+			entry.Level = user.Level
+			entry.Title = user.Title
+		}
+		entries = append(entries, entry)
 	}
 	return entries
 }
 
-// ReportWorkout 上报训练数据：写入训练记录 → 更新用户累计 → 更新 Redis 排行榜
+// ReportWorkout 上报训练数据：写入训练记录 → 更新用户累计（事务包裹）→ 更新 Redis 排行榜
 func ReportWorkout(db *gorm.DB, userID, roomID uint64, minutes, kcal, count int) (*model.WorkoutLog, error) {
-	// 1. 写入训练记录
-	log := &model.WorkoutLog{
+	wlog := &model.WorkoutLog{
 		UserID:  userID,
 		RoomID:  roomID,
 		Minutes: minutes,
 		Kcal:    kcal,
 		Count:   count,
 	}
-	if err := model.CreateLog(db, log); err != nil {
-		return nil, err
-	}
 
-	// 2. 更新用户累计数据
-	user, err := model.FindByID(db, userID)
-	if err == nil {
+	// DB 操作包裹在事务中
+	err := db.Transaction(func(tx *gorm.DB) error {
+		if err := model.CreateLog(tx, wlog); err != nil {
+			return err
+		}
+		user, err := model.FindByID(tx, userID)
+		if err != nil {
+			return err
+		}
 		user.TotalMin += minutes
 		user.TotalKcal += kcal
 		user.TotalCount += count
-		_ = user.Save(db) // 非致命错误，忽略
+		return user.Save(tx)
+	})
+	if err != nil {
+		return nil, err
 	}
 
-	// 3. 更新 Redis 排行榜 ZSET
+	// Redis 更新放在事务外（非关键，best-effort）
 	_ = cache.ZIncrBy("duration", userID, minutes)
 	_ = cache.ZIncrBy("calories", userID, kcal)
 	_ = cache.ZIncrBy("count", userID, count)
 
-	return log, nil
+	return wlog, nil
 }

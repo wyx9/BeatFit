@@ -16,12 +16,19 @@ Page({
     this.loadUserInfo()
   },
 
-  // 从本地缓存加载用户信息
-  loadUserInfo() {
+  // 优先从服务器加载，失败则用本地缓存
+  async loadUserInfo() {
+    try {
+      const data = await api.getProfile()
+      if (data.user) {
+        this.setData({ userInfo: data.user })
+        api.setUserInfo(data.user)  // 同步到本地缓存
+        return
+      }
+    } catch(e) {}
+    // 服务器不可用时用本地缓存
     const user = api.getUserInfo()
-    if (user) {
-      this.setData({ userInfo: user })
-    }
+    if (user) this.setData({ userInfo: user })
   },
 
   goLobby() {

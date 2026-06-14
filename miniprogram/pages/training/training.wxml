@@ -43,12 +43,20 @@
     <!-- 当前动作卡片 -->
     <view class="exercise-card">
       <view class="card-badge">当前动作</view>
-      <text class="card-exercise-name">{{currentExercise.name}}</text>
-      <view class="card-meta-row">
-        <text class="card-set-info">第 {{currentExercise.currentSet}}/{{currentExercise.totalSets}} 组</text>
-        <view class="card-reps">
-          <image class="card-reps-icon" src="/images/icon-fitness.svg" mode="aspectFit" />
-          <text class="card-reps-text">{{currentExercise.targetReps}} 次</text>
+      <view class="card-top">
+        <view class="card-top-text">
+          <text class="card-exercise-name">{{currentExercise.name}}</text>
+          <view class="card-meta-row">
+            <text class="card-set-info">第 {{currentExercise.currentSet}}/{{currentExercise.totalSets}} 组</text>
+            <view class="card-reps">
+              <image class="card-reps-icon" src="/images/icon-fitness.svg" mode="aspectFit" />
+              <text class="card-reps-text">{{currentExercise.targetReps}} 次</text>
+            </view>
+          </view>
+        </view>
+        <image wx:if="{{currentExercise.image}}" class="card-exercise-img" src="{{currentExercise.image}}" mode="aspectFill" />
+        <view wx:else class="card-exercise-placeholder">
+          <image class="card-placeholder-icon" src="/images/icon-fitness.svg" mode="aspectFit" />
         </view>
       </view>
     </view>

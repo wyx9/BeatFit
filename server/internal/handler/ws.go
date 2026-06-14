@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"os"
+	"strings"
 	"time"
 
 	"beat_fit_server/internal/model"
@@ -14,11 +16,36 @@ import (
 	"gorm.io/gorm"
 )
 
-var upgrader = websocket.Upgrader{
-	CheckOrigin: func(r *http.Request) bool { return true },
+// 允许的 WebSocket 来源域名（逗号分隔），由 WS_ORIGINS 环境变量配置
+var allowedWSOrigins = loadWSOrigins()
+
+func loadWSOrigins() map[string]bool {
+	origins := make(map[string]bool)
+	if env := os.Getenv("WS_ORIGINS"); env != "" {
+		for _, o := range strings.Split(env, ",") {
+			if t := strings.TrimSpace(o); t != "" {
+				origins[t] = true
+			}
+		}
+	}
+	return origins
 }
 
-// WSHandler WebSocket 连接处理器
+var upgrader = websocket.Upgrader{
+	CheckOrigin: func(r *http.Request) bool {
+		origin := r.Header.Get("Origin")
+		if origin == "" {
+			return true // 非浏览器客户端（小程序/curl），Origin 为空直接放行
+		}
+		// WS_ORIGINS 未配置时，允许所有来源（开发模式）
+		if len(allowedWSOrigins) == 0 {
+			return true
+		}
+		return allowedWSOrigins[origin]
+	},
+}
+
+const wsReadLimit = 4096 // WebSocket 读取消息大小上限
 type WSHandler struct {
 	db *gorm.DB
 }
@@ -50,7 +77,13 @@ func (h *WSHandler) handleWS(c *gin.Context, channel string) {
 		Conn:     conn,
 		Send:     make(chan []byte, 64),
 	}
-	service.Hub.Register(client)
+	if err := service.Hub.Register(client); err != nil {
+		log.Printf("[WS] 注册失败: %v", err)
+		conn.WriteMessage(websocket.CloseMessage,
+			websocket.FormatCloseMessage(websocket.ClosePolicyViolation, err.Error()))
+		conn.Close()
+		return
+	}
 
 	// 发送加入成功消息
 	joinMsg := &service.WSMessage{
@@ -110,7 +143,7 @@ func (h *WSHandler) readPump(client *service.WSClient) {
 		client.Conn.Close()
 	}()
 
-	client.Conn.SetReadLimit(512)
+	client.Conn.SetReadLimit(wsReadLimit)
 	client.Conn.SetReadDeadline(time.Now().Add(60 * time.Second))
 	client.Conn.SetPongHandler(func(string) error {
 		client.Conn.SetReadDeadline(time.Now().Add(60 * time.Second))

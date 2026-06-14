@@ -116,8 +116,14 @@
   <view class="modal-mask" wx:if="{{showExerciseModal}}" bindtap="hideModals">
     <view class="modal-card" catchtap="noop">
       <text class="modal-title">添加动作到「{{addingToCategory}}」</text>
-      <view class="modal-picker">
-        <view class="picker-item {{addingExercise === item.name ? 'picker-item-active' : ''}}" hover-class="picker-item-hover" wx:for="{{availableExercises}}" wx:key="name" bindtap="selectExercise" data-name="{{item.name}}">{{item.name}}</view>
+      <view class="picker-row">
+        <view class="modal-picker">
+          <view class="picker-item {{addingExercise === item.name ? 'picker-item-active' : ''}}" hover-class="picker-item-hover" wx:for="{{availableExercises}}" wx:key="name" bindtap="selectExercise" data-name="{{item.name}}">{{item.name}}</view>
+        </view>
+        <view class="picker-preview">
+          <image wx:if="{{previewImage}}" class="preview-img" src="{{previewImage}}" mode="aspectFill" />
+          <view wx:else class="preview-empty"><text>选择动作\n查看预览</text></view>
+        </view>
       </view>
       <view class="modal-buttons">
         <view class="modal-btn modal-btn-cancel" bindtap="hideModals"><text>取消</text></view>

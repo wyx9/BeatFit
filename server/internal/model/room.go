@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 // Room 房间表
@@ -33,6 +34,17 @@ func CreateRoom(db *gorm.DB, room *Room) error {
 func FindRoomByCode(db *gorm.DB, code string) (*Room, error) {
 	var room Room
 	err := db.Where("invite_code = ?", code).First(&room).Error
+	if err != nil {
+		return nil, err
+	}
+	return &room, nil
+}
+
+// FindRoomByCodeForUpdate 根据邀请码查找房间（带行锁，用于事务内防竞态）
+func FindRoomByCodeForUpdate(db *gorm.DB, code string) (*Room, error) {
+	var room Room
+	err := db.Clauses(clause.Locking{Strength: "UPDATE"}).
+		Where("invite_code = ?", code).First(&room).Error
 	if err != nil {
 		return nil, err
 	}

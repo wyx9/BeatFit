@@ -34,6 +34,7 @@ Page({
     newCategoryName: '',
     addingToCategory: '',
     addingExercise: '',
+    previewImage: '',
     availableExercises: [],
 
     // 计算属性
@@ -93,12 +94,19 @@ Page({
       showExerciseModal: true,
       addingToCategory: cat,
       addingExercise: lib[0] ? lib[0].name : '',
+      previewImage: lib[0] && lib[0].image ? lib[0].image : '',
       availableExercises: lib
     })
   },
 
   selectExercise(e) {
-    this.setData({ addingExercise: e.currentTarget.dataset.name })
+    const name = e.currentTarget.dataset.name
+    const lib = EXERCISE_LIBRARY[this.data.addingToCategory] || []
+    const ex = lib.find(item => item.name === name)
+    this.setData({
+      addingExercise: name,
+      previewImage: ex && ex.image ? ex.image : ''
+    })
   },
 
   confirmAddExercise() {

@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"sync"
 	"time"
@@ -35,6 +36,8 @@ type WSHub struct {
 	db    *gorm.DB
 }
 
+const maxConnsPerUser = 5 // 单用户最大并发 WebSocket 连接数
+
 // Hub 全局 WebSocket Hub 单例
 var Hub *WSHub
 
@@ -48,15 +51,29 @@ func InitHub(db *gorm.DB) {
 }
 
 // Register 注册新客户端连接到指定频道
-func (h *WSHub) Register(client *WSClient) {
+func (h *WSHub) Register(client *WSClient) error {
 	h.mu.Lock()
 	defer h.mu.Unlock()
+
+	// 检查单用户连接数上限
+	userConnCount := 0
+	for _, clients := range h.rooms {
+		for c := range clients {
+			if c.UserID == client.UserID {
+				userConnCount++
+			}
+		}
+	}
+	if userConnCount >= maxConnsPerUser {
+		return fmt.Errorf("用户 %d 连接数已达上限 (%d)", client.UserID, maxConnsPerUser)
+	}
 
 	if h.rooms[client.RoomCode] == nil {
 		h.rooms[client.RoomCode] = make(map[*WSClient]bool)
 	}
 	h.rooms[client.RoomCode][client] = true
 	log.Printf("[WS] 用户 %d 进入频道 %s (当前在线: %d)", client.UserID, client.RoomCode, len(h.rooms[client.RoomCode]))
+	return nil
 }
 
 // Unregister 从频道移除客户端连接
@@ -122,4 +139,21 @@ func (h *WSHub) RoomOnlineCount(channel string) int {
 	h.mu.RLock()
 	defer h.mu.RUnlock()
 	return len(h.rooms[channel])
+}
+
+// Shutdown 优雅关闭所有 WebSocket 连接
+func (h *WSHub) Shutdown() {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+
+	for channel, clients := range h.rooms {
+		for client := range clients {
+			client.Conn.WriteMessage(websocket.CloseMessage,
+				websocket.FormatCloseMessage(websocket.CloseGoingAway, "服务器关闭"))
+			close(client.Send)
+			client.Conn.Close()
+		}
+		delete(h.rooms, channel)
+	}
+	log.Printf("[WS] Hub 已关闭，共清理 %d 个频道", len(h.rooms)+1)
 }

@@ -1,10 +1,12 @@
 package middleware
 
 import (
+	"log"
 	"net/http"
 	"strings"
 
 	"beat_fit_server/config"
+	"beat_fit_server/internal/cache"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
@@ -43,9 +45,30 @@ func AuthRequired(cfg *config.Config) gin.HandlerFunc {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "token 解析失败"})
 			return
 		}
-		userID := uint64(claims["user_id"].(float64))
+		userIDClaim, exists := claims["user_id"]
+		if !exists {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "token 无效"})
+			return
+		}
+		userIDFloat, ok := userIDClaim.(float64)
+		if !ok {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "token 无效"})
+			return
+		}
+		userID := uint64(userIDFloat)
 
-		// 4. 注入 Context，后续 Handler 通过 c.Get("user_id") 获取
+		// 4. 校验 Redis 中的 token（支持登出失效）
+		cachedToken, err := cache.GetToken(userID)
+		if err == nil && cachedToken != tokenStr {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "token 已登出或已失效"})
+			return
+		}
+		if err != nil {
+			// Redis 不可用时不阻断请求，仅记录日志
+			log.Printf("[WARN] Redis token 校验失败 user=%d err=%v", userID, err)
+		}
+
+		// 5. 注入 Context，后续 Handler 通过 c.Get("user_id") 获取
 		c.Set("user_id", userID)
 		c.Next()
 

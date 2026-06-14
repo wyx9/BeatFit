@@ -30,6 +30,15 @@ func Init(cfg *config.Config) {
 // GetClient 获取全局 Redis 客户端
 func GetClient() *redis.Client { return client }
 
+// Close 关闭 Redis 连接
+func Close() error {
+	if client != nil {
+		log.Println("正在关闭 Redis 连接...")
+		return client.Close()
+	}
+	return nil
+}
+
 // ========== 排行榜缓存（ZSET） ==========
 
 // leaderboardKey 生成排行榜 Redis key
@@ -103,4 +112,20 @@ func GetToken(userID uint64) (string, error) {
 func DelToken(userID uint64) error {
 	key := fmt.Sprintf("user:%d:token", userID)
 	return client.Del(context.Background(), key).Err()
+}
+
+// RateLimitCheck 基于 Redis INCR 的简易速率限制
+// key: 限流键（如 "ratelimit:login:192.168.1.1"），maxReq: 窗口内最大请求数，window: 时间窗口
+// 返回 true 表示未超限，false 表示已达上限
+func RateLimitCheck(key string, maxReq int, window time.Duration) (bool, error) {
+	ctx := context.Background()
+	count, err := client.Incr(ctx, key).Result()
+	if err != nil {
+		return false, err
+	}
+	// 首次请求时设置过期时间
+	if count == 1 {
+		client.Expire(ctx, key, window)
+	}
+	return int(count) <= maxReq, nil
 }
