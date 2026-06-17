@@ -1,0 +1,110 @@
+<!-- 模板编辑页 -->
+<view class="page">
+  <!-- Header -->
+  <view class="header" style="padding-top: {{statusBarHeight}}px;">
+    <view class="header-inner">
+      <view class="header-left">
+        <image class="header-back" src="/images/icon-arrow-back.svg" mode="aspectFit" bindtap="goBack" />
+        <text class="header-title">{{readonly ? '查看模板' : (tplId ? '编辑模板' : '新建模板')}}</text>
+      </view>
+      <view class="header-save" wx:if="{{!readonly}}" bindtap="onSave">
+        <text class="save-text">保存</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="main">
+    <!-- 模板名称 -->
+    <view class="section">
+      <text class="section-label">模板名称</text>
+      <input class="name-input" placeholder="输入模板名称..." placeholder-class="name-placeholder" value="{{tplName}}" bindinput="onNameInput" />
+    </view>
+
+    <!-- 已选动作列表 -->
+    <view class="section">
+      <view class="section-header-row">
+        <text class="section-label">已选动作 ({{exercises.length}})</text>
+      </view>
+
+      <view class="exercise-list" wx:if="{{exercises.length > 0}}">
+        <view class="exercise-card" wx:for="{{exercises}}" wx:key="index">
+          <view class="card-header">
+            <view class="card-title-row">
+              <text class="card-name">{{item.name}}</text>
+              <text class="card-tag">{{item.tag}}</text>
+            </view>
+            <image wx:if="{{!readonly}}" class="card-remove" src="/images/icon-close.svg" mode="aspectFit" bindtap="onRemoveExercise" data-index="{{index}}" />
+          </view>
+          <view class="card-inputs">
+            <view class="card-field">
+              <text class="field-label">组数</text>
+              <input wx:if="{{!readonly}}" class="field-input" type="number" value="{{item.sets}}" bindinput="onParamChange" data-index="{{index}}" data-field="sets" />
+              <text wx:else class="field-value">{{item.sets}}</text>
+            </view>
+            <view class="card-field">
+              <text class="field-label">次数</text>
+              <input wx:if="{{!readonly}}" class="field-input" type="number" value="{{item.reps}}" bindinput="onParamChange" data-index="{{index}}" data-field="reps" />
+              <text wx:else class="field-value">{{item.reps}}</text>
+            </view>
+            <view class="card-field">
+              <text class="field-label">动作时长(秒)</text>
+              <input wx:if="{{!readonly}}" class="field-input" type="number" value="{{item.duration_sec}}" bindinput="onParamChange" data-index="{{index}}" data-field="duration_sec" />
+              <text wx:else class="field-value">{{item.duration_sec}}s</text>
+            </view>
+            <view class="card-field">
+              <text class="field-label">休息时长(秒)</text>
+              <input wx:if="{{!readonly}}" class="field-input" type="number" value="{{item.rest_sec}}" bindinput="onParamChange" data-index="{{index}}" data-field="rest_sec" />
+              <text wx:else class="field-value">{{item.rest_sec}}s</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 空状态 -->
+      <view class="empty-state" wx:else>
+        <text class="empty-text">暂无动作，点击下方按钮添加</text>
+      </view>
+
+      <!-- 添加动作按钮 -->
+      <view wx:if="{{!readonly}}" class="add-btn" bindtap="onShowPicker">
+        <image class="add-icon" src="/images/icon-add.svg" mode="aspectFit" />
+        <text class="add-text">添加动作</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部另存为按钮（只读模式） -->
+  <view wx:if="{{readonly}}" class="bottom-bar">
+    <view class="bottom-bar-inner">
+      <view class="btn-save-as" hover-class="btn-save-as-pressed" bindtap="onSaveAs">
+        <text class="btn-save-as-text">另存为我的模板</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 动作选择器弹窗 -->
+  <view class="modal-mask" wx:if="{{showPicker}}" bindtap="onHidePicker">
+    <view class="modal-card" catchtap="noop">
+      <view class="modal-header">
+        <text class="modal-title">选择动作</text>
+        <image class="modal-close" src="/images/icon-close.svg" mode="aspectFit" bindtap="onHidePicker" />
+      </view>
+
+      <!-- 部位 Tab -->
+      <scroll-view class="picker-tabs" scroll-x enable-flex>
+        <view class="picker-tab {{activePickerPart === item.key ? 'picker-tab-active' : ''}}" wx:for="{{pickerParts}}" wx:key="key" bindtap="onSwitchPickerPart" data-key="{{item.key}}">{{item.name}}</view>
+      </scroll-view>
+
+      <!-- 动作列表 -->
+      <scroll-view class="picker-list" scroll-y>
+        <view class="picker-item" wx:for="{{pickerExercises}}" wx:key="name" bindtap="onSelectExercise" data-name="{{item.name}}">
+          <view class="picker-item-left">
+            <text class="picker-item-name">{{item.name}}</text>
+            <text class="picker-item-tag">{{item.tag}}</text>
+          </view>
+          <text class="picker-item-desc">{{item.sets}}组 × {{item.reps}}次 · {{item.duration_sec}}s/{{item.rest_sec}}s</text>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>

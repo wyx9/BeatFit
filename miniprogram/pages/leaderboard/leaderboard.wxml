@@ -132,9 +132,9 @@
       </view>
       <text class="nav-label nav-label-active">排行榜</text>
     </view>
-    <view class="nav-item">
-      <image class="nav-icon" src="/images/icon-history.svg" mode="aspectFit" />
-      <text class="nav-label">记录</text>
+    <view class="nav-item" bindtap="goTemplates">
+      <image class="nav-icon" src="/images/icon-fitness.svg" mode="aspectFit" />
+      <text class="nav-label">动作</text>
     </view>
     <view class="nav-item" bindtap="goProfile">
       <image class="nav-icon" src="/images/icon-person.svg" mode="aspectFit" />

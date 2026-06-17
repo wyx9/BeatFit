@@ -1,0 +1,96 @@
+/* ===== 模板管理页（动作库） ===== */
+
+/* === Header === */
+.header {
+  position: fixed; top: 0; width: 100%; z-index: 50;
+  background: rgba(248,249,255,0.95);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+.header-inner {
+  display: flex; justify-content: space-between; align-items: center;
+  height: 88rpx; padding: 0 40rpx;
+}
+.header-left { display: flex; align-items: center; gap: 24rpx; }
+.header-back { width: 48rpx; height: 48rpx; }
+.header-title { font-size: 36rpx; font-weight: 700; color: #0b1c30; }
+
+/* === Main === */
+.main {
+  padding-top: 148rpx; padding-bottom: 64rpx;
+  padding-left: 40rpx; padding-right: 40rpx;
+  max-width: 900rpx; margin: 0 auto;
+}
+
+/* === Section === */
+.section { margin-bottom: 56rpx; }
+.section-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 24rpx;
+}
+.section-title {
+  display: block; font-size: 32rpx; font-weight: 700; color: #0b1c30;
+  margin-bottom: 24rpx;
+}
+.section-header .section-title { margin-bottom: 0; }
+.section-action {
+  display: flex; align-items: center; gap: 4rpx;
+}
+.action-icon { width: 36rpx; height: 36rpx; }
+.action-text { font-size: 26rpx; font-weight: 600; color: var(--color-primary); }
+
+/* === Template Cards === */
+.tpl-grid { display: flex; flex-direction: column; gap: 24rpx; }
+.tpl-card {
+  background: #fff; border: 2rpx solid #e5eeff;
+  border-radius: 32rpx; padding: 32rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.03);
+}
+.tpl-card-top {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 20rpx;
+}
+.tpl-card-info { display: flex; flex-direction: column; gap: 6rpx; }
+.tpl-card-name { font-size: 30rpx; font-weight: 700; color: #0b1c30; }
+.tpl-card-count { font-size: 24rpx; color: #94a3b8; }
+.tpl-card-arrow { font-size: 32rpx; color: #94a3b8; }
+
+.tpl-card-tags { display: flex; flex-wrap: wrap; gap: 12rpx; }
+.tpl-tag {
+  font-size: 22rpx; font-weight: 500; color: #565e74;
+  background: #f1f5f9; padding: 6rpx 20rpx; border-radius: 9999rpx;
+}
+
+/* === User Template Card Extra === */
+.tpl-card-user { border-color: rgba(188,203,185,0.15); }
+.tpl-card-actions {
+  margin-top: 24rpx; padding-top: 20rpx;
+  border-top: 1rpx solid #f1f5f9;
+  display: flex; justify-content: flex-end;
+}
+.action-delete {
+  font-size: 24rpx; font-weight: 500; color: #ef4444;
+  padding: 8rpx 24rpx;
+}
+
+/* === Empty State === */
+.empty-section { display: flex; flex-direction: column; gap: 32rpx; }
+.empty-state {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 80rpx 40rpx;
+  border: 4rpx dashed rgba(188,203,185,0.3);
+  border-radius: 32rpx;
+}
+.empty-icon { font-size: 80rpx; margin-bottom: 24rpx; }
+.empty-title { font-size: 28rpx; font-weight: 600; color: #3d4a3d; margin-bottom: 8rpx; }
+.empty-desc { font-size: 24rpx; color: #94a3b8; }
+
+/* === New Button === */
+.btn-new {
+  width: 100%; height: 112rpx; background: var(--color-primary);
+  border-radius: 48rpx; display: flex; align-items: center; justify-content: center;
+  gap: 12rpx; box-shadow: 0 8rpx 32rpx rgba(34,197,94,0.25);
+}
+.btn-new-pressed { transform: scale(0.98); opacity: 0.9; }
+.btn-new-icon { font-size: 40rpx; font-weight: 300; color: #fff; }
+.btn-new-text { font-size: 34rpx; font-weight: 700; color: #fff; }

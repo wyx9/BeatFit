@@ -124,6 +124,10 @@ Page({
     wx.redirectTo({ url: '/pages/lobby/lobby' })
   },
 
+  goTemplates() {
+    wx.redirectTo({ url: '/pages/exercise-templates/exercise-templates' })
+  },
+
   goProfile() {
     wx.redirectTo({ url: '/pages/profile/profile' })
   }

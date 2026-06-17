@@ -39,6 +39,10 @@ Page({
     wx.redirectTo({ url: '/pages/leaderboard/leaderboard' })
   },
 
+  goTemplates() {
+    wx.redirectTo({ url: '/pages/exercise-templates/exercise-templates' })
+  },
+
   handleLogout() {
     wx.showModal({
       title: '退出登录',

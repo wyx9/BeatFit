@@ -7,7 +7,9 @@
     "pages/create-room/create-room",
     "pages/profile/profile",
     "pages/training/training",
-    "pages/room-waiting/room-waiting"
+    "pages/room-waiting/room-waiting",
+    "pages/exercise-templates/exercise-templates",
+    "pages/exercise-editor/exercise-editor"
   ],
   "window": {
     "navigationStyle": "custom",

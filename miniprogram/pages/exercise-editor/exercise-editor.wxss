@@ -1,0 +1,171 @@
+/* ===== 模板编辑页 ===== */
+
+/* === Header === */
+.header {
+  position: fixed; top: 0; width: 100%; z-index: 50;
+  background: rgba(248,249,255,0.95);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+.header-inner {
+  display: flex; justify-content: space-between; align-items: center;
+  height: 88rpx; padding: 0 40rpx;
+}
+.header-left {
+  display: flex; align-items: center; gap: 24rpx;
+}
+.header-back { width: 48rpx; height: 48rpx; }
+.header-title { font-size: 36rpx; font-weight: 700; color: #0b1c30; }
+.header-save {
+  background: var(--color-primary); padding: 16rpx 40rpx; border-radius: 9999rpx;
+}
+.save-text { font-size: 28rpx; font-weight: 600; color: #fff; }
+
+/* === Main === */
+.main {
+  padding-top: 148rpx; padding-bottom: 200rpx;
+  padding-left: 40rpx; padding-right: 40rpx;
+  max-width: 900rpx; margin: 0 auto;
+}
+
+/* === Section === */
+.section { margin-bottom: 48rpx; }
+.section-label {
+  display: block; font-size: 28rpx; font-weight: 600; color: #3d4a3d;
+  margin-bottom: 20rpx;
+}
+.section-header-row {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 20rpx;
+}
+.section-header-row .section-label { margin-bottom: 0; }
+
+/* === Name Input === */
+.name-input {
+  width: 100%; height: 96rpx; padding: 0 40rpx;
+  background: #fff; border: 2rpx solid #e5eeff;
+  border-radius: 48rpx; font-size: 32rpx; font-weight: 500; color: #0b1c30;
+  box-sizing: border-box;
+}
+.name-input:focus { border-color: var(--color-primary); }
+.name-placeholder { color: rgba(61,74,61,0.4); font-size: 28rpx; }
+
+/* === Exercise Cards === */
+.exercise-list { display: flex; flex-direction: column; gap: 24rpx; margin-bottom: 32rpx; }
+.exercise-card {
+  background: #fff; border: 2rpx solid rgba(188,203,185,0.1);
+  border-radius: 32rpx; padding: 32rpx;
+  box-shadow: 0 2rpx 16rpx rgba(0,0,0,0.04);
+}
+.card-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 24rpx;
+}
+.card-title-row { display: flex; align-items: center; gap: 16rpx; }
+.card-name { font-size: 30rpx; font-weight: 700; color: #0b1c30; }
+.card-tag {
+  font-size: 20rpx; font-weight: 700; color: var(--color-primary);
+  background: rgba(34,197,94,0.1); padding: 4rpx 20rpx; border-radius: 9999rpx;
+}
+.card-remove { width: 32rpx; height: 32rpx; opacity: 0.4; }
+
+.card-inputs { display: flex; gap: 20rpx; }
+.card-field { flex: 1; display: flex; flex-direction: column; gap: 6rpx; }
+.field-label { font-size: 22rpx; font-weight: 500; color: #3d4a3d; }
+.field-input {
+  width: 100%; height: 72rpx; background: #e5eeff;
+  border: none; border-radius: 20rpx; text-align: center;
+  font-size: 26rpx; font-weight: 700; color: #0b1c30;
+  padding: 0 6rpx; box-sizing: border-box;
+}
+.field-input:focus { box-shadow: 0 0 0 4rpx rgba(34,197,94,0.3); }
+.field-value {
+  display: flex; align-items: center; justify-content: center;
+  height: 72rpx; font-size: 26rpx; font-weight: 700; color: #0b1c30;
+}
+
+/* === Empty State === */
+.empty-state {
+  border: 4rpx dashed rgba(188,203,185,0.3); border-radius: 32rpx;
+  padding: 64rpx; text-align: center; margin-bottom: 32rpx;
+}
+.empty-text { font-size: 28rpx; font-weight: 500; color: #3d4a3d; }
+
+/* === Add Button === */
+.add-btn {
+  display: flex; align-items: center; justify-content: center; gap: 12rpx;
+  height: 96rpx; background: #e5eeff; border: 2rpx dashed rgba(34,197,94,0.3);
+  border-radius: 48rpx;
+}
+.add-icon { width: 40rpx; height: 40rpx; }
+.add-text { font-size: 28rpx; font-weight: 600; color: var(--color-primary); }
+
+/* === Bottom Bar (readonly) === */
+.bottom-bar {
+  position: fixed; bottom: 0; left: 0; width: 100%; z-index: 50;
+  background: rgba(248,249,255,0.95);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  padding: 40rpx 40rpx;
+  padding-bottom: calc(40rpx + env(safe-area-inset-bottom));
+}
+.bottom-bar-inner { max-width: 900rpx; margin: 0 auto; }
+.btn-save-as {
+  width: 100%; height: 104rpx; background: var(--color-primary);
+  border-radius: 9999rpx; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8rpx 32rpx rgba(34,197,94,0.3);
+}
+.btn-save-as-pressed { transform: scale(0.98); opacity: 0.9; }
+.btn-save-as-text { font-size: 36rpx; font-weight: 700; color: #fff; }
+
+/* === Modal Mask === */
+.modal-mask {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.4);
+  display: flex; align-items: flex-end; justify-content: center;
+}
+.modal-card {
+  width: 100%; max-height: 80vh; background: #fff;
+  border-radius: 48rpx 48rpx 0 0;
+  padding: 40rpx 40rpx 64rpx;
+  display: flex; flex-direction: column; gap: 24rpx;
+  animation: slideUp 0.3s ease;
+}
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.modal-header {
+  display: flex; justify-content: space-between; align-items: center;
+}
+.modal-title { font-size: 34rpx; font-weight: 700; color: #0b1c30; }
+.modal-close { width: 40rpx; height: 40rpx; opacity: 0.5; }
+
+/* === Picker Tabs === */
+.picker-tabs {
+  display: flex; white-space: nowrap;
+  padding-bottom: 8rpx;
+}
+.picker-tab {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 14rpx 36rpx; border-radius: 9999rpx;
+  font-size: 24rpx; font-weight: 500;
+  background: #f1f5f9; color: #64748b;
+  margin-right: 12rpx; flex-shrink: 0;
+}
+.picker-tab-active {
+  background: var(--color-primary); color: #fff;
+}
+
+/* === Picker List === */
+.picker-list { max-height: 480rpx; }
+.picker-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 28rpx 24rpx; border-radius: 24rpx;
+  border-bottom: 1rpx solid rgba(226,232,240,0.4);
+}
+.picker-item:last-child { border-bottom: none; }
+.picker-item-left { display: flex; align-items: center; gap: 16rpx; }
+.picker-item-name { font-size: 28rpx; font-weight: 600; color: #0b1c30; }
+.picker-item-tag {
+  font-size: 20rpx; font-weight: 600; color: var(--color-primary);
+  background: rgba(34,197,94,0.08); padding: 2rpx 16rpx; border-radius: 9999rpx;
+}
+.picker-item-desc { font-size: 24rpx; color: #94a3b8; }

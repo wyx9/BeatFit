@@ -1,5 +1,6 @@
 const api = require('../../utils/api')
 const EXERCISE_LIBRARY = require('../../config/exercises')
+const exerciseUtils = require('../../utils/exercise-utils')
 
 // 从配置库取前两个动作作为默认展示
 function buildDefaults(key) {
@@ -31,11 +32,14 @@ Page({
     // 弹窗状态
     showCategoryModal: false,
     showExerciseModal: false,
+    showImportModal: false,
     newCategoryName: '',
     addingToCategory: '',
     addingExercise: '',
     previewImage: '',
     availableExercises: [],
+    importTemplates: [],
+    selectedTplId: '',
 
     // 计算属性
     filteredCategories: [],
@@ -151,9 +155,63 @@ Page({
     this.refreshFiltered()
   },
 
+  // ===== 导入模板 =====
+  onShowImportModal() {
+    const templates = exerciseUtils.getAllTemplates()
+    this.setData({ showImportModal: true, importTemplates: templates, selectedTplId: '' })
+  },
+
+  onHideImportModal() {
+    this.setData({ showImportModal: false })
+  },
+
+  onSelectImportTpl(e) {
+    this.setData({ selectedTplId: e.currentTarget.dataset.id })
+  },
+
+  onConfirmImport() {
+    const tplId = this.data.selectedTplId
+    if (!tplId) {
+      wx.showToast({ title: '请选择一个模板', icon: 'none' })
+      return
+    }
+    const tpl = exerciseUtils.getTemplateById(tplId)
+    if (!tpl || !tpl.exercises || tpl.exercises.length === 0) {
+      wx.showToast({ title: '模板无效', icon: 'none' })
+      return
+    }
+
+    // 用模板动作替换当前页签
+    const activePart = this.data.activePart
+    const categories = this.data.categories
+    const catIdx = categories.findIndex(c => c.key === activePart)
+    const cloned = tpl.exercises.map(ex => ({ ...ex }))
+
+    if (catIdx >= 0) {
+      categories[catIdx].exercises = cloned
+    } else {
+      // 当前页签不存在 → 新建分类
+      const partNames = { back: '背部', chest: '胸部', legs: '腿部', shoulder: '肩部', arms: '手臂', core: '核心' }
+      categories.push({ key: activePart, name: partNames[activePart] || '自定义', exercises: cloned })
+    }
+
+    this.setData({ categories, showImportModal: false })
+    this.refreshFiltered()
+    wx.showToast({ title: '已导入 ' + tpl.name, icon: 'success' })
+  },
+
+  // 计算模板总时长
+  tplMinutes(tpl) {
+    let sec = 0
+    ;(tpl.exercises || []).forEach(ex => {
+      sec += (ex.sets || 1) * ((ex.duration_sec || 0) + (ex.rest_sec || 0))
+    })
+    return Math.ceil(sec / 60)
+  },
+
   // ===== 弹窗控制 =====
   hideModals() {
-    this.setData({ showCategoryModal: false, showExerciseModal: false })
+    this.setData({ showCategoryModal: false, showExerciseModal: false, showImportModal: false })
   },
   noop() {},
 

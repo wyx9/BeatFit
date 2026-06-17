@@ -1,0 +1,76 @@
+<!-- 模板管理页（动作库） -->
+<view class="page">
+  <!-- Header -->
+  <view class="header" style="padding-top: {{statusBarHeight}}px;">
+    <view class="header-inner">
+      <view class="header-left">
+        <image class="header-back" src="/images/icon-arrow-back.svg" mode="aspectFit" bindtap="goBack" />
+        <text class="header-title">动作库</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="main">
+    <!-- 系统推荐 -->
+    <view class="section">
+      <text class="section-title">系统推荐</text>
+      <view class="tpl-grid">
+        <view class="tpl-card" wx:for="{{presets}}" wx:key="id" bindtap="onViewPreset" data-id="{{item.id}}">
+          <view class="tpl-card-top">
+            <view class="tpl-card-info">
+              <text class="tpl-card-name">{{item.name}}</text>
+              <text class="tpl-card-count">{{item.exercises.length}}个动作 · 约{{totalMinutes(item)}}分钟</text>
+            </view>
+            <text class="tpl-card-arrow">→</text>
+          </view>
+          <view class="tpl-card-tags">
+            <text class="tpl-tag" wx:for="{{item.exercises}}" wx:for-item="ex" wx:key="name">{{ex.name}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 我的模板 -->
+    <view class="section">
+      <view class="section-header">
+        <text class="section-title">我的模板</text>
+        <view class="section-action" bindtap="onCreateNew">
+          <image class="action-icon" src="/images/icon-add.svg" mode="aspectFit" />
+          <text class="action-text">新建</text>
+        </view>
+      </view>
+
+      <!-- 模板列表 -->
+      <view class="tpl-grid" wx:if="{{userTemplates.length > 0}}">
+        <view class="tpl-card tpl-card-user" wx:for="{{userTemplates}}" wx:key="id">
+          <view class="tpl-card-top" bindtap="onEditTemplate" data-id="{{item.id}}">
+            <view class="tpl-card-info">
+              <text class="tpl-card-name">{{item.name}}</text>
+              <text class="tpl-card-count">{{item.exercises.length}}个动作 · 约{{totalMinutes(item)}}分钟</text>
+            </view>
+            <text class="tpl-card-arrow">→</text>
+          </view>
+          <view class="tpl-card-tags">
+            <text class="tpl-tag" wx:for="{{item.exercises}}" wx:for-item="ex" wx:key="name">{{ex.name}}</text>
+          </view>
+          <view class="tpl-card-actions">
+            <text class="action-delete" bindtap="onDeleteTemplate" data-id="{{item.id}}">删除</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 空状态 + 新建按钮 -->
+      <view wx:else class="empty-section">
+        <view class="empty-state">
+          <text class="empty-icon">📋</text>
+          <text class="empty-title">还没有自定义模板</text>
+          <text class="empty-desc">创建一套专属训练计划，创建房间时一键导入</text>
+        </view>
+        <view class="btn-new" hover-class="btn-new-pressed" bindtap="onCreateNew">
+          <text class="btn-new-icon">＋</text>
+          <text class="btn-new-text">新建模板</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

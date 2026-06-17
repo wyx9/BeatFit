@@ -297,6 +297,7 @@ Page({
   },
 
   goLobby() { wx.redirectTo({ url: '/pages/lobby/lobby' }) },
+  goTemplates() { wx.redirectTo({ url: '/pages/exercise-templates/exercise-templates' }) },
   goLeaderboard() { wx.redirectTo({ url: '/pages/leaderboard/leaderboard' }) },
   goProfile() { wx.redirectTo({ url: '/pages/profile/profile' }) }
 })

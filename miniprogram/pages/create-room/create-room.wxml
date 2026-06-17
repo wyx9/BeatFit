@@ -47,6 +47,10 @@
                 <image class="action-icon" src="/images/icon-add.svg" mode="aspectFit" />
                 <text class="action-text">添加动作</text>
               </view>
+              <view class="category-action" bindtap="onShowImportModal">
+                <image class="action-icon" src="/images/icon-edit.svg" mode="aspectFit" />
+                <text class="action-text">导入模板</text>
+              </view>
             </view>
 
             <!-- 动作卡片列表 -->
@@ -128,6 +132,31 @@
       <view class="modal-buttons">
         <view class="modal-btn modal-btn-cancel" bindtap="hideModals"><text>取消</text></view>
         <view class="modal-btn modal-btn-confirm" bindtap="confirmAddExercise"><text>确认添加</text></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 导入模板弹窗 -->
+  <view class="modal-mask" wx:if="{{showImportModal}}" bindtap="onHideImportModal">
+    <view class="modal-card" catchtap="noop">
+      <text class="modal-title">选择模板导入</text>
+      <scroll-view class="import-list" scroll-y>
+        <view class="import-item {{selectedTplId === item.id ? 'import-item-active' : ''}}" wx:for="{{importTemplates}}" wx:key="id" bindtap="onSelectImportTpl" data-id="{{item.id}}">
+          <view class="import-item-left">
+            <text class="import-item-name">{{item.name}}</text>
+            <text class="import-item-desc">{{item.exercises.length}}个动作 · 约{{tplMinutes(item)}}分钟</text>
+          </view>
+          <view class="import-radio {{selectedTplId === item.id ? 'import-radio-checked' : ''}}">
+            <view wx:if="{{selectedTplId === item.id}}" class="import-radio-dot"></view>
+          </view>
+        </view>
+        <view wx:if="{{importTemplates.length === 0}}" class="import-empty">
+          <text>暂无可用的模板</text>
+        </view>
+      </scroll-view>
+      <view class="modal-buttons">
+        <view class="modal-btn modal-btn-cancel" bindtap="onHideImportModal"><text>取消</text></view>
+        <view class="modal-btn modal-btn-confirm" bindtap="onConfirmImport"><text>确认导入</text></view>
       </view>
     </view>
   </view>
