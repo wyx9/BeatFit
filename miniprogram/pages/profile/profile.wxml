@@ -45,12 +45,12 @@
 
     <!-- 菜单列表 -->
     <view class="menu-section">
-      <view class="menu-item" hover-class="menu-item-pressed">
+      <view wx:if="{{ENABLE_WORKOUT_RECORDS}}" class="menu-item" hover-class="menu-item-pressed">
         <image class="menu-icon" src="/images/icon-fitness.svg" mode="aspectFit" />
         <text class="menu-text">我的训练记录</text>
         <image class="menu-arrow" src="/images/icon-chevron-right.svg" mode="aspectFit" />
       </view>
-      <view class="menu-item" hover-class="menu-item-pressed">
+      <view wx:if="{{ENABLE_ACHIEVEMENTS}}" class="menu-item" hover-class="menu-item-pressed">
         <image class="menu-icon" src="/images/icon-leaderboard.svg" mode="aspectFit" />
         <text class="menu-text">成就徽章</text>
         <image class="menu-arrow" src="/images/icon-chevron-right.svg" mode="aspectFit" />
@@ -81,7 +81,7 @@
       <image class="nav-icon" src="/images/icon-grid.svg" mode="aspectFit" />
       <text class="nav-label">大厅</text>
     </view>
-    <view class="nav-item" bindtap="goLeaderboard">
+    <view wx:if="{{ENABLE_LEADERBOARD}}" class="nav-item" bindtap="goLeaderboard">
       <image class="nav-icon" src="/images/icon-leaderboard-gray.svg" mode="aspectFit" />
       <text class="nav-label">排行榜</text>
     </view>

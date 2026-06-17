@@ -17,6 +17,20 @@
       <input class="field-input" placeholder="例如：晨间活力力量训练" placeholder-class="field-placeholder" value="{{roomName}}" bindinput="onRoomNameInput" />
     </view>
 
+    <!-- 导入模板 -->
+    <view class="section">
+      <view class="import-template-card" bindtap="onShowImportModal">
+        <view class="import-template-left">
+          <text class="import-template-icon">📥</text>
+          <view class="import-template-text">
+            <text class="import-template-title">从模板导入动作</text>
+            <text class="import-template-desc">选择已有模板快速填充训练动作</text>
+          </view>
+        </view>
+        <image class="import-template-arrow" src="/images/icon-chevron-right.svg" mode="aspectFit" />
+      </view>
+    </view>
+
     <!-- 动作配置 -->
     <view class="section">
       <view class="section-header-row">
@@ -32,7 +46,10 @@
 
       <!-- 部位 Tab -->
       <scroll-view class="tabs-scroll" scroll-x enable-flex>
-        <view class="body-tab {{activePart === item.key ? 'body-tab-active' : ''}}" wx:for="{{categories}}" wx:key="key" bindtap="switchPart" data-part="{{item.key}}">{{item.name}}</view>
+        <view class="body-tab {{activePart === item.key ? 'body-tab-active' : ''}}" wx:for="{{categories}}" wx:key="key" bindtap="switchPart" data-part="{{item.key}}">
+          <text class="body-tab-emoji">{{item.icon}}</text>
+          <text>{{item.name}}</text>
+        </view>
       </scroll-view>
 
       <!-- 分类列表 -->
@@ -43,13 +60,9 @@
               <view class="category-title-wrap">
                 <text class="category-title">{{item.name}}</text>
               </view>
-              <view class="category-action" bindtap="showAddExercise" data-cat="{{item.key}}">
+              <view class="category-action" bindtap="onShowPicker">
                 <image class="action-icon" src="/images/icon-add.svg" mode="aspectFit" />
                 <text class="action-text">添加动作</text>
-              </view>
-              <view class="category-action" bindtap="onShowImportModal">
-                <image class="action-icon" src="/images/icon-edit.svg" mode="aspectFit" />
-                <text class="action-text">导入模板</text>
               </view>
             </view>
 
@@ -59,7 +72,7 @@
                 <view class="workout-card-header">
                   <view class="workout-name-wrap">
                     <text class="workout-name">{{ex.name}}</text>
-                    <text class="workout-tag">{{ex.tag}}</text>
+                    <text class="workout-tag {{ex.tag === '力量' ? 'tag-strength' : ex.tag === '塑形' ? 'tag-shape' : ex.tag === '肥大' ? 'tag-hypertrophy' : ex.tag === '复合' ? 'tag-compound' : ex.tag === '耐力' ? 'tag-endurance' : 'tag-rehab'}}">{{ex.tag}}</text>
                   </view>
                   <image class="workout-close" src="/images/icon-close.svg" mode="aspectFit" bindtap="removeExercise" data-cat="{{item.key}}" data-name="{{ex.name}}" />
                 </view>
@@ -82,7 +95,7 @@
     </view>
 
     <!-- 房间设置 -->
-    <view class="settings-card">
+    <view wx:if="{{ENABLE_ROOM_SETTINGS}}" class="settings-card">
       <text class="settings-title">房间设置</text>
       <view class="settings-chips">
         <view class="chip"><image class="chip-icon" src="/images/icon-lock-open.svg" mode="aspectFit" /><text class="chip-text">公开房间</text></view>
@@ -116,23 +129,82 @@
     </view>
   </view>
 
-  <!-- 添加动作弹窗 -->
-  <view class="modal-mask" wx:if="{{showExerciseModal}}" bindtap="hideModals">
-    <view class="modal-card" catchtap="noop">
-      <text class="modal-title">添加动作到「{{addingToCategory}}」</text>
-      <view class="picker-row">
-        <view class="modal-picker">
-          <view class="picker-item {{addingExercise === item.name ? 'picker-item-active' : ''}}" hover-class="picker-item-hover" wx:for="{{availableExercises}}" wx:key="name" bindtap="selectExercise" data-name="{{item.name}}">{{item.name}}</view>
-        </view>
-        <view class="picker-preview">
-          <image wx:if="{{previewImage}}" class="preview-img" src="{{previewImage}}" mode="aspectFill" />
-          <view wx:else class="preview-empty"><text>选择动作\n查看预览</text></view>
+  <!-- 动作选择器弹窗（复用 exercise-editor） -->
+  <view class="picker-mask" wx:if="{{showPicker}}" bindtap="onHidePicker">
+    <view class="picker-card-modal" catchtap="noop">
+      <view class="picker-drag-bar"></view>
+
+      <view class="picker-header">
+        <text class="picker-title">选择动作</text>
+        <text class="picker-subtitle">{{isSearching ? '全库搜索' : activePickerPartName}} · {{pickerExercises.length}}个动作</text>
+        <image class="picker-close" src="/images/icon-close.svg" mode="aspectFit" bindtap="onHidePicker" />
+      </view>
+
+      <!-- 搜索栏 -->
+      <view class="picker-search-bar">
+        <text class="picker-search-icon">🔍</text>
+        <input
+          class="picker-search-input"
+          placeholder="搜索动作名称…"
+          placeholder-class="picker-search-placeholder"
+          value="{{pickerSearch}}"
+          bindinput="onPickerSearchInput"
+          confirm-type="search"
+        />
+        <view wx:if="{{pickerSearch.length > 0}}" class="picker-search-clear" bindtap="onClearSearch">
+          <text class="picker-search-clear-text">✕</text>
         </view>
       </view>
-      <view class="modal-buttons">
-        <view class="modal-btn modal-btn-cancel" bindtap="hideModals"><text>取消</text></view>
-        <view class="modal-btn modal-btn-confirm" bindtap="confirmAddExercise"><text>确认添加</text></view>
-      </view>
+
+      <!-- 部位 Tab -->
+      <scroll-view wx:if="{{!isSearching}}" class="picker-tabs-scroll" scroll-x enable-flex enhanced show-scrollbar="{{false}}">
+        <view
+          class="picker-tab-chip {{activePickerPart === item.key ? 'picker-tab-active' : ''}}"
+          wx:for="{{pickerParts}}"
+          wx:key="key"
+          bindtap="onSwitchPickerPart"
+          data-key="{{item.key}}"
+        >
+          <text class="picker-tab-emoji">{{item.icon}}</text>
+          <text class="picker-tab-name">{{item.name}}</text>
+        </view>
+      </scroll-view>
+
+      <!-- 动作卡片列表 -->
+      <scroll-view class="picker-list-scroll" scroll-y enhanced show-scrollbar="{{false}}">
+        <view
+          class="picker-ex-card"
+          wx:for="{{pickerExercises}}"
+          wx:key="name"
+          bindtap="onSelectPickerExercise"
+          data-name="{{item.name}}"
+          data-partkey="{{item._partKey}}"
+          hover-class="picker-ex-card-hover"
+        >
+          <view class="picker-ex-body">
+            <view class="picker-ex-left">
+              <view class="picker-ex-header-row">
+                <text class="picker-ex-name">{{item.name}}</text>
+                <text class="picker-ex-tag {{item.tag === '力量' ? 'tag-strength' : item.tag === '塑形' ? 'tag-shape' : item.tag === '肥大' ? 'tag-hypertrophy' : item.tag === '复合' ? 'tag-compound' : item.tag === '耐力' ? 'tag-endurance' : 'tag-rehab'}}">{{item.tag}}</text>
+              </view>
+              <text wx:if="{{isSearching}}" class="picker-ex-part">{{item._part}}</text>
+              <view class="picker-ex-params" wx:else>
+                <text class="picker-ex-chip">{{item.sets}}组 × {{item.reps}}次</text>
+                <text class="picker-ex-divider">·</text>
+                <text class="picker-ex-chip">{{item.duration_sec}}s / {{item.rest_sec}}s</text>
+              </view>
+            </view>
+            <text class="picker-ex-add">＋</text>
+          </view>
+        </view>
+
+        <view wx:if="{{isSearching && pickerExercises.length === 0}}" class="picker-ex-empty">
+          <text class="picker-ex-empty-text">未找到匹配 "{{pickerSearch}}" 的动作</text>
+        </view>
+        <view wx:elif="{{!isSearching && pickerExercises.length === 0}}" class="picker-ex-empty">
+          <text class="picker-ex-empty-text">该部位暂无动作</text>
+        </view>
+      </scroll-view>
     </view>
   </view>
 

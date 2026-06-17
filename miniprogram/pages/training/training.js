@@ -1,4 +1,5 @@
 const api = require('../../utils/api')
+const features = require('../../config/features')
 
 // MET 热量系数：按动作标签区分每秒消耗（千卡）
 const TAG_KCAL_PER_SEC = {
@@ -10,6 +11,7 @@ const DEFAULT_KCAL_PER_SEC = 0.1
 Page({
   data: {
     statusBarHeight: 0,
+    ENABLE_LEADERBOARD: features.ENABLE_LEADERBOARD,
     userAvatar: '',
     userInitial: '?',
     displayTime: '00:00',
@@ -62,6 +64,15 @@ Page({
     // 兼容 JSON 字符串格式（从后端 WS 传来的）
     if (typeof exercises === 'string') {
       try { exercises = JSON.parse(exercises) } catch(e) { exercises = [] }
+    }
+    // 兜底：从 currentRoom.exercises 解析（断线重连场景 globalData.roomExercises 可能为数组但为空）
+    if (exercises.length === 0 && app.globalData && app.globalData.currentRoom && app.globalData.currentRoom.exercises) {
+      const raw = app.globalData.currentRoom.exercises
+      try { exercises = typeof raw === 'string' ? JSON.parse(raw) : raw } catch(e) {}
+    }
+    // 兜底：如果 globalData 没有 currentRoom，从 URL 参数构造
+    if ((!app.globalData.currentRoom || !app.globalData.currentRoom.id) && options.roomId) {
+      app.globalData.currentRoom = { id: parseInt(options.roomId) }
     }
     if (!Array.isArray(exercises) || !exercises.length) {
       exercises = [
@@ -296,8 +307,4 @@ Page({
     })
   },
 
-  goLobby() { wx.redirectTo({ url: '/pages/lobby/lobby' }) },
-  goTemplates() { wx.redirectTo({ url: '/pages/exercise-templates/exercise-templates' }) },
-  goLeaderboard() { wx.redirectTo({ url: '/pages/leaderboard/leaderboard' }) },
-  goProfile() { wx.redirectTo({ url: '/pages/profile/profile' }) }
 })

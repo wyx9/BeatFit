@@ -1,6 +1,18 @@
 const api = require('../../utils/api')
 const EXERCISE_LIBRARY = require('../../config/exercises')
 const exerciseUtils = require('../../utils/exercise-utils')
+const features = require('../../config/features')
+
+// 部位名称 & 图标映射
+const PART_NAMES = {
+  back: '背部', chest: '胸部', legs: '腿部',
+  shoulder: '肩部', arms: '手臂', core: '核心'
+}
+const PART_EMOJI = {
+  back: '🏋️', chest: '💪', legs: '🦵',
+  shoulder: '🤸', arms: '🦾', core: '🎯'
+}
+const PART_KEYS = Object.keys(PART_NAMES)
 
 // 从配置库取前两个动作作为默认展示
 function buildDefaults(key) {
@@ -24,22 +36,29 @@ Page({
 
     // 分类数据（含默认动作）
     categories: [
-      { key: 'back', name: '背部', exercises: buildDefaults('back') },
-      { key: 'chest', name: '胸部', exercises: buildDefaults('chest') },
-      { key: 'legs', name: '腿部', exercises: buildDefaults('legs') }
+      { key: 'back', name: '背部', icon: '🏋️', exercises: buildDefaults('back') },
+      { key: 'chest', name: '胸部', icon: '💪', exercises: buildDefaults('chest') },
+      { key: 'legs', name: '腿部', icon: '🦵', exercises: buildDefaults('legs') }
     ],
 
     // 弹窗状态
     showCategoryModal: false,
-    showExerciseModal: false,
     showImportModal: false,
     newCategoryName: '',
-    addingToCategory: '',
-    addingExercise: '',
-    previewImage: '',
-    availableExercises: [],
     importTemplates: [],
     selectedTplId: '',
+
+    // 动作选择器
+    showPicker: false,
+    activePickerPart: 'back',
+    activePickerPartName: '背部',
+    pickerParts: [],
+    pickerExercises: [],
+    pickerSearch: '',
+    isSearching: false,
+
+    // 功能开关
+    ENABLE_ROOM_SETTINGS: features.ENABLE_ROOM_SETTINGS,
 
     // 计算属性
     filteredCategories: [],
@@ -48,7 +67,10 @@ Page({
 
   onLoad() {
     const sys = wx.getSystemInfoSync()
-    this.setData({ statusBarHeight: sys.statusBarHeight })
+    this.setData({
+      statusBarHeight: sys.statusBarHeight,
+      pickerParts: PART_KEYS.map(k => ({ key: k, name: PART_NAMES[k], icon: PART_EMOJI[k] }))
+    })
     this.refreshFiltered()
   },
 
@@ -85,60 +107,97 @@ Page({
     const name = this.data.newCategoryName.trim()
     if (!name) { wx.showToast({ title: '请输入分类名', icon: 'none' }); return }
     const key = 'cat_' + Date.now()
-    const cats = [...this.data.categories, { key, name, exercises: [] }]
+    const cats = [...this.data.categories, { key, name, icon: '📋', exercises: [] }]
     this.setData({ categories: cats, showCategoryModal: false, newCategoryName: '' })
     this.refreshFiltered()
   },
 
-  // ===== 添加动作 =====
-  showAddExercise(e) {
-    const cat = e.currentTarget.dataset.cat
-    const lib = EXERCISE_LIBRARY[cat] || EXERCISE_LIBRARY['core']
-    this.setData({
-      showExerciseModal: true,
-      addingToCategory: cat,
-      addingExercise: lib[0] ? lib[0].name : '',
-      previewImage: lib[0] && lib[0].image ? lib[0].image : '',
-      availableExercises: lib
-    })
+  // ===== 动作选择器（复用 exercise-editor picker）=====
+  onShowPicker() {
+    this.setData({ showPicker: true, pickerSearch: '', isSearching: false })
+    this.loadPickerExercises(this.data.activePickerPart)
   },
 
-  selectExercise(e) {
-    const name = e.currentTarget.dataset.name
-    const lib = EXERCISE_LIBRARY[this.data.addingToCategory] || []
-    const ex = lib.find(item => item.name === name)
-    this.setData({
-      addingExercise: name,
-      previewImage: ex && ex.image ? ex.image : ''
-    })
+  onHidePicker() {
+    this.setData({ showPicker: false, pickerSearch: '', isSearching: false })
   },
 
-  confirmAddExercise() {
-    const { categories, addingToCategory, addingExercise } = this.data
-    const lib = EXERCISE_LIBRARY[addingToCategory] || []
-    const ex = lib.find(item => item.name === addingExercise)
-    if (!ex) { wx.showToast({ title: '请选择动作', icon: 'none' }); return }
+  onPickerSearchInput(e) {
+    const keyword = e.detail.value.trim()
+    this.setData({ pickerSearch: keyword, isSearching: keyword.length > 0 })
+    if (!keyword) {
+      this.loadPickerExercises(this.data.activePickerPart)
+      return
+    }
+    const results = []
+    const lower = keyword.toLowerCase()
+    PART_KEYS.forEach(partKey => {
+      const list = EXERCISE_LIBRARY[partKey] || []
+      list.forEach(ex => {
+        if (ex.name.toLowerCase().includes(lower)) {
+          results.push({
+            ...ex,
+            emoji: ex.emoji || PART_EMOJI[partKey] || '🏋️',
+            _part: PART_NAMES[partKey] || partKey,
+            _partKey: partKey
+          })
+        }
+      })
+    })
+    this.setData({ activePickerPartName: '搜索结果', pickerExercises: results })
+  },
 
-    const newCats = categories.map(cat => {
-      if (cat.key === addingToCategory) {
-        const exists = cat.exercises.some(e => e.name === ex.name)
-        if (exists) {
-          wx.showToast({ title: '该动作已存在', icon: 'none' })
-          return cat
-        }
-        return {
-          ...cat,
-          exercises: [...cat.exercises, buildExercise(ex.name, cat.key)]
-        }
+  onClearSearch() {
+    this.setData({ pickerSearch: '', isSearching: false })
+    this.loadPickerExercises(this.data.activePickerPart)
+  },
+
+  onSwitchPickerPart(e) {
+    const key = e.currentTarget.dataset.key
+    const name = PART_NAMES[key] || key
+    this.setData({ activePickerPart: key, activePickerPartName: name })
+    this.loadPickerExercises(key)
+  },
+
+  loadPickerExercises(partKey) {
+    const list = (EXERCISE_LIBRARY[partKey] || []).map(ex => ({
+      ...ex,
+      emoji: ex.emoji || PART_EMOJI[partKey] || '🏋️'
+    }))
+    this.setData({ pickerExercises: list })
+  },
+
+  onSelectPickerExercise(e) {
+    const { name, partkey } = e.currentTarget.dataset
+    const partKey = partkey || this.data.activePickerPart
+    const lib = EXERCISE_LIBRARY[partKey] || []
+    const found = lib.find(ex => ex.name === name)
+    if (!found) { wx.showToast({ title: '动作未找到', icon: 'none' }); return }
+
+    const activePart = this.data.activePart
+    const categories = this.data.categories
+    const catIdx = categories.findIndex(c => c.key === activePart)
+
+    if (catIdx >= 0) {
+      const exists = categories[catIdx].exercises.some(e => e.name === found.name)
+      if (exists) {
+        wx.showToast({ title: '该动作已存在', icon: 'none' })
+        return
       }
-      return cat
-    })
+      categories[catIdx] = {
+        ...categories[catIdx],
+        exercises: [...categories[catIdx].exercises, { ...found }]
+      }
+    } else {
+      categories.push({
+        key: activePart,
+        name: PART_NAMES[activePart] || activePart,
+        icon: PART_EMOJI[activePart] || '🏋️',
+        exercises: [{ ...found }]
+      })
+    }
 
-    this.setData({
-      categories: newCats,
-      showExerciseModal: false,
-      addingExercise: ''
-    })
+    this.setData({ categories, showPicker: false, pickerSearch: '', isSearching: false })
     this.refreshFiltered()
   },
 
@@ -191,8 +250,7 @@ Page({
       categories[catIdx].exercises = cloned
     } else {
       // 当前页签不存在 → 新建分类
-      const partNames = { back: '背部', chest: '胸部', legs: '腿部', shoulder: '肩部', arms: '手臂', core: '核心' }
-      categories.push({ key: activePart, name: partNames[activePart] || '自定义', exercises: cloned })
+      categories.push({ key: activePart, name: PART_NAMES[activePart] || '自定义', icon: PART_EMOJI[activePart] || '📋', exercises: cloned })
     }
 
     this.setData({ categories, showImportModal: false })
@@ -211,7 +269,7 @@ Page({
 
   // ===== 弹窗控制 =====
   hideModals() {
-    this.setData({ showCategoryModal: false, showExerciseModal: false, showImportModal: false })
+    this.setData({ showCategoryModal: false, showImportModal: false })
   },
   noop() {},
 

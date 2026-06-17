@@ -9,6 +9,10 @@ const PART_NAMES = {
   back: '背部', chest: '胸部', legs: '腿部',
   shoulder: '肩部', arms: '手臂', core: '核心'
 }
+const PART_EMOJI = {
+  back: '🏋️', chest: '💪', legs: '🦵',
+  shoulder: '🤸', arms: '🦾', core: '🎯'
+}
 const PART_KEYS = Object.keys(PART_NAMES)
 
 Page({
@@ -22,15 +26,18 @@ Page({
     // 动作选择器弹窗
     showPicker: false,
     activePickerPart: 'back',
-    pickerParts: [],       // [{ key, name }]
-    pickerExercises: []    // 当前部位的动作列表
+    activePickerPartName: '背部',
+    pickerParts: [],       // [{ key, name, icon }]
+    pickerExercises: [],   // 当前显示的动作列表
+    pickerSearch: '',      // 搜索关键词
+    isSearching: false     // 是否处于搜索模式
   },
 
   onLoad(options) {
     const sys = wx.getSystemInfoSync()
     this.setData({
       statusBarHeight: sys.statusBarHeight,
-      pickerParts: PART_KEYS.map(k => ({ key: k, name: PART_NAMES[k] }))
+      pickerParts: PART_KEYS.map(k => ({ key: k, name: PART_NAMES[k], icon: PART_EMOJI[k] }))
     })
 
     const tplId = options.tplId || ''
@@ -75,28 +82,73 @@ Page({
 
   // ===== 动作选择器 =====
   onShowPicker() {
-    this.setData({ showPicker: true })
+    this.setData({ showPicker: true, pickerSearch: '', isSearching: false })
     this.loadPickerExercises(this.data.activePickerPart)
   },
 
   onHidePicker() {
-    this.setData({ showPicker: false })
+    this.setData({ showPicker: false, pickerSearch: '', isSearching: false })
+  },
+
+  // 搜索输入 → 全库模糊匹配
+  onPickerSearchInput(e) {
+    const keyword = e.detail.value.trim()
+    this.setData({ pickerSearch: keyword, isSearching: keyword.length > 0 })
+
+    if (!keyword) {
+      // 清空搜索 → 恢复当前部位 Tab 视图
+      this.loadPickerExercises(this.data.activePickerPart)
+      return
+    }
+
+    // 遍历所有部位的动作，模糊匹配名称
+    const results = []
+    const lower = keyword.toLowerCase()
+    PART_KEYS.forEach(partKey => {
+      const list = EXERCISE_CONFIG[partKey] || []
+      list.forEach(ex => {
+        if (ex.name.toLowerCase().includes(lower)) {
+          results.push({
+            ...ex,
+            emoji: ex.emoji || PART_EMOJI[partKey] || '🏋️',
+            _part: PART_NAMES[partKey] || partKey,
+            _partKey: partKey
+          })
+        }
+      })
+    })
+
+    this.setData({
+      activePickerPartName: '搜索结果',
+      pickerExercises: results
+    })
+  },
+
+  // 清空搜索
+  onClearSearch() {
+    this.setData({ pickerSearch: '', isSearching: false })
+    this.loadPickerExercises(this.data.activePickerPart)
   },
 
   onSwitchPickerPart(e) {
     const key = e.currentTarget.dataset.key
-    this.setData({ activePickerPart: key })
+    const name = PART_NAMES[key] || key
+    this.setData({ activePickerPart: key, activePickerPartName: name })
     this.loadPickerExercises(key)
   },
 
   loadPickerExercises(partKey) {
-    const list = EXERCISE_CONFIG[partKey] || []
+    const list = (EXERCISE_CONFIG[partKey] || []).map(ex => ({
+      ...ex,
+      emoji: ex.emoji || PART_EMOJI[partKey] || '🏋️'
+    }))
     this.setData({ pickerExercises: list })
   },
 
   onSelectExercise(e) {
-    const name = e.currentTarget.dataset.name
-    const partKey = this.data.activePickerPart
+    const { name, partkey } = e.currentTarget.dataset
+    // 搜索模式下用结果中的 _partKey，否则用当前 activePickerPart
+    const partKey = partkey || this.data.activePickerPart
     const list = EXERCISE_CONFIG[partKey] || []
     const found = list.find(ex => ex.name === name)
     if (found) {
@@ -108,7 +160,7 @@ Page({
         duration_sec: found.duration_sec,
         rest_sec: found.rest_sec
       }]
-      this.setData({ exercises, showPicker: false })
+      this.setData({ exercises, showPicker: false, pickerSearch: '', isSearching: false })
     }
   },
 
@@ -181,5 +233,14 @@ Page({
   },
 
   // ===== 导航 =====
-  goBack() { wx.navigateBack() }
+  goBack() {
+    const pages = getCurrentPages()
+    if (pages.length > 1) {
+      wx.navigateBack()
+    } else {
+      wx.redirectTo({ url: '/pages/lobby/lobby' })
+    }
+  },
+
+  noop() {}
 })

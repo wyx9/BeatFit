@@ -17,7 +17,7 @@
 
 /* === Main === */
 .main {
-  padding-top: 148rpx; padding-bottom: 64rpx;
+  padding-top: 148rpx; padding-bottom: 200rpx;
   padding-left: 40rpx; padding-right: 40rpx;
   max-width: 900rpx; margin: 0 auto;
 }
@@ -94,3 +94,51 @@
 .btn-new-pressed { transform: scale(0.98); opacity: 0.9; }
 .btn-new-icon { font-size: 40rpx; font-weight: 300; color: #fff; }
 .btn-new-text { font-size: 34rpx; font-weight: 700; color: #fff; }
+
+/* === Bottom Navigation === */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 32rpx 32rpx calc(64rpx + env(safe-area-inset-bottom));
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1rpx solid rgba(226, 232, 240, 0.3);
+  box-shadow: 0 -16rpx 60rpx rgba(0, 0, 0, 0.02);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12rpx 48rpx;
+  color: #454747;
+  transition: all 0.2s;
+}
+
+.nav-active {
+  color: var(--color-primary);
+}
+
+.nav-icon {
+  width: 48rpx;
+  height: 48rpx;
+}
+
+.nav-label {
+  font-size: 22rpx;
+  font-weight: 700;
+  margin-top: 2rpx;
+  color: #454747;
+}
+
+.nav-label-active {
+  color: var(--color-primary);
+}

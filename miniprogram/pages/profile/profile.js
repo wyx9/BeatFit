@@ -1,9 +1,13 @@
 const api = require('../../utils/api')
+const features = require('../../config/features')
 
 Page({
   data: {
     statusBarHeight: 0,
-    userInfo: {}
+    userInfo: {},
+    ENABLE_LEADERBOARD: features.ENABLE_LEADERBOARD,
+    ENABLE_WORKOUT_RECORDS: features.ENABLE_WORKOUT_RECORDS,
+    ENABLE_ACHIEVEMENTS: features.ENABLE_ACHIEVEMENTS
   },
 
   onLoad() {

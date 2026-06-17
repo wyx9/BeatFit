@@ -85,24 +85,80 @@
   <!-- 动作选择器弹窗 -->
   <view class="modal-mask" wx:if="{{showPicker}}" bindtap="onHidePicker">
     <view class="modal-card" catchtap="noop">
+      <!-- 拖拽指示条 -->
+      <view class="modal-drag-bar"></view>
+
       <view class="modal-header">
         <text class="modal-title">选择动作</text>
+        <text class="modal-subtitle">{{isSearching ? '全库搜索' : activePickerPartName}} · {{pickerExercises.length}}个动作</text>
         <image class="modal-close" src="/images/icon-close.svg" mode="aspectFit" bindtap="onHidePicker" />
       </view>
 
-      <!-- 部位 Tab -->
-      <scroll-view class="picker-tabs" scroll-x enable-flex>
-        <view class="picker-tab {{activePickerPart === item.key ? 'picker-tab-active' : ''}}" wx:for="{{pickerParts}}" wx:key="key" bindtap="onSwitchPickerPart" data-key="{{item.key}}">{{item.name}}</view>
+      <!-- 搜索栏 -->
+      <view class="search-bar">
+        <text class="search-icon-emoji">🔍</text>
+        <input
+          class="search-input"
+          placeholder="搜索动作名称…"
+          placeholder-class="search-placeholder"
+          value="{{pickerSearch}}"
+          bindinput="onPickerSearchInput"
+          confirm-type="search"
+        />
+        <view wx:if="{{pickerSearch.length > 0}}" class="search-clear" bindtap="onClearSearch">
+          <text class="search-clear-text">✕</text>
+        </view>
+      </view>
+
+      <!-- 部位 Tab（非搜索模式） -->
+      <scroll-view wx:if="{{!isSearching}}" class="picker-tabs" scroll-x enable-flex enhanced show-scrollbar="{{false}}">
+        <view
+          class="picker-tab {{activePickerPart === item.key ? 'picker-tab-active' : ''}}"
+          wx:for="{{pickerParts}}"
+          wx:key="key"
+          bindtap="onSwitchPickerPart"
+          data-key="{{item.key}}"
+        >
+          <text class="picker-tab-emoji">{{item.icon}}</text>
+          <text class="picker-tab-name">{{item.name}}</text>
+        </view>
       </scroll-view>
 
-      <!-- 动作列表 -->
-      <scroll-view class="picker-list" scroll-y>
-        <view class="picker-item" wx:for="{{pickerExercises}}" wx:key="name" bindtap="onSelectExercise" data-name="{{item.name}}">
-          <view class="picker-item-left">
-            <text class="picker-item-name">{{item.name}}</text>
-            <text class="picker-item-tag">{{item.tag}}</text>
+      <!-- 动作卡片列表 -->
+      <scroll-view class="picker-list" scroll-y enhanced show-scrollbar="{{false}}">
+        <view
+          class="picker-card"
+          wx:for="{{pickerExercises}}"
+          wx:key="name"
+          bindtap="onSelectExercise"
+          data-name="{{item.name}}"
+          data-partkey="{{item._partKey}}"
+          hover-class="picker-card-hover"
+        >
+          <view class="picker-card-body">
+            <view class="picker-card-left">
+              <view class="picker-card-header-row">
+                <text class="picker-card-name">{{item.name}}</text>
+                <text class="picker-card-tag {{item.tag === '力量' ? 'tag-strength' : item.tag === '塑形' ? 'tag-shape' : item.tag === '肥大' ? 'tag-hypertrophy' : item.tag === '复合' ? 'tag-compound' : item.tag === '耐力' ? 'tag-endurance' : 'tag-rehab'}}">{{item.tag}}</text>
+              </view>
+              <text wx:if="{{isSearching}}" class="picker-card-part">{{item._part}}</text>
+              <view class="picker-card-params" wx:else>
+                <text class="param-chip">{{item.sets}}组 × {{item.reps}}次</text>
+                <text class="param-divider">·</text>
+                <text class="param-chip">{{item.duration_sec}}s / {{item.rest_sec}}s</text>
+              </view>
+            </view>
+            <text class="picker-card-add">＋</text>
           </view>
-          <text class="picker-item-desc">{{item.sets}}组 × {{item.reps}}次 · {{item.duration_sec}}s/{{item.rest_sec}}s</text>
+        </view>
+
+        <!-- 搜索空结果 -->
+        <view wx:if="{{isSearching && pickerExercises.length === 0}}" class="picker-empty">
+          <text class="picker-empty-text">未找到匹配 "{{pickerSearch}}" 的动作</text>
+        </view>
+        <!-- 部位空结果 -->
+        <view wx:elif="{{!isSearching && pickerExercises.length === 0}}" class="picker-empty">
+          <text class="picker-empty-text">该部位暂无动作</text>
         </view>
       </scroll-view>
     </view>

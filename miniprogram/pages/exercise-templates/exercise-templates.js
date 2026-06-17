@@ -1,12 +1,14 @@
 // ===== 模板管理页（动作库） =====
 
 const exerciseUtils = require('../../utils/exercise-utils')
+const features = require('../../config/features')
 
 Page({
   data: {
     statusBarHeight: 0,
     presets: [],
-    userTemplates: []
+    userTemplates: [],
+    ENABLE_LEADERBOARD: features.ENABLE_LEADERBOARD
   },
 
   onLoad() {
@@ -68,5 +70,20 @@ Page({
     })
   },
 
-  goBack() { wx.navigateBack() }
+  goBack() {
+    // 底部导航使用 redirectTo 跳入此页，栈中无上一页，因此回到大厅
+    wx.redirectTo({ url: '/pages/lobby/lobby' })
+  },
+
+  goLobby() {
+    wx.redirectTo({ url: '/pages/lobby/lobby' })
+  },
+
+  goLeaderboard() {
+    wx.redirectTo({ url: '/pages/leaderboard/leaderboard' })
+  },
+
+  goProfile() {
+    wx.redirectTo({ url: '/pages/profile/profile' })
+  }
 })

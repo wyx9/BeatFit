@@ -1,8 +1,10 @@
 const api = require('../../utils/api')
+const features = require('../../config/features')
 
 Page({
   data: {
     statusBarHeight: 0,
+    ENABLE_LEADERBOARD: features.ENABLE_LEADERBOARD,
     code0: '', code1: '', code2: '', code3: '',
     focusIndex: 0,
     rooms: [],

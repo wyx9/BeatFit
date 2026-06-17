@@ -29,6 +29,18 @@ App({
       const data = await api.getActiveRoom()
       if (data.room) {
         const room = data.room
+        const app = getApp()
+        // 存储房间信息 + 解析 exercises 到 globalData，供训练页/房间页恢复使用
+        app.globalData.currentRoom = room
+        if (room.exercises) {
+          try {
+            app.globalData.roomExercises = typeof room.exercises === 'string'
+              ? JSON.parse(room.exercises)
+              : room.exercises
+          } catch(e) {
+            app.globalData.roomExercises = []
+          }
+        }
         const url = room.status === 2
           ? '/pages/training/training?roomId=' + room.id
           : '/pages/room-waiting/room-waiting?roomId=' + room.id

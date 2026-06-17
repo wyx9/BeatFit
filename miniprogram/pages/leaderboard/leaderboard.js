@@ -1,4 +1,5 @@
 const api = require('../../utils/api')
+const features = require('../../config/features')
 
 Page({
   data: {
@@ -46,6 +47,10 @@ Page({
   },
 
   onLoad() {
+    if (!features.ENABLE_LEADERBOARD) {
+      wx.redirectTo({ url: '/pages/lobby/lobby' })
+      return
+    }
     const sys = wx.getSystemInfoSync()
     this.setData({ statusBarHeight: sys.statusBarHeight })
     this.loadUserAvatar()
