@@ -23,6 +23,18 @@ const PRESET_TEMPLATES = [
       { name: '杠铃划船',     tag: '力量', sets: 3, reps: 12, duration_sec: 30, rest_sec: 60 },
       { name: '硬拉',         tag: '复合', sets: 3, reps: 5,  duration_sec: 30, rest_sec: 90 }
     ]
+  },
+  {
+    id: 'preset_tan_back',
+    name: '谭成义背部训练',
+    preset: true,
+    exercises: [
+      { name: '反手高位下拉',     tag: '力量', sets: 4, reps: 12, duration_sec: 40, rest_sec: 60, tips: '身体保持中立，下落时不要后仰，向上时身体稍前倾，缓慢控制感受背阔肌拉伸。' },
+      { name: '坐姿绳索划船',     tag: '力量', sets: 4, reps: 12, duration_sec: 40, rest_sec: 60, tips: '脚蹬紧踏板，保持骨盆和身体稳定，后拉时身体不要后仰，感受背阔肌收缩。' },
+      { name: '中距对握高位下拉', tag: '力量', sets: 4, reps: 10, duration_sec: 40, rest_sec: 60, tips: '身体保持中立，感受肩胛骨上回旋，核心收紧，挺胸，不要低头或仰头。' },
+      { name: '中距对握划船',     tag: '力量', sets: 4, reps: 12, duration_sec: 40, rest_sec: 60, tips: '以肩胛后缩为主，手肘打开向后运动，缓慢控制感受中背部发力。' },
+      { name: '直立下压',         tag: '力量', sets: 3, reps: 12, duration_sec: 40, rest_sec: 60, tips: '采用1.5倍肩宽握距，核心收紧，背部优先发力，不要过度含胸或挺胸。' }
+    ]
   }
 ]
 
@@ -48,7 +60,12 @@ const EXERCISE_LIBRARY = {
     { name: '宽距高位下拉', tag: '力量', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5 },
     { name: '悍马机划船',   tag: '力量', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5 },
     { name: '杠铃耸肩',     tag: '力量', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5 },
-    { name: '对握下拉',     tag: '力量', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5 }
+    { name: '对握下拉',         tag: '力量', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5 },
+    { name: '反手高位下拉',     tag: '力量', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5 },
+    { name: '坐姿绳索划船',     tag: '力量', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5 },
+    { name: '中距对握高位下拉', tag: '力量', sets: 2, reps: 10, duration_sec: 5, rest_sec: 5 },
+    { name: '中距对握划船',     tag: '力量', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5 },
+    { name: '直立下压',         tag: '力量', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5 }
   ],
 
   // ========== 胸部 (17个) ==========

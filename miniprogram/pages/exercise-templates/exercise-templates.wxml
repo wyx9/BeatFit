@@ -1,16 +1,7 @@
 <!-- 模板管理页（动作库） -->
 <view class="page">
-  <!-- Header -->
-  <view class="header" style="padding-top: {{statusBarHeight}}px;">
-    <view class="header-inner">
-      <view class="header-left">
-        <image class="header-back" src="/images/icon-arrow-back.svg" mode="aspectFit" bindtap="goBack" />
-        <text class="header-title">动作库</text>
-      </view>
-    </view>
-  </view>
-
   <view class="main">
+    <view class="page-title">动作库</view>
     <!-- 系统推荐 -->
     <view class="section">
       <text class="section-title">系统推荐</text>

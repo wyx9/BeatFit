@@ -102,6 +102,7 @@ Page({
     }
 
     // 遍历所有部位的动作，模糊匹配名称
+    const addedNames = this.data.exercises.map(e => e.name)
     const results = []
     const lower = keyword.toLowerCase()
     PART_KEYS.forEach(partKey => {
@@ -112,7 +113,8 @@ Page({
             ...ex,
             emoji: ex.emoji || PART_EMOJI[partKey] || '🏋️',
             _part: PART_NAMES[partKey] || partKey,
-            _partKey: partKey
+            _partKey: partKey,
+            _added: addedNames.includes(ex.name)
           })
         }
       })
@@ -138,9 +140,11 @@ Page({
   },
 
   loadPickerExercises(partKey) {
+    const addedNames = this.data.exercises.map(e => e.name)
     const list = (EXERCISE_CONFIG[partKey] || []).map(ex => ({
       ...ex,
-      emoji: ex.emoji || PART_EMOJI[partKey] || '🏋️'
+      emoji: ex.emoji || PART_EMOJI[partKey] || '🏋️',
+      _added: addedNames.includes(ex.name)
     }))
     this.setData({ pickerExercises: list })
   },

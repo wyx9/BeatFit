@@ -5,16 +5,12 @@ const features = require('../../config/features')
 
 Page({
   data: {
-    statusBarHeight: 0,
     presets: [],
     userTemplates: [],
     ENABLE_LEADERBOARD: features.ENABLE_LEADERBOARD
   },
 
-  onLoad() {
-    const sys = wx.getSystemInfoSync()
-    this.setData({ statusBarHeight: sys.statusBarHeight })
-  },
+  onLoad() {},
 
   onShow() {
     this.refresh()
@@ -68,11 +64,6 @@ Page({
         }
       }
     })
-  },
-
-  goBack() {
-    // 底部导航使用 redirectTo 跳入此页，栈中无上一页，因此回到大厅
-    wx.redirectTo({ url: '/pages/lobby/lobby' })
   },
 
   goLobby() {

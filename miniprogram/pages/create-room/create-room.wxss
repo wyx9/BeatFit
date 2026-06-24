@@ -609,24 +609,25 @@
   width: 36rpx; height: 36rpx; opacity: 0.4; flex-shrink: 0;
 }
 
-/* ===== Picker Modal (from exercise-editor) ===== */
+/* ===== Picker Modal (居中弹窗 + 背景模糊) ===== */
 .picker-mask {
   position: fixed; inset: 0; z-index: 200;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   display: flex; align-items: flex-end; justify-content: center;
 }
 .picker-card-modal {
-  width: 100%; max-height: 82vh; background: #fff;
+  width: 100%; max-height: 92vh; background: #fff;
   border-radius: 48rpx 48rpx 0 0;
-  padding: 24rpx 32rpx 64rpx;
+  padding: 40rpx 32rpx 48rpx;
   display: flex; flex-direction: column; gap: 20rpx;
   animation: pickerSlideUp 0.3s ease;
+  box-shadow: 0 -16rpx 60rpx rgba(0,0,0,0.12);
 }
-@keyframes pickerSlideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-
-.picker-drag-bar {
-  width: 72rpx; height: 8rpx; background: #d3e4fe;
-  border-radius: 4rpx; margin: 0 auto 16rpx;
+@keyframes pickerSlideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 .picker-header {
@@ -672,14 +673,14 @@
   padding: 6rpx 0 2rpx;
 }
 .picker-tab-chip {
-  display: inline-flex; flex-direction: row; align-items: center; gap: 8rpx;
-  padding: 14rpx 28rpx; border-radius: 9999rpx;
+  display: inline-flex; flex-direction: row; align-items: center; gap: 6rpx;
+  padding: 10rpx 20rpx; border-radius: 9999rpx;
   background: #f1f5f9;
-  margin-right: 14rpx; flex-shrink: 0;
+  margin-right: 10rpx; flex-shrink: 0;
   transition: all 0.2s;
 }
-.picker-tab-emoji { font-size: 26rpx; line-height: 1; }
-.picker-tab-name { font-size: 24rpx; font-weight: 500; color: #64748b; line-height: 1; }
+.picker-tab-emoji { font-size: 22rpx; line-height: 1; }
+.picker-tab-name { font-size: 20rpx; font-weight: 500; color: #64748b; line-height: 1; }
 .picker-tab-active {
   background: var(--color-primary);
   box-shadow: 0 4rpx 16rpx rgba(34,197,94,0.25);
@@ -687,12 +688,13 @@
 .picker-tab-active .picker-tab-name { color: #fff; }
 
 /* Picker List */
-.picker-list-scroll { max-height: 520rpx; margin-top: 6rpx; }
+.picker-list-scroll { max-height: 900rpx; margin-top: 6rpx; flex: 1; }
 
 .picker-ex-card {
+  display: flex; flex-direction: row; align-items: center; gap: 24rpx;
   background: #f8f9ff;
   border-radius: 24rpx;
-  padding: 24rpx 24rpx;
+  padding: 20rpx 24rpx;
   margin-bottom: 16rpx;
   border: 2rpx solid transparent;
   transition: all 0.15s;
@@ -703,8 +705,20 @@
   transform: scale(0.985);
 }
 
+/* 缩略图 */
+.picker-ex-thumb {
+  width: 120rpx; height: 120rpx; border-radius: 24rpx;
+  flex-shrink: 0; overflow: hidden;
+}
+.picker-ex-thumb-placeholder {
+  display: flex; align-items: center; justify-content: center;
+  background: #e5eeff;
+}
+.picker-ex-thumb-emoji { font-size: 48rpx; line-height: 1; }
+
 .picker-ex-body {
   display: flex; justify-content: space-between; align-items: center; gap: 12rpx;
+  flex: 1; min-width: 0;
 }
 .picker-ex-left {
   display: flex; flex-direction: column; gap: 8rpx; flex: 1; min-width: 0;
@@ -745,6 +759,18 @@
   display: flex; align-items: center; justify-content: center;
   line-height: 1;
   box-shadow: 0 4rpx 12rpx rgba(34,197,94,0.25);
+}
+
+/* 已添加状态 */
+.picker-ex-card-added {
+  opacity: 0.55; background: #f1f5f9;
+}
+.picker-ex-added {
+  width: 44rpx; height: 44rpx; border-radius: 50%;
+  background: var(--color-primary); flex-shrink: 0;
+  color: #fff; font-size: 24rpx; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  line-height: 1;
 }
 
 .picker-ex-empty {

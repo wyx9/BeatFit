@@ -129,6 +129,9 @@ Page({
       this.loadPickerExercises(this.data.activePickerPart)
       return
     }
+    // 获取当前分类已添加的动作名
+    const activeCat = this.data.categories.find(c => c.key === this.data.activePart)
+    const addedNames = activeCat ? activeCat.exercises.map(ex => ex.name) : []
     const results = []
     const lower = keyword.toLowerCase()
     PART_KEYS.forEach(partKey => {
@@ -139,7 +142,8 @@ Page({
             ...ex,
             emoji: ex.emoji || PART_EMOJI[partKey] || '🏋️',
             _part: PART_NAMES[partKey] || partKey,
-            _partKey: partKey
+            _partKey: partKey,
+            _added: addedNames.includes(ex.name)
           })
         }
       })
@@ -160,9 +164,13 @@ Page({
   },
 
   loadPickerExercises(partKey) {
+    // 获取当前分类已添加的动作名
+    const activeCat = this.data.categories.find(c => c.key === this.data.activePart)
+    const addedNames = activeCat ? activeCat.exercises.map(ex => ex.name) : []
     const list = (EXERCISE_LIBRARY[partKey] || []).map(ex => ({
       ...ex,
-      emoji: ex.emoji || PART_EMOJI[partKey] || '🏋️'
+      emoji: ex.emoji || PART_EMOJI[partKey] || '🏋️',
+      _added: addedNames.includes(ex.name)
     }))
     this.setData({ pickerExercises: list })
   },

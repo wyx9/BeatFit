@@ -85,9 +85,6 @@
   <!-- 动作选择器弹窗 -->
   <view class="modal-mask" wx:if="{{showPicker}}" bindtap="onHidePicker">
     <view class="modal-card" catchtap="noop">
-      <!-- 拖拽指示条 -->
-      <view class="modal-drag-bar"></view>
-
       <view class="modal-header">
         <text class="modal-title">选择动作</text>
         <text class="modal-subtitle">{{isSearching ? '全库搜索' : activePickerPartName}} · {{pickerExercises.length}}个动作</text>
@@ -127,14 +124,21 @@
       <!-- 动作卡片列表 -->
       <scroll-view class="picker-list" scroll-y enhanced show-scrollbar="{{false}}">
         <view
-          class="picker-card"
+          class="picker-card {{item._added ? 'picker-card-added' : ''}}"
           wx:for="{{pickerExercises}}"
           wx:key="name"
-          bindtap="onSelectExercise"
+          bindtap="{{item._added ? '' : 'onSelectExercise'}}"
           data-name="{{item.name}}"
           data-partkey="{{item._partKey}}"
-          hover-class="picker-card-hover"
+          hover-class="{{item._added ? '' : 'picker-card-hover'}}"
         >
+          <!-- 左侧缩略图 -->
+          <image wx:if="{{item.image}}" class="picker-card-thumb" src="{{item.image}}" mode="aspectFill" />
+          <view wx:else class="picker-card-thumb picker-card-thumb-placeholder">
+            <text class="picker-card-thumb-emoji">{{item.emoji || '🏋️'}}</text>
+          </view>
+
+          <!-- 右侧信息 -->
           <view class="picker-card-body">
             <view class="picker-card-left">
               <view class="picker-card-header-row">
@@ -148,7 +152,9 @@
                 <text class="param-chip">{{item.duration_sec}}s / {{item.rest_sec}}s</text>
               </view>
             </view>
-            <text class="picker-card-add">＋</text>
+            <!-- 添加/已添加按钮 -->
+            <view wx:if="{{item._added}}" class="picker-card-added-icon">✓</view>
+            <text wx:else class="picker-card-add">＋</text>
           </view>
         </view>
 

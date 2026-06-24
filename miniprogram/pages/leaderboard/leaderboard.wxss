@@ -1,5 +1,14 @@
 /* ===== 排行榜页面样式 - 1:1 还原 _1/code.html ===== */
 
+/* Page fade-in for smooth tab transitions */
+.page {
+  animation: pageFadeIn 0.2s ease both;
+}
+@keyframes pageFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 /* === Top AppBar === */
 .header {
   position: fixed;
@@ -401,9 +410,11 @@
   width: 100%;
   z-index: 50;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
-  padding: 32rpx 32rpx calc(64rpx + env(safe-area-inset-bottom));
+  gap: 160rpx;
+  padding: 24rpx 40rpx calc(56rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
@@ -416,7 +427,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 12rpx 48rpx;
+  padding: 8rpx 16rpx;
   color: #454747;
   transition: all 0.2s;
 }

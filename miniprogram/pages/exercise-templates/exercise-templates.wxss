@@ -1,23 +1,23 @@
 /* ===== 模板管理页（动作库） ===== */
 
-/* === Header === */
-.header {
-  position: fixed; top: 0; width: 100%; z-index: 50;
-  background: rgba(248,249,255,0.95);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+/* Page fade-in for smooth tab transitions */
+.page {
+  animation: pageFadeIn 0.2s ease both;
 }
-.header-inner {
-  display: flex; justify-content: space-between; align-items: center;
-  height: 88rpx; padding: 0 40rpx;
+@keyframes pageFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
-.header-left { display: flex; align-items: center; gap: 24rpx; }
-.header-back { width: 48rpx; height: 48rpx; }
-.header-title { font-size: 36rpx; font-weight: 700; color: #0b1c30; }
+
+/* === Page Title === */
+.page-title {
+  font-size: 44rpx; font-weight: 700; color: #0b1c30;
+  margin-bottom: 40rpx; padding-left: 4rpx;
+}
 
 /* === Main === */
 .main {
-  padding-top: 148rpx; padding-bottom: 200rpx;
+  padding-top: 60rpx; padding-bottom: 200rpx;
   padding-left: 40rpx; padding-right: 40rpx;
   max-width: 900rpx; margin: 0 auto;
 }
@@ -42,9 +42,9 @@
 /* === Template Cards === */
 .tpl-grid { display: flex; flex-direction: column; gap: 24rpx; }
 .tpl-card {
-  background: #fff; border: 2rpx solid #e5eeff;
-  border-radius: 32rpx; padding: 32rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.03);
+  background: #fff; border: 2rpx solid #f3f4f6;
+  border-radius: 64rpx; padding: 48rpx;
+  box-shadow: 0 8rpx 40rpx rgba(0,0,0,0.05);
 }
 .tpl-card-top {
   display: flex; justify-content: space-between; align-items: center;
@@ -88,8 +88,8 @@
 /* === New Button === */
 .btn-new {
   width: 100%; height: 112rpx; background: var(--color-primary);
-  border-radius: 48rpx; display: flex; align-items: center; justify-content: center;
-  gap: 12rpx; box-shadow: 0 8rpx 32rpx rgba(34,197,94,0.25);
+  border-radius: 9999rpx; display: flex; align-items: center; justify-content: center;
+  gap: 12rpx; box-shadow: 0 8rpx 30rpx rgba(34,197,94,0.3);
 }
 .btn-new-pressed { transform: scale(0.98); opacity: 0.9; }
 .btn-new-icon { font-size: 40rpx; font-weight: 300; color: #fff; }
@@ -103,9 +103,11 @@
   width: 100%;
   z-index: 50;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
-  padding: 32rpx 32rpx calc(64rpx + env(safe-area-inset-bottom));
+  gap: 160rpx;
+  padding: 24rpx 40rpx calc(56rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
@@ -118,7 +120,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 12rpx 48rpx;
+  padding: 8rpx 16rpx;
   color: #454747;
   transition: all 0.2s;
 }
