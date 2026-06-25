@@ -176,6 +176,14 @@ function reportWorkout(roomId, minutes, kcal, count) {
   })
 }
 
+// 获取动作图片完整 URL
+// filename: exercises.js 中 image 字段值，如 'back_lat_pulldown.webp'
+// 返回: 完整 URL 如 'http://192.168.1.23:8080/static/exercises/back_lat_pulldown.webp'
+function getExerciseImageUrl(filename) {
+  if (!filename) return ''
+  return getBaseUrl() + '/static/exercises/' + filename
+}
+
 // ===== WebSocket 连接 =====
 
 function connectWS(path, onMessage) {
@@ -232,6 +240,7 @@ module.exports = {
   getProfile,
   updateProfile,
   getWorkoutHistory,
+  getExerciseImageUrl,
   connectWS,
   closeWS
 }

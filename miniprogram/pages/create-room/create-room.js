@@ -140,6 +140,7 @@ Page({
         if (ex.name.toLowerCase().includes(lower)) {
           results.push({
             ...ex,
+            image: ex.image ? api.getExerciseImageUrl(ex.image) : '',
             emoji: ex.emoji || PART_EMOJI[partKey] || '🏋️',
             _part: PART_NAMES[partKey] || partKey,
             _partKey: partKey,
@@ -169,6 +170,7 @@ Page({
     const addedNames = activeCat ? activeCat.exercises.map(ex => ex.name) : []
     const list = (EXERCISE_LIBRARY[partKey] || []).map(ex => ({
       ...ex,
+      image: ex.image ? api.getExerciseImageUrl(ex.image) : '',
       emoji: ex.emoji || PART_EMOJI[partKey] || '🏋️',
       _added: addedNames.includes(ex.name)
     }))
@@ -304,7 +306,8 @@ Page({
     }
     const exercises = activeCat.exercises.map(ex => ({
       category: activeCat.name, name: ex.name, tag: ex.tag,
-      sets: ex.sets, reps: ex.reps, duration_sec: ex.duration_sec, rest_sec: ex.rest_sec
+      sets: ex.sets, reps: ex.reps, duration_sec: ex.duration_sec, rest_sec: ex.rest_sec,
+        image: ex.image
     }))
 
     this.setData({ creating: true })

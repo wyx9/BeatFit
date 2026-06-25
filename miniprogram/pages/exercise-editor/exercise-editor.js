@@ -1,6 +1,7 @@
 // ===== 模板编辑页 =====
 // 模式: 新建(无tplId) / 编辑(用户tplId) / 只读(preset_前缀tplId)
 
+const api = require('../../utils/api')
 const exerciseUtils = require('../../utils/exercise-utils')
 const EXERCISE_CONFIG = require('../../config/exercises')
 
@@ -111,6 +112,7 @@ Page({
         if (ex.name.toLowerCase().includes(lower)) {
           results.push({
             ...ex,
+            image: ex.image ? api.getExerciseImageUrl(ex.image) : '',
             emoji: ex.emoji || PART_EMOJI[partKey] || '🏋️',
             _part: PART_NAMES[partKey] || partKey,
             _partKey: partKey,
@@ -143,6 +145,7 @@ Page({
     const addedNames = this.data.exercises.map(e => e.name)
     const list = (EXERCISE_CONFIG[partKey] || []).map(ex => ({
       ...ex,
+      image: ex.image ? api.getExerciseImageUrl(ex.image) : '',
       emoji: ex.emoji || PART_EMOJI[partKey] || '🏋️',
       _added: addedNames.includes(ex.name)
     }))

@@ -45,6 +45,15 @@
   position: absolute; inset: 0; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
 }
+/* 阶段切换脉冲 */
+.timer-ring.ring-pulse {
+  animation: ringPulse 0.25s ease;
+}
+@keyframes ringPulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
 /* 中间挖空 → 形成圆环效果 */
 .timer-ring-hole {
   position: absolute;
@@ -88,8 +97,8 @@
   border-radius: 9999rpx; overflow: hidden;
 }
 .total-progress-fill {
-  height: 100%; background: #22c55e; border-radius: 9999rpx;
-  transition: width 0.5s ease;
+  height: 100%; border-radius: 9999rpx;
+  transition: width 0.3s ease;
 }
 /* === Current Exercise Card === */
 .exercise-card {
@@ -163,18 +172,6 @@
 .controls {
   display: flex; gap: 32rpx; margin-top: 64rpx;
 }
-.btn-pause {
-  flex: 1; height: 112rpx; background: #e5eeff;
-  border-radius: 9999rpx; display: flex; align-items: center;
-  justify-content: center; gap: 16rpx;
-  font-size: 32rpx; font-weight: 700; color: #0b1c30;
-  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.04);
-  transition: all 0.2s;
-}
-.btn-pause-pressed { transform: scale(0.95); background: #dce9ff; }
-.btn-pause-icon { width: 40rpx; height: 40rpx; }
-.btn-pause-text { font-size: 32rpx; font-weight: 700; color: #0b1c30; }
-
 .btn-stop {
   flex: 1; height: 112rpx; background: #22c55e;
   border-radius: 9999rpx; display: flex; align-items: center;

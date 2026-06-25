@@ -20,7 +20,7 @@
     <!-- Timer Section: conic-gradient 圆环进度 -->
     <view class="timer-section">
       <view class="timer-ring-wrap">
-        <view class="timer-ring" style="background: conic-gradient(#22c55e 0deg {{ringDeg}}deg, #e5eeff {{ringDeg}}deg 360deg);">
+        <view class="timer-ring {{ringPulse ? 'ring-pulse' : ''}}" style="background: conic-gradient(#22c55e 0deg {{ringDeg}}deg, #e5eeff {{ringDeg}}deg 360deg);">
           <view class="timer-ring-hole">
             <text class="timer-time">{{displayTime}}</text>
             <text class="timer-phase">{{isPaused ? '已暂停' : phaseLabel}}</text>
@@ -36,7 +36,7 @@
         <text class="total-time-value">{{totalDisplayTime}}</text>
       </view>
       <view class="total-progress-track">
-        <view class="total-progress-fill" style="width: {{totalProgress}}%;"></view>
+        <view class="total-progress-fill" style="width: {{totalProgress}}%; background: linear-gradient(90deg, #22c55e, #4ade80);"></view>
       </view>
     </view>
 
@@ -80,13 +80,9 @@
 
     <!-- 操作按钮 -->
     <view class="controls">
-      <view class="btn-pause" hover-class="btn-pause-pressed" bindtap="togglePause">
-        <image class="btn-pause-icon" src="/images/icon-{{isPaused ? 'play-arrow' : 'pause'}}.svg" mode="aspectFit" />
-        <text class="btn-pause-text">{{isPaused ? '继续' : '暂停'}}</text>
-      </view>
       <view class="btn-stop" hover-class="btn-stop-pressed" bindtap="handleStop">
         <image class="btn-stop-icon" src="/images/icon-stop.svg" mode="aspectFit" />
-        <text class="btn-stop-text">结束</text>
+        <text class="btn-stop-text">结束训练</text>
       </view>
     </view>
   </view>

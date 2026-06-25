@@ -91,6 +91,9 @@ func main() {
 	// 7. 创建路由
 	r := gin.Default()
 
+	// 动作图片静态文件服务（公开访问）
+	r.Static("/static/exercises", "./static/exercises")
+
 	r.GET("/health", func(c *gin.Context) {
 		healthy := true
 		details := gin.H{}

@@ -27,6 +27,7 @@ Page({
     totalPhaseSec: 30,
 
     ringDeg: 0,
+    ringPulse: false,
     totalDisplayTime: '00:00',
     totalProgress: 0,
 
@@ -175,7 +176,7 @@ Page({
     const nextEx = exIndex + 1 < list.length ? list[exIndex + 1] : null
     this.setData({
       exIndex, currentSet: setNum,
-      currentExercise: { name: ex.name, currentSet: setNum, totalSets: ex.sets || 4, targetReps: ex.reps, currentReps: 0, image: ex.image || '' },
+      currentExercise: { name: ex.name, currentSet: setNum, totalSets: ex.sets || 4, targetReps: ex.reps, currentReps: 0, image: ex.image ? api.getExerciseImageUrl(ex.image) : '' },
       nextExercise: nextEx ? { name: nextEx.name, duration: Math.ceil(nextEx.duration_sec / 60) } : null,
       phase: 'exercise', phaseLabel: '动作中',
       countdownSec: ex.duration_sec || 30, totalPhaseSec: ex.duration_sec || 30,
@@ -196,16 +197,17 @@ Page({
 
       const now = Date.now()
       const phaseElapsedMs = now - this.data.phaseStartTime - this.data.phasePauseMs
-      const remainingSec = this.data.totalPhaseSec - Math.floor(phaseElapsedMs / 1000)
+      const remainingMs = this.data.totalPhaseSec * 1000 - phaseElapsedMs
 
-      if (remainingSec < 0) {
+      if (remainingMs <= 0) {
         this.nextPhase()
         return
       }
 
       const totalElapsedMs = now - this.data.trainingStartTime - this.data.totalPauseMs
       const totalElapsedSec = Math.floor(totalElapsedMs / 1000)
-      const ratio = 1 - (remainingSec / Math.max(this.data.totalPhaseSec, 1))
+      const remainingSec = Math.ceil(remainingMs / 1000)
+      const ratio = phaseElapsedMs / (this.data.totalPhaseSec * 1000)
       const ringDeg = Math.round(ratio * 360)
       const totalRatio = this.data.totalPlanSec > 0 ? totalElapsedSec / this.data.totalPlanSec : 0
 
@@ -220,7 +222,7 @@ Page({
     }
     // 首次 tick 立即执行（无延迟），消除启动空白
     update()
-    this.setData({ timerInterval: setInterval(update, 1000) })
+    this.setData({ timerInterval: setInterval(update, 100) })
   },
 
   // —— 阶段切换：累加热量，直接进入下一阶段 ——
@@ -267,7 +269,8 @@ Page({
   // 阶段开始前的通用准备（重置计时基准）
   beforeNextPhase() {
     const now = Date.now()
-    this.setData({ phaseStartTime: now, phasePauseMs: 0 })
+    this.setData({ phaseStartTime: now, phasePauseMs: 0, ringPulse: true })
+    setTimeout(() => { this.setData({ ringPulse: false }) }, 300)
     this.startCountdown()
   },
 
@@ -302,8 +305,22 @@ Page({
 
   handleStop() {
     wx.showModal({
-      title: '结束训练', content: '确定要结束本次训练吗？',
-      success: (res) => { if (res.confirm) { this.clearTimer(); wx.navigateBack() } }
+      title: '结束训练', content: '确定要结束本次训练吗？已完成的训练数据会被保存。',
+      success: (res) => {
+        if (res.confirm) {
+          this.clearTimer()
+          // 上报已完成的训练数据 + 解散房间
+          const app = getApp()
+          const roomId = (app.globalData && app.globalData.currentRoom && app.globalData.currentRoom.id)
+          if (roomId) {
+            const elapsed = this.data.totalElapsedSec
+            const kcal = Math.round(this.data.totalKcal)
+            api.reportWorkout(roomId, Math.ceil(elapsed / 60), kcal, this.data.exerciseList.length).catch(() => {})
+            api.dissolveRoom(roomId).catch(() => {})
+          }
+          wx.redirectTo({ url: '/pages/lobby/lobby' })
+        }
+      }
     })
   },
 
