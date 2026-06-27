@@ -1,6 +1,5 @@
 // ===== 模板管理页（动作库） =====
 
-const api = require('../../utils/api')
 const exerciseUtils = require('../../utils/exercise-utils')
 const features = require('../../config/features')
 
@@ -19,12 +18,8 @@ Page({
 
   refresh() {
     const all = exerciseUtils.getAllTemplates()
-    const presets = all.filter(t => t.preset === true).map(t => ({
-      ...t, exercises: api.resolveExerciseImages(t.exercises)
-    }))
-    const userTemplates = all.filter(t => t.preset !== true).map(t => ({
-      ...t, exercises: api.resolveExerciseImages(t.exercises)
-    }))
+    const presets = all.filter(t => t.preset === true)
+    const userTemplates = all.filter(t => t.preset !== true)
     this.setData({ presets, userTemplates })
   },
 

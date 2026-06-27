@@ -89,7 +89,7 @@
 
 .card-inputs { display: flex; gap: 20rpx; }
 .card-field { flex: 1; display: flex; flex-direction: column; gap: 6rpx; }
-.field-label { font-size: 22rpx; font-weight: 500; color: #3d4a3d; }
+.field-label { font-size: 22rpx; font-weight: 500; color: #3d4a3d; white-space: nowrap; line-height: 1.4; min-height: 32rpx; }
 .field-input {
   width: 100%; height: 72rpx; background: #e5eeff;
   border: none; border-radius: 20rpx; text-align: center;

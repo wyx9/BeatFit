@@ -342,6 +342,9 @@
   font-size: 22rpx;
   font-weight: 500;
   color: #3d4a3d;
+  white-space: nowrap;
+  line-height: 1.4;
+  min-height: 32rpx;
 }
 
 .workout-input {
