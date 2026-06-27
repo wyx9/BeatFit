@@ -17,14 +17,15 @@ const PART_KEYS = Object.keys(PART_NAMES)
 // 从配置库取前两个动作作为默认展示
 function buildDefaults(key) {
   const list = EXERCISE_LIBRARY[key] || []
-  return list.slice(0, 2).map(ex => ({ ...ex }))
+  return list.slice(0, 2).map(ex => api.resolveExerciseImage({ ...ex }))
 }
 
 // 从配置库取动作完整默认值
 function buildExercise(name, catKey) {
   const list = EXERCISE_LIBRARY[catKey] || []
   const found = list.find(ex => ex.name === name)
-  return found ? { ...found } : { name: name, tag: '力量', sets: 4, reps: 12, duration_sec: 30, rest_sec: 60 }
+  const base = found ? { ...found } : { name: name, tag: '力量', sets: 4, reps: 12, duration_sec: 30, rest_sec: 60 }
+  return api.resolveExerciseImage(base)
 }
 
 Page({
@@ -196,7 +197,7 @@ Page({
       }
       categories[catIdx] = {
         ...categories[catIdx],
-        exercises: [...categories[catIdx].exercises, { ...found }]
+        exercises: [...categories[catIdx].exercises, api.resolveExerciseImage({ ...found })]
       }
     } else {
       categories.push({
@@ -254,7 +255,7 @@ Page({
     const activePart = this.data.activePart
     const categories = this.data.categories
     const catIdx = categories.findIndex(c => c.key === activePart)
-    const cloned = tpl.exercises.map(ex => ({ ...ex }))
+    const cloned = api.resolveExerciseImages(tpl.exercises.map(ex => ({ ...ex })))
 
     if (catIdx >= 0) {
       categories[catIdx].exercises = cloned

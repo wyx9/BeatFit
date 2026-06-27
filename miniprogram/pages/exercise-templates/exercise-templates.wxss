@@ -57,8 +57,21 @@
 
 .tpl-card-tags { display: flex; flex-wrap: wrap; gap: 12rpx; }
 .tpl-tag {
+  display: inline-flex; align-items: center; gap: 8rpx;
   font-size: 22rpx; font-weight: 500; color: #565e74;
-  background: #f1f5f9; padding: 6rpx 20rpx; border-radius: 9999rpx;
+  background: #f1f5f9;
+  padding: 4rpx 18rpx 4rpx 6rpx;
+  border-radius: 9999rpx;
+  line-height: 1;
+}
+.tpl-tag-thumb {
+  width: 36rpx; height: 36rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.tpl-tag-thumb-placeholder {
+  background: #dce9ff;
 }
 
 /* === User Template Card Extra === */

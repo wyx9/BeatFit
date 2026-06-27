@@ -15,7 +15,11 @@
             <text class="tpl-card-arrow">→</text>
           </view>
           <view class="tpl-card-tags">
-            <text class="tpl-tag" wx:for="{{item.exercises}}" wx:for-item="ex" wx:key="name">{{ex.name}}</text>
+            <view class="tpl-tag" wx:for="{{item.exercises}}" wx:for-item="ex" wx:key="name">
+              <image wx:if="{{ex.imageUrl}}" class="tpl-tag-thumb" src="{{ex.imageUrl}}" mode="aspectFill" />
+              <view wx:else class="tpl-tag-thumb tpl-tag-thumb-placeholder"></view>
+              <text>{{ex.name}}</text>
+            </view>
           </view>
         </view>
       </view>
@@ -42,7 +46,11 @@
             <text class="tpl-card-arrow">→</text>
           </view>
           <view class="tpl-card-tags">
-            <text class="tpl-tag" wx:for="{{item.exercises}}" wx:for-item="ex" wx:key="name">{{ex.name}}</text>
+            <view class="tpl-tag" wx:for="{{item.exercises}}" wx:for-item="ex" wx:key="name">
+              <image wx:if="{{ex.imageUrl}}" class="tpl-tag-thumb" src="{{ex.imageUrl}}" mode="aspectFill" />
+              <view wx:else class="tpl-tag-thumb tpl-tag-thumb-placeholder"></view>
+              <text>{{ex.name}}</text>
+            </view>
           </view>
           <view class="tpl-card-actions">
             <text class="action-delete" bindtap="onDeleteTemplate" data-id="{{item.id}}">删除</text>

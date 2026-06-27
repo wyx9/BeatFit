@@ -72,12 +72,28 @@
   border-bottom: 1rpx solid rgba(226,232,240,0.4);
 }
 .ex-row {
-  display: flex; justify-content: space-between; align-items: center;
+  display: flex; align-items: center; gap: 20rpx;
   padding: 20rpx 0;
   border-bottom: 1rpx solid rgba(226,232,240,0.2);
 }
 .ex-row:last-child { border-bottom: none; }
-.ex-left { display: flex; align-items: center; gap: 16rpx; }
+
+.ex-thumb {
+  width: 80rpx; height: 80rpx;
+  border-radius: 16rpx;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.ex-thumb-placeholder {
+  display: flex; align-items: center; justify-content: center;
+  background: #e5eeff;
+}
+
+.ex-thumb-emoji { font-size: 36rpx; line-height: 1; }
+
+.ex-left { display: flex; align-items: center; gap: 16rpx; flex: 1; }
+.ex-detail { font-size: 22rpx; color: #94a3b8; flex-shrink: 0; }
 .ex-name { font-size: 28rpx; font-weight: 600; color: #131313; }
 .ex-tag {
   font-size: 20rpx; font-weight: 700; color: var(--color-primary);

@@ -49,7 +49,7 @@ Page({
         this.setData({
           tplId: tpl.id,
           tplName: tpl.name,
-          exercises: tpl.exercises.map(ex => ({ ...ex })),
+          exercises: tpl.exercises.map(ex => api.resolveExerciseImage({ ...ex })),
           readonly
         })
         return
@@ -159,14 +159,15 @@ Page({
     const list = EXERCISE_CONFIG[partKey] || []
     const found = list.find(ex => ex.name === name)
     if (found) {
-      const exercises = [...this.data.exercises, {
+      const exercises = [...this.data.exercises, api.resolveExerciseImage({
         name: found.name,
         tag: found.tag,
         sets: found.sets,
         reps: found.reps,
         duration_sec: found.duration_sec,
-        rest_sec: found.rest_sec
-      }]
+        rest_sec: found.rest_sec,
+        image: found.image
+      })]
       this.setData({ exercises, showPicker: false, pickerSearch: '', isSearching: false })
     }
   },

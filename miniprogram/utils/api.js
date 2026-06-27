@@ -3,7 +3,7 @@
 // 后端服务地址（自动适配模拟器和真机）
 // 模拟器用 127.0.0.1，真机用电脑局域网 IP
 // ★ IP 地址从 DHCP 动态分配，如果变了需要改这里的 DEVICE_IP
-const DEVICE_IP = '192.168.1.23'  // ← PC 局域网 IP（用 ipconfig 查看）
+const DEVICE_IP = '192.168.1.12'  // ← PC 局域网 IP（用 ipconfig 查看）
 
 function getBaseUrl() {
   const platform = wx.getSystemInfoSync().platform
@@ -181,7 +181,19 @@ function reportWorkout(roomId, minutes, kcal, count) {
 // 返回: 完整 URL 如 'http://192.168.1.23:8080/static/exercises/back_lat_pulldown.webp'
 function getExerciseImageUrl(filename) {
   if (!filename) return ''
-  return getBaseUrl() + '/static/exercises/' + filename
+  return getBaseUrl() + '/static/exercises/' + encodeURIComponent(filename)
+}
+
+// 为单个动作对象解析图片 URL，返回附加 imageUrl 字段的新对象
+function resolveExerciseImage(ex) {
+  if (!ex) return ex
+  return Object.assign({}, ex, { imageUrl: ex.image ? getExerciseImageUrl(ex.image) : '' })
+}
+
+// 批量解析动作图片 URL
+function resolveExerciseImages(exercises) {
+  if (!exercises || !exercises.length) return exercises || []
+  return exercises.map(function(ex) { return resolveExerciseImage(ex) })
 }
 
 // ===== WebSocket 连接 =====
@@ -241,6 +253,8 @@ module.exports = {
   updateProfile,
   getWorkoutHistory,
   getExerciseImageUrl,
+  resolveExerciseImage,
+  resolveExerciseImages,
   connectWS,
   closeWS
 }

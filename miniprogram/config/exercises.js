@@ -44,9 +44,9 @@ const EXERCISE_LIBRARY = {
   'back': [
     // --- 原有 ---
     { name: '高位下拉',     tag: '力量', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: '高位下拉.png' },
-    { name: '引体向上',     tag: '力量', sets: 2, reps: 10, duration_sec: 5, rest_sec: 5, image: 'back_pull_up.webp' },
-    { name: '坐姿划船',     tag: '力量', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: 'back_seated_row.webp' },
-    { name: '杠铃划船',     tag: '力量', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: 'back_barbell_row.webp' },
+    { name: '引体向上',     tag: '力量', sets: 2, reps: 10, duration_sec: 5, rest_sec: 5, image: '引体向上.png' },
+    { name: '坐姿划船',     tag: '力量', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: '坐姿划船.png' },
+    { name: '杠铃划船',     tag: '力量', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: '杠铃划船.png' },
     { name: '硬拉',         tag: '复合', sets: 2, reps: 5,  duration_sec: 5, rest_sec: 5, image: 'back_deadlift.webp' },
     { name: 'T杆划船',     tag: '力量', sets: 2, reps: 10, duration_sec: 5, rest_sec: 5, image: 'back_t_bar_row.webp' },
     // --- 新增 ---
@@ -71,14 +71,14 @@ const EXERCISE_LIBRARY = {
   // ========== 胸部 (17个) ==========
   'chest': [
     // --- 原有 ---
-    { name: '平板卧推',     tag: '力量', sets: 2, reps: 10, duration_sec: 5, rest_sec: 5, image: 'chest_bench_press.webp' },
+    { name: '平板卧推',     tag: '力量', sets: 2, reps: 10, duration_sec: 5, rest_sec: 5, image: '平板卧推.png' },
     { name: '哑铃飞鸟',     tag: '塑形', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: 'chest_dumbbell_fly.webp' },
-    { name: '上斜哑铃卧推', tag: '肥大', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: 'chest_incline_dumbbell_press.webp' },
+    { name: '上斜哑铃卧推', tag: '肥大', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: '上斜哑铃卧推.png' },
     { name: '双杠臂屈伸',   tag: '力量', sets: 2, reps: 10, duration_sec: 5, rest_sec: 5, image: 'chest_dips.webp' },
-    { name: '蝴蝶机夹胸',   tag: '塑形', sets: 2, reps: 15, duration_sec: 5, rest_sec: 5, image: 'chest_pec_deck.webp' },
+    { name: '蝴蝶机夹胸',   tag: '塑形', sets: 2, reps: 15, duration_sec: 5, rest_sec: 5, image: '蝴蝶机夹胸.png' },
     { name: '俯卧撑',       tag: '耐力', sets: 2, reps: 20, duration_sec: 5, rest_sec: 5, image: 'chest_push_up.webp' },
     // --- 新增 ---
-    { name: '上斜杠铃卧推', tag: '力量', sets: 2, reps: 10, duration_sec: 5, rest_sec: 5, image: 'chest_incline_barbell_press.webp' },
+    { name: '上斜杠铃卧推', tag: '力量', sets: 2, reps: 10, duration_sec: 5, rest_sec: 5, image: '上斜杠铃卧推.png' },
     { name: '下斜卧推',     tag: '力量', sets: 2, reps: 10, duration_sec: 5, rest_sec: 5, image: 'chest_decline_press.webp' },
     { name: '哑铃卧推',     tag: '力量', sets: 2, reps: 10, duration_sec: 5, rest_sec: 5, image: 'chest_dumbbell_press.webp' },
     { name: '高位绳索夹胸', tag: '塑形', sets: 2, reps: 15, duration_sec: 5, rest_sec: 5, image: 'chest_high_cable_fly.webp' },
@@ -94,15 +94,15 @@ const EXERCISE_LIBRARY = {
   // ========== 腿部 (17个) ==========
   'legs': [
     // --- 原有 ---
-    { name: '深蹲',         tag: '复合', sets: 2, reps: 8,  duration_sec: 5, rest_sec: 5, image: 'legs_squat.webp' },
-    { name: '箭步蹲',       tag: '复合', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: 'legs_lunge.webp' },
+    { name: '深蹲',         tag: '复合', sets: 2, reps: 8,  duration_sec: 5, rest_sec: 5, image: '深蹲.png' },
+    { name: '箭步蹲',       tag: '复合', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: '箭步蹲.png' },
     { name: '腿举',         tag: '力量', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: 'legs_leg_press.webp' },
     { name: '罗马尼亚硬拉', tag: '力量', sets: 2, reps: 10, duration_sec: 5, rest_sec: 5, image: 'legs_romanian_deadlift.webp' },
     { name: '腿弯举',       tag: '塑形', sets: 2, reps: 15, duration_sec: 5, rest_sec: 5, image: 'legs_leg_curl.webp' },
     { name: '提踵',         tag: '塑形', sets: 2, reps: 20, duration_sec: 5, rest_sec: 5, image: 'legs_calf_raise.webp' },
     // --- 新增 ---
     { name: '保加利亚分腿蹲', tag: '复合', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: 'legs_bulgarian_split_squat.webp' },
-    { name: '腿屈伸',       tag: '塑形', sets: 2, reps: 15, duration_sec: 5, rest_sec: 5, image: 'legs_leg_extension.webp' },
+    { name: '腿屈伸',       tag: '塑形', sets: 2, reps: 15, duration_sec: 5, rest_sec: 5, image: '腿屈伸.png' },
     { name: '俯卧腿弯举',   tag: '塑形', sets: 2, reps: 15, duration_sec: 5, rest_sec: 5, image: 'legs_lying_leg_curl.webp' },
     { name: '臀推',         tag: '力量', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: 'legs_hip_thrust.webp' },
     { name: '哈克深蹲',     tag: '力量', sets: 2, reps: 10, duration_sec: 5, rest_sec: 5, image: 'legs_hack_squat.webp' },
@@ -117,12 +117,12 @@ const EXERCISE_LIBRARY = {
   // ========== 肩部 (17个) ==========
   'shoulder': [
     // --- 原有 ---
-    { name: '杠铃推举',     tag: '力量', sets: 2, reps: 10, duration_sec: 5, rest_sec: 5, image: 'shoulder_barbell_press.webp' },
+    { name: '杠铃推举',     tag: '力量', sets: 2, reps: 10, duration_sec: 5, rest_sec: 5, image: '杠铃推举.png' },
     { name: '哑铃侧平举',   tag: '塑形', sets: 2, reps: 15, duration_sec: 5, rest_sec: 5, image: '侧平举.png' },
     { name: '阿诺德推举',   tag: '肥大', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: 'shoulder_arnold_press.webp' },
-    { name: '面拉',         tag: '康复', sets: 2, reps: 15, duration_sec: 5, rest_sec: 5, image: 'shoulder_face_pull.webp' },
-    { name: '前平举',       tag: '塑形', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: 'shoulder_front_raise.webp' },
-    { name: '俯身飞鸟',     tag: '塑形', sets: 2, reps: 15, duration_sec: 5, rest_sec: 5, image: 'shoulder_bent_over_fly.webp' },
+    { name: '面拉',         tag: '康复', sets: 2, reps: 15, duration_sec: 5, rest_sec: 5, image: '面拉.png' },
+    { name: '前平举',       tag: '塑形', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: '前平举.png' },
+    { name: '俯身飞鸟',     tag: '塑形', sets: 2, reps: 15, duration_sec: 5, rest_sec: 5, image: '俯身飞鸟.png' },
     // --- 新增 ---
     { name: '坐姿哑铃推举', tag: '力量', sets: 2, reps: 10, duration_sec: 5, rest_sec: 5, image: 'shoulder_seated_dumbbell_press.webp' },
     { name: '杠铃提拉',     tag: '力量', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: 'shoulder_barbell_upright_row.webp' },
@@ -140,14 +140,14 @@ const EXERCISE_LIBRARY = {
   // ========== 手臂 (17个) ==========
   'arms': [
     // --- 原有 ---
-    { name: '杠铃弯举',     tag: '肥大', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: 'arms_barbell_curl.webp' },
+    { name: '杠铃弯举',     tag: '肥大', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: '杠铃弯举.png' },
     { name: '绳索下压',     tag: '塑形', sets: 2, reps: 15, duration_sec: 5, rest_sec: 5, image: 'arms_tricep_pushdown.webp' },
-    { name: '锤式弯举',     tag: '肥大', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: 'arms_hammer_curl.webp' },
+    { name: '锤式弯举',     tag: '肥大', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: '锤式弯举.png' },
     { name: '窄距卧推',     tag: '力量', sets: 2, reps: 10, duration_sec: 5, rest_sec: 5, image: 'arms_close_grip_bench_press.webp' },
     { name: '集中弯举',     tag: '塑形', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: 'arms_concentration_curl.webp' },
     { name: '臂屈伸',       tag: '力量', sets: 2, reps: 10, duration_sec: 5, rest_sec: 5, image: 'arms_tricep_dip.webp' },
     // --- 新增 ---
-    { name: '牧师凳弯举',   tag: '塑形', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: 'arms_preacher_curl.webp' },
+    { name: '牧师凳弯举',   tag: '塑形', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: '牧师凳弯举.png' },
     { name: '仰卧臂屈伸',   tag: '力量', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: 'arms_lying_tricep_extension.webp' },
     { name: '哑铃弯举',     tag: '肥大', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: 'arms_dumbbell_curl.webp' },
     { name: '颈后臂屈伸',   tag: '力量', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: 'arms_overhead_tricep_extension.webp' },
@@ -163,10 +163,10 @@ const EXERCISE_LIBRARY = {
   // ========== 核心 (17个) ==========
   'core': [
     // --- 原有 ---
-    { name: '平板支撑',     tag: '耐力', sets: 2, reps: 1,  duration_sec: 5, rest_sec: 5, image: 'core_plank.webp' },
+    { name: '平板支撑',     tag: '耐力', sets: 2, reps: 1,  duration_sec: 5, rest_sec: 5, image: '平板支撑.png' },
     { name: '卷腹',         tag: '塑形', sets: 2, reps: 20, duration_sec: 5, rest_sec: 5, image: 'core_crunch.webp' },
     { name: '俄罗斯转体',   tag: '塑形', sets: 2, reps: 20, duration_sec: 5, rest_sec: 5, image: 'core_russian_twist.webp' },
-    { name: '悬垂举腿',     tag: '力量', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: 'core_hanging_leg_raise.webp' },
+    { name: '悬垂举腿',     tag: '力量', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: '悬垂举腿.png' },
     { name: '仰卧起坐',     tag: '耐力', sets: 2, reps: 25, duration_sec: 5, rest_sec: 5, image: 'core_sit_up.webp' },
     { name: '死虫式',       tag: '康复', sets: 2, reps: 12, duration_sec: 5, rest_sec: 5, image: 'core_dead_bug.webp' },
     // --- 新增 ---

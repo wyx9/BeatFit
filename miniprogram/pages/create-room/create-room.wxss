@@ -270,6 +270,26 @@
   border-radius: 32rpx;
   padding: 40rpx;
   box-shadow: 0 2rpx 16rpx rgba(0, 0, 0, 0.04);
+  display: flex;
+  gap: 28rpx;
+}
+
+.workout-thumb {
+  width: 100rpx; height: 100rpx;
+  border-radius: 20rpx;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.workout-thumb-placeholder {
+  display: flex; align-items: center; justify-content: center;
+  background: #e5eeff;
+}
+
+.workout-thumb-emoji { font-size: 44rpx; line-height: 1; }
+
+.workout-card-body {
+  flex: 1; min-width: 0;
 }
 
 .workout-card-header {

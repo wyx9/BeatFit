@@ -40,19 +40,46 @@
   position: relative;
   width: 510rpx; height: 510rpx;
 }
-/* 圆环：conic-gradient 实现原生环状进度 */
-.timer-ring {
-  position: absolute; inset: 0; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-}
-/* 阶段切换脉冲 */
-.timer-ring.ring-pulse {
+/* 阶段切换脉冲（作用于整个圆环容器） */
+.timer-ring-wrap.ring-pulse {
   animation: ringPulse 0.25s ease;
 }
 @keyframes ringPulse {
   0%   { transform: scale(1); }
-  50%  { transform: scale(1.03); }
+  50%  { transform: scale(1.005); }
   100% { transform: scale(1); }
+}
+/* 底色圆环（灰色轨道） */
+.ring-base {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: #e5eeff;
+}
+/* 半圆裁剪容器 */
+.ring-clip {
+  position: absolute; top: 0; width: 50%; height: 100%;
+  overflow: hidden;
+}
+.ring-clip-right {
+  left: 50%;
+}
+.ring-clip-left {
+  left: 0;
+}
+/* 静态半圆：绿色 0-180° / 透明 180-360°，旋转驱动进度 */
+.ring-semi {
+  position: absolute; top: 0;
+  width: 200%; height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(#22c55e 180deg, transparent 180deg);
+  transition: transform 0.12s linear;
+}
+.ring-clip-right .ring-semi {
+  left: -100%;
+  transform-origin: 50% 50%;
+}
+.ring-clip-left .ring-semi {
+  left: 0;
+  transform-origin: 50% 50%;
 }
 /* 中间挖空 → 形成圆环效果 */
 .timer-ring-hole {

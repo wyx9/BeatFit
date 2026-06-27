@@ -69,18 +69,24 @@
             <!-- 动作卡片列表 -->
             <view class="workout-grid" wx:if="{{item.exercises.length > 0}}">
               <view class="workout-card" wx:for="{{item.exercises}}" wx:for-item="ex" wx:key="name">
-                <view class="workout-card-header">
-                  <view class="workout-name-wrap">
-                    <text class="workout-name">{{ex.name}}</text>
-                    <text class="workout-tag {{ex.tag === '力量' ? 'tag-strength' : ex.tag === '塑形' ? 'tag-shape' : ex.tag === '肥大' ? 'tag-hypertrophy' : ex.tag === '复合' ? 'tag-compound' : ex.tag === '耐力' ? 'tag-endurance' : 'tag-rehab'}}">{{ex.tag}}</text>
-                  </view>
-                  <image class="workout-close" src="/images/icon-close.svg" mode="aspectFit" bindtap="removeExercise" data-cat="{{item.key}}" data-name="{{ex.name}}" />
+                <image wx:if="{{ex.imageUrl}}" class="workout-thumb" src="{{ex.imageUrl}}" mode="aspectFill" />
+                <view wx:else class="workout-thumb workout-thumb-placeholder">
+                  <text class="workout-thumb-emoji">{{item.icon || '🏋️'}}</text>
                 </view>
-                <view class="workout-inputs">
-                  <view class="workout-field"><text class="workout-label">组数</text><input class="workout-input" type="number" value="{{ex.sets}}" /></view>
-                  <view class="workout-field"><text class="workout-label">次数</text><input class="workout-input" type="number" value="{{ex.reps}}" /></view>
-                  <view class="workout-field"><text class="workout-label">动作时长(秒)</text><input class="workout-input" type="number" value="{{ex.duration_sec}}" /></view>
-                  <view class="workout-field"><text class="workout-label">组间休息(秒)</text><input class="workout-input" type="number" value="{{ex.rest_sec}}" /></view>
+                <view class="workout-card-body">
+                  <view class="workout-card-header">
+                    <view class="workout-name-wrap">
+                      <text class="workout-name">{{ex.name}}</text>
+                      <text class="workout-tag {{ex.tag === '力量' ? 'tag-strength' : ex.tag === '塑形' ? 'tag-shape' : ex.tag === '肥大' ? 'tag-hypertrophy' : ex.tag === '复合' ? 'tag-compound' : ex.tag === '耐力' ? 'tag-endurance' : 'tag-rehab'}}">{{ex.tag}}</text>
+                    </view>
+                    <image class="workout-close" src="/images/icon-close.svg" mode="aspectFit" bindtap="removeExercise" data-cat="{{item.key}}" data-name="{{ex.name}}" />
+                  </view>
+                  <view class="workout-inputs">
+                    <view class="workout-field"><text class="workout-label">组数</text><input class="workout-input" type="number" value="{{ex.sets}}" /></view>
+                    <view class="workout-field"><text class="workout-label">次数</text><input class="workout-input" type="number" value="{{ex.reps}}" /></view>
+                    <view class="workout-field"><text class="workout-label">动作时长(秒)</text><input class="workout-input" type="number" value="{{ex.duration_sec}}" /></view>
+                    <view class="workout-field"><text class="workout-label">组间休息(秒)</text><input class="workout-input" type="number" value="{{ex.rest_sec}}" /></view>
+                  </view>
                 </view>
               </view>
             </view>

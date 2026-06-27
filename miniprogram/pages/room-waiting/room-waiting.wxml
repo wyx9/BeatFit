@@ -42,6 +42,10 @@
       <view class="category-block" wx:for="{{groupedExercises}}" wx:key="category">
         <text class="cat-name">{{item.category}}</text>
         <view class="ex-row" wx:for="{{item.exercises}}" wx:for-item="ex" wx:key="name">
+          <image wx:if="{{ex.imageUrl}}" class="ex-thumb" src="{{ex.imageUrl}}" mode="aspectFill" />
+          <view wx:else class="ex-thumb ex-thumb-placeholder">
+            <text class="ex-thumb-emoji">🏋️</text>
+          </view>
           <view class="ex-left">
             <text class="ex-name">{{ex.name}}</text>
             <text class="ex-tag">{{ex.tag}}</text>

@@ -26,7 +26,9 @@ Page({
     countdownSec: 30,
     totalPhaseSec: 30,
 
-    ringDeg: 0,
+    rightDeg: 180,
+    leftDeg: 0,
+    showLeft: false,
     ringPulse: false,
     totalDisplayTime: '00:00',
     totalProgress: 0,
@@ -148,7 +150,7 @@ Page({
     if (exIndex >= list.length) {
       this.clearTimer()
       this.vibrate('long')
-      this.setData({ phase: 'complete', phaseLabel: '训练完成', displayTime: '00:00', ringDeg: 0, totalProgress: 100 })
+      this.setData({ phase: 'complete', phaseLabel: '训练完成', displayTime: '00:00', rightDeg: 180, leftDeg: 0, showLeft: false, totalProgress: 100 })
       const app = getApp()
       const roomId = (app.globalData && app.globalData.currentRoom && app.globalData.currentRoom.id)
       if (roomId) {
@@ -177,10 +179,10 @@ Page({
     this.setData({
       exIndex, currentSet: setNum,
       currentExercise: { name: ex.name, currentSet: setNum, totalSets: ex.sets || 4, targetReps: ex.reps, currentReps: 0, image: ex.image ? api.getExerciseImageUrl(ex.image) : '' },
-      nextExercise: nextEx ? { name: nextEx.name, duration: Math.ceil(nextEx.duration_sec / 60) } : null,
+      nextExercise: nextEx ? { name: nextEx.name, duration: Math.ceil((nextEx.sets || 1) * ((nextEx.duration_sec || 30) + (nextEx.rest_sec || 60)) / 60), image: nextEx.image ? api.getExerciseImageUrl(nextEx.image) : '' } : null,
       phase: 'exercise', phaseLabel: '动作中',
       countdownSec: ex.duration_sec || 30, totalPhaseSec: ex.duration_sec || 30,
-      ringDeg: 0
+      rightDeg: 180, leftDeg: 0, showLeft: false
     })
     return false
   },
@@ -208,13 +210,18 @@ Page({
       const totalElapsedSec = Math.floor(totalElapsedMs / 1000)
       const remainingSec = Math.ceil(remainingMs / 1000)
       const ratio = phaseElapsedMs / (this.data.totalPhaseSec * 1000)
-      const ringDeg = Math.round(ratio * 360)
+      const degrees = ratio * 360
+      const rightDeg = 180 + Math.min(180, degrees)
+      const leftDeg = Math.max(0, degrees - 180)
+      const showLeft = degrees > 180
       const totalRatio = this.data.totalPlanSec > 0 ? totalElapsedSec / this.data.totalPlanSec : 0
 
       this.setData({
         countdownSec: remainingSec,
         displayTime: String(Math.floor(remainingSec / 60)).padStart(2, '0') + ':' + String(remainingSec % 60).padStart(2, '0'),
-        ringDeg: ringDeg,
+        rightDeg: rightDeg,
+        leftDeg: leftDeg,
+        showLeft: showLeft,
         totalElapsedSec: totalElapsedSec,
         totalProgress: Math.min(100, Math.round(totalRatio * 100)),
         totalDisplayTime: String(Math.floor(totalElapsedSec / 60)).padStart(2, '0') + ':' + String(totalElapsedSec % 60).padStart(2, '0')

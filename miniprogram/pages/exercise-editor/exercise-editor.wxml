@@ -28,33 +28,39 @@
 
       <view class="exercise-list" wx:if="{{exercises.length > 0}}">
         <view class="exercise-card" wx:for="{{exercises}}" wx:key="index">
-          <view class="card-header">
-            <view class="card-title-row">
-              <text class="card-name">{{item.name}}</text>
-              <text class="card-tag">{{item.tag}}</text>
-            </view>
-            <image wx:if="{{!readonly}}" class="card-remove" src="/images/icon-close.svg" mode="aspectFit" bindtap="onRemoveExercise" data-index="{{index}}" />
+          <image wx:if="{{item.imageUrl}}" class="card-thumb" src="{{item.imageUrl}}" mode="aspectFill" />
+          <view wx:else class="card-thumb card-thumb-placeholder">
+            <text class="card-thumb-emoji">🏋️</text>
           </view>
-          <view class="card-inputs">
-            <view class="card-field">
-              <text class="field-label">组数</text>
-              <input wx:if="{{!readonly}}" class="field-input" type="number" value="{{item.sets}}" bindinput="onParamChange" data-index="{{index}}" data-field="sets" />
-              <text wx:else class="field-value">{{item.sets}}</text>
+          <view class="card-body">
+            <view class="card-header">
+              <view class="card-title-row">
+                <text class="card-name">{{item.name}}</text>
+                <text class="card-tag">{{item.tag}}</text>
+              </view>
+              <image wx:if="{{!readonly}}" class="card-remove" src="/images/icon-close.svg" mode="aspectFit" bindtap="onRemoveExercise" data-index="{{index}}" />
             </view>
-            <view class="card-field">
-              <text class="field-label">次数</text>
-              <input wx:if="{{!readonly}}" class="field-input" type="number" value="{{item.reps}}" bindinput="onParamChange" data-index="{{index}}" data-field="reps" />
-              <text wx:else class="field-value">{{item.reps}}</text>
-            </view>
-            <view class="card-field">
-              <text class="field-label">动作时长(秒)</text>
-              <input wx:if="{{!readonly}}" class="field-input" type="number" value="{{item.duration_sec}}" bindinput="onParamChange" data-index="{{index}}" data-field="duration_sec" />
-              <text wx:else class="field-value">{{item.duration_sec}}s</text>
-            </view>
-            <view class="card-field">
-              <text class="field-label">休息时长(秒)</text>
-              <input wx:if="{{!readonly}}" class="field-input" type="number" value="{{item.rest_sec}}" bindinput="onParamChange" data-index="{{index}}" data-field="rest_sec" />
-              <text wx:else class="field-value">{{item.rest_sec}}s</text>
+            <view class="card-inputs">
+              <view class="card-field">
+                <text class="field-label">组数</text>
+                <input wx:if="{{!readonly}}" class="field-input" type="number" value="{{item.sets}}" bindinput="onParamChange" data-index="{{index}}" data-field="sets" />
+                <text wx:else class="field-value">{{item.sets}}</text>
+              </view>
+              <view class="card-field">
+                <text class="field-label">次数</text>
+                <input wx:if="{{!readonly}}" class="field-input" type="number" value="{{item.reps}}" bindinput="onParamChange" data-index="{{index}}" data-field="reps" />
+                <text wx:else class="field-value">{{item.reps}}</text>
+              </view>
+              <view class="card-field">
+                <text class="field-label">动作时长(秒)</text>
+                <input wx:if="{{!readonly}}" class="field-input" type="number" value="{{item.duration_sec}}" bindinput="onParamChange" data-index="{{index}}" data-field="duration_sec" />
+                <text wx:else class="field-value">{{item.duration_sec}}s</text>
+              </view>
+              <view class="card-field">
+                <text class="field-label">休息时长(秒)</text>
+                <input wx:if="{{!readonly}}" class="field-input" type="number" value="{{item.rest_sec}}" bindinput="onParamChange" data-index="{{index}}" data-field="rest_sec" />
+                <text wx:else class="field-value">{{item.rest_sec}}s</text>
+              </view>
             </view>
           </view>
         </view>

@@ -44,7 +44,7 @@ Page({
     exercises.forEach(ex => {
       const cat = ex.category || '其他'
       if (!groups[cat]) groups[cat] = []
-      groups[cat].push(ex)
+      groups[cat].push(api.resolveExerciseImage(ex))
     })
     const grouped = Object.keys(groups).map(cat => ({
       category: cat, exercises: groups[cat]
