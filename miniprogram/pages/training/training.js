@@ -156,7 +156,9 @@ Page({
       if (roomId) {
         const elapsed = this.data.totalElapsedSec
         const kcal = Math.round(this.data.totalKcal)
-        api.reportWorkout(roomId, Math.ceil(elapsed / 60), kcal, this.data.exerciseList.length).catch(() => {})
+        api.reportWorkout(roomId, Math.ceil(elapsed / 60), kcal, (this.data.exerciseList || []).reduce(function(sum, ex) { return sum + (ex.sets || 1) * (ex.reps || 0) }, 0),
+            (this.data.exerciseList || []).map(function(ex) { return { name: ex.name, tag: ex.tag, sets: ex.sets } })
+          ).catch(() => {})
         api.dissolveRoom(roomId).catch(() => {})
       }
       wx.showModal({
@@ -322,7 +324,9 @@ Page({
           if (roomId) {
             const elapsed = this.data.totalElapsedSec
             const kcal = Math.round(this.data.totalKcal)
-            api.reportWorkout(roomId, Math.ceil(elapsed / 60), kcal, this.data.exerciseList.length).catch(() => {})
+            api.reportWorkout(roomId, Math.ceil(elapsed / 60), kcal, (this.data.exerciseList || []).reduce(function(sum, ex) { return sum + (ex.sets || 1) * (ex.reps || 0) }, 0),
+            (this.data.exerciseList || []).map(function(ex) { return { name: ex.name, tag: ex.tag, sets: ex.sets } })
+          ).catch(() => {})
             api.dissolveRoom(roomId).catch(() => {})
           }
           wx.redirectTo({ url: '/pages/lobby/lobby' })

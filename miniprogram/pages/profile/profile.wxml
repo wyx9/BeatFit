@@ -16,7 +16,10 @@
         </view>
       </view>
       <view class="user-text">
-        <text class="user-name">{{userInfo.nickname || '未设置昵称'}}</text>
+        <view class="user-name-row" bindtap="onEditNickname">
+          <text class="user-name">{{userInfo.nickname || '未设置昵称'}}</text>
+          <text class="user-name-edit">✎</text>
+        </view>
         <view class="user-badge">
           <text class="user-level">Lv.{{userInfo.level || 1}}</text>
           <text class="user-title">{{userInfo.title || '初来乍到'}}</text>
@@ -45,7 +48,7 @@
 
     <!-- 菜单列表 -->
     <view class="menu-section">
-      <view wx:if="{{ENABLE_WORKOUT_RECORDS}}" class="menu-item" hover-class="menu-item-pressed">
+      <view wx:if="{{ENABLE_WORKOUT_RECORDS}}" class="menu-item" hover-class="menu-item-pressed" bindtap="goWorkoutHistory">
         <image class="menu-icon" src="/images/icon-fitness.svg" mode="aspectFit" />
         <text class="menu-text">我的训练记录</text>
         <image class="menu-arrow" src="/images/icon-chevron-right.svg" mode="aspectFit" />
@@ -75,19 +78,44 @@
     </view>
   </view>
 
+  <!-- 修改昵称弹窗 -->
+  <view class="nickname-overlay" wx:if="{{showNicknameModal}}" bindtap="onCancelNickname">
+    <view class="nickname-modal" catchtap="">
+      <text class="nickname-modal-title">修改昵称</text>
+      <input
+        class="nickname-input"
+        value="{{editNickname}}"
+        placeholder="请输入昵称"
+        maxlength="12"
+        bindinput="onNicknameInput"
+        focus="{{showNicknameModal}}"
+        confirm-type="done"
+        bindconfirm="onConfirmNickname"
+      />
+      <view class="nickname-modal-btns">
+        <view class="nickname-btn nickname-btn-cancel" bindtap="onCancelNickname" hover-class="nickname-btn-pressed">
+          <text class="nickname-btn-text">取消</text>
+        </view>
+        <view class="nickname-btn nickname-btn-confirm" bindtap="onConfirmNickname" hover-class="nickname-btn-pressed">
+          <text class="nickname-btn-text">确定</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
   <!-- 底部导航栏 -->
   <view class="bottom-nav">
     <view class="nav-item" bindtap="goLobby">
       <image class="nav-icon" src="/images/icon-grid.svg" mode="aspectFit" />
       <text class="nav-label">大厅</text>
     </view>
-    <view wx:if="{{ENABLE_LEADERBOARD}}" class="nav-item" bindtap="goLeaderboard">
-      <image class="nav-icon" src="/images/icon-leaderboard-gray.svg" mode="aspectFit" />
-      <text class="nav-label">排行榜</text>
-    </view>
     <view class="nav-item" bindtap="goTemplates">
       <image class="nav-icon" src="/images/icon-fitness.svg" mode="aspectFit" />
       <text class="nav-label">动作</text>
+    </view>
+    <view wx:if="{{ENABLE_LEADERBOARD}}" class="nav-item" bindtap="goLeaderboard">
+      <image class="nav-icon" src="/images/icon-leaderboard-gray.svg" mode="aspectFit" />
+      <text class="nav-label">排行榜</text>
     </view>
     <view class="nav-item nav-active">
       <image class="nav-icon" src="/images/icon-person.svg" mode="aspectFit" />

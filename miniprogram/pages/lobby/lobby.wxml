@@ -100,13 +100,13 @@
       <image class="nav-icon" src="/images/icon-grid.svg" mode="aspectFit" />
       <text class="nav-label nav-label-active">大厅</text>
     </view>
-    <view wx:if="{{ENABLE_LEADERBOARD}}" class="nav-item" bindtap="goLeaderboard">
-      <image class="nav-icon" src="/images/icon-leaderboard-gray.svg" mode="aspectFit" />
-      <text class="nav-label">排行榜</text>
-    </view>
     <view class="nav-item" bindtap="goTemplates">
       <image class="nav-icon" src="/images/icon-fitness.svg" mode="aspectFit" />
       <text class="nav-label">动作</text>
+    </view>
+    <view wx:if="{{ENABLE_LEADERBOARD}}" class="nav-item" bindtap="goLeaderboard">
+      <image class="nav-icon" src="/images/icon-leaderboard-gray.svg" mode="aspectFit" />
+      <text class="nav-label">排行榜</text>
     </view>
     <view class="nav-item" bindtap="goProfile">
       <image class="nav-icon" src="/images/icon-person.svg" mode="aspectFit" />

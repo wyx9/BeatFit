@@ -1,4 +1,5 @@
 const api = require('../../utils/api')
+const exerciseUtils = require('../../utils/exercise-utils')
 
 Page({
   data: {
@@ -44,7 +45,7 @@ Page({
     exercises.forEach(ex => {
       const cat = ex.category || '其他'
       if (!groups[cat]) groups[cat] = []
-      groups[cat].push(api.resolveExerciseImage(ex))
+      groups[cat].push(api.resolveExerciseImage(exerciseUtils.enrichExerciseImage(ex)))
     })
     const grouped = Object.keys(groups).map(cat => ({
       category: cat, exercises: groups[cat]

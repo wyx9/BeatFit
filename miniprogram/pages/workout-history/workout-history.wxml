@@ -1,0 +1,131 @@
+<!-- 训练记录页 -->
+<view class="page">
+  <!-- Header -->
+  <view class="header" style="padding-top: {{statusBarHeight}}px;">
+    <view class="header-inner">
+      <view class="header-left">
+        <image class="header-back" src="/images/icon-arrow-back.svg" mode="aspectFit" bindtap="goBack" />
+        <text class="header-title">训练记录</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="main">
+
+    <!-- ===== 日历 + 月度汇总 ===== -->
+    <view class="summary-card">
+
+      <!-- 月份导航 -->
+      <view class="cal-nav">
+        <view class="cal-nav-arrow {{canGoPrev ? '' : 'cal-nav-arrow-disabled'}}" bindtap="goPrevMonth">
+          <text>◀</text>
+        </view>
+        <text class="cal-nav-title">{{calendarYear}}年 {{calendarMonth}}月</text>
+        <view class="cal-nav-arrow {{canGoNext ? '' : 'cal-nav-arrow-disabled'}}" bindtap="goNextMonth">
+          <text>▶</text>
+        </view>
+      </view>
+
+      <!-- 星期头 -->
+      <view class="cal-weekdays">
+        <text class="cal-weekday" wx:for="{{weekdays}}" wx:key="*this">{{item}}</text>
+      </view>
+
+      <!-- 日期网格 -->
+      <view class="cal-grid">
+        <view
+          class="cal-cell {{item.isEmpty ? 'cal-cell-empty' : ''}}"
+          wx:for="{{calendarGrid}}" wx:key="index"
+        >
+          <text wx:if="{{!item.isEmpty}}" class="cal-day">{{item.day}}</text>
+          <view wx:if="{{item.isWorkout}}" class="cal-dot"></view>
+        </view>
+      </view>
+
+      <!-- 本月汇总 -->
+      <view class="summary-row">
+        <view class="summary-item">
+          <text class="summary-value">{{summary.monthWorkouts}}</text>
+          <text class="summary-label">训练次数</text>
+        </view>
+        <view class="summary-divider"></view>
+        <view class="summary-item">
+          <text class="summary-value">{{summary.monthMinutes}}</text>
+          <text class="summary-label">累计分钟</text>
+        </view>
+        <view class="summary-divider"></view>
+        <view class="summary-item">
+          <text class="summary-value">{{summary.monthKcal}}</text>
+          <text class="summary-label">消耗千卡</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ===== 记录列表 ===== -->
+    <view class="log-list">
+      <view
+        class="log-card {{expandedId === item.id ? 'log-card-expanded' : ''}}"
+        wx:for="{{logs}}" wx:key="id"
+        bindtap="onToggleCard"
+        data-id="{{item.id}}"
+        hover-class="log-card-hover"
+      >
+
+        <!-- 头部：日期 + 展开箭头 -->
+        <view class="log-card-top">
+          <view class="log-date-left">
+            <text class="log-date">{{item.date}}</text>
+            <text class="log-weekday">{{item.weekday}}</text>
+          </view>
+          <view class="log-expand-hint">
+            <text class="expand-arrow {{expandedId === item.id ? 'expand-arrow-up' : ''}}">▾</text>
+          </view>
+        </view>
+
+        <!-- 数据行 -->
+        <view class="log-stats">
+          <view class="log-stat">
+            <text class="log-stat-icon">⏱</text>
+            <view class="log-stat-text">
+              <text class="log-stat-value">{{item.minutes}}</text>
+              <text class="log-stat-unit">分钟</text>
+            </view>
+          </view>
+          <view class="log-stat">
+            <text class="log-stat-icon">🔥</text>
+            <view class="log-stat-text">
+              <text class="log-stat-value">{{item.kcal}}</text>
+              <text class="log-stat-unit">千卡</text>
+            </view>
+          </view>
+          <view class="log-stat">
+            <text class="log-stat-icon">🏋️</text>
+            <view class="log-stat-text">
+              <text class="log-stat-value">{{item.count}}</text>
+              <text class="log-stat-unit">次</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 展开：训练内容 -->
+        <view wx:if="{{expandedId === item.id}}" class="log-detail">
+          <view class="detail-row" wx:for="{{item.exercises}}" wx:for-item="ex" wx:key="name">
+            <text class="detail-name">{{ex.name}}</text>
+            <text class="detail-sets">{{ex.sets}}组</text>
+          </view>
+        </view>
+
+      </view>
+
+      <!-- 无记录提示 -->
+      <view wx:if="{{logs.length === 0}}" class="empty-hint">
+        <text class="empty-text">本月无训练记录</text>
+      </view>
+    </view>
+
+    <!-- 底部提示 -->
+    <view class="bottom-hint">
+      <text class="hint-text">— 仅展示最近 30 天记录 —</text>
+    </view>
+  </view>
+</view>

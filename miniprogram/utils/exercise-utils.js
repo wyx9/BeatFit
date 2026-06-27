@@ -52,11 +52,33 @@ function generateTplId() {
   return 'tpl_' + Date.now()
 }
 
+// 按名称从动作库中查找 image 字段并补全（用于预设模板等缺少 image 的动作）
+function enrichExerciseImage(ex) {
+  if (!ex || ex.image) return ex
+  var PART_KEYS = ['back', 'chest', 'legs', 'shoulder', 'arms', 'core']
+  for (var i = 0; i < PART_KEYS.length; i++) {
+    var list = EXERCISE_CONFIG[PART_KEYS[i]] || []
+    var found = list.find(function(item) { return item.name === ex.name })
+    if (found && found.image) {
+      return Object.assign({}, ex, { image: found.image })
+    }
+  }
+  return ex
+}
+
+// 批量补全 image
+function enrichExerciseImages(exercises) {
+  if (!exercises || !exercises.length) return exercises || []
+  return exercises.map(function(ex) { return enrichExerciseImage(ex) })
+}
+
 module.exports = {
   getAllTemplates,
   getUserTemplates,
   saveUserTemplates,
   deleteUserTemplate,
   getTemplateById,
-  generateTplId
+  generateTplId,
+  enrichExerciseImage,
+  enrichExerciseImages
 }

@@ -56,6 +56,24 @@ func ZIncrBy(typ string, userID uint64, score int) error {
 	).Err()
 }
 
+// ZRevRank 获取用户在排行榜中的降序排名（0-based，-1 + 1 为实际排名），无数据返回 -1
+func ZRevRank(typ string, userID uint64) (int64, error) {
+	rank, err := client.ZRevRank(context.Background(), leaderboardKey(typ), strconv.FormatUint(userID, 10)).Result()
+	if err == redis.Nil {
+		return -1, nil
+	}
+	return rank, err
+}
+
+// ZScore 获取用户在排行榜中的分数，无数据返回 0
+func ZScore(typ string, userID uint64) (float64, error) {
+	score, err := client.ZScore(context.Background(), leaderboardKey(typ), strconv.FormatUint(userID, 10)).Result()
+	if err == redis.Nil {
+		return 0, nil
+	}
+	return score, err
+}
+
 // ZRevRange 获取排行榜降序结果（分数从高到低）
 func ZRevRange(typ string, start, stop int64) ([]redis.Z, error) {
 	return client.ZRevRangeWithScores(

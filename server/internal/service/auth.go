@@ -75,31 +75,48 @@ func code2session(appID, appSecret, code string) (string, error) {
 	return result.Openid, nil
 }
 
-// GuestLogin 游客登录：生成唯一游客标识 → 创建用户 → 签发 JWT
-func GuestLogin(db *gorm.DB, cfg *config.Config, nickname string) (string, *model.User, error) {
-	// 生成唯一游客 openid: guest_ + 16位随机hex
-	b := make([]byte, 16)
-	rand.Read(b)
-	guestOpenid := "guest_" + hex.EncodeToString(b)
+// GuestLogin 游客登录：优先通过 wx.login 静默获取持久化 openid；
+// 未配置 WX_APP_SECRET 时回退到随机 openid（开发环境兼容）
+func GuestLogin(db *gorm.DB, cfg *config.Config, code string, nickname string) (string, *model.User, error) {
+	var openid string
 
-	// 创建游客用户
-	user, err := model.FindOrCreateByOpenid(db, guestOpenid)
-	if err != nil {
-		return "", nil, fmt.Errorf("游客创建失败: %w", err)
+	// 1. 尝试调用微信 code2session 换取 openid
+	if cfg.WxAppSecret != "" && code != "" {
+		oid, err := code2session(cfg.WxAppID, cfg.WxAppSecret, code)
+		if err != nil {
+			log.Printf("[WARN] 游客登录 code2session 失败（回退随机ID）: %v", err)
+		} else {
+			openid = oid
+		}
 	}
 
-	// 保存昵称
+	// 2. 降级：未配置 AppSecret 或微信接口失败时，生成随机 openid
+	if openid == "" {
+		b := make([]byte, 16)
+		rand.Read(b)
+		openid = "guest_" + hex.EncodeToString(b)
+		log.Printf("[INFO] 游客登录使用随机ID（WX_APP_SECRET 未配置或 code2session 失败）")
+	}
+
+	// 3. 根据 openid 查找或创建用户
+	user, err := model.FindOrCreateByOpenid(db, openid)
+	if err != nil {
+		return "", nil, fmt.Errorf("用户创建失败: %w", err)
+	}
+
+	// 4. 保存/更新昵称（每次游客登录都更新为用户输入的最新昵称）
 	if nickname != "" {
 		_ = db.Model(user).Update("nickname", nickname).Error
-		user.Nickname = nickname // 同步到返回对象
+		user.Nickname = nickname
 	}
 
+	// 5. 生成 JWT Token（7天有效）
 	token, err := generateJWT(cfg.JWTSecret, user.ID, user.Openid)
 	if err != nil {
 		return "", nil, err
 	}
 
-	// 缓存 token 到 Redis（用于登出校验）
+	// 6. 缓存 token 到 Redis（用于登出校验）
 	if err := cache.SetToken(user.ID, token); err != nil {
 		log.Printf("[WARN] 缓存token失败 user=%d err=%v", user.ID, err)
 	}

@@ -1,21 +1,5 @@
 <!-- 排行榜页面 - 1:1 还原 _1/code.html -->
 <view class="page">
-  <!-- Top AppBar -->
-  <view class="header" style="padding-top: {{statusBarHeight}}px;">
-    <view class="header-inner">
-      <view class="header-left">
-        <view class="avatar avatar-sm ring-primary">
-          <image wx:if="{{userAvatar}}" class="avatar-img" src="{{userAvatar}}" mode="aspectFill" />
-          <view wx:else class="avatar-placeholder-sm">
-            <text class="avatar-initial-sm">{{userInitial || '?'}}</text>
-          </view>
-        </view>
-      </view>
-      <text class="header-title">健身空间</text>
-      <image class="icon icon-settings" src="/images/icon-settings.svg" mode="aspectFit" />
-    </view>
-  </view>
-
   <!-- Main Content -->
   <view class="main">
     <!-- Hero Section -->
@@ -116,6 +100,21 @@
           <text class="rank-stats-unit">{{unit}}</text>
         </view>
       </view>
+      <!-- My Rank Capsule -->
+      <view wx:if="{{myRank !== null}}" class="my-rank-capsule">
+        <block wx:if="{{myRank.rank}}">
+          <text class="my-rank-icon">🏆</text>
+          <text class="my-rank-text">你的排名</text>
+          <text class="my-rank-sep">·</text>
+          <text class="my-rank-value">第 {{myRank.rank}} 名</text>
+          <text class="my-rank-sep">·</text>
+          <text class="my-rank-value">{{myRank.value}} {{unit}}</text>
+        </block>
+        <block wx:else>
+          <text class="my-rank-icon">🏆</text>
+          <text class="my-rank-text my-rank-empty">今日暂无训练，动起来吧！</text>
+        </block>
+      </view>
     </view>
   </view>
 
@@ -125,16 +124,13 @@
       <image class="nav-icon" src="/images/icon-grid.svg" mode="aspectFit" />
       <text class="nav-label">大厅</text>
     </view>
-    <view class="nav-item nav-active">
-      <view class="nav-icon-wrap">
-        <image class="nav-icon" src="/images/icon-leaderboard.svg" mode="aspectFit" />
-        <view class="nav-dot"></view>
-      </view>
-      <text class="nav-label nav-label-active">排行榜</text>
-    </view>
     <view class="nav-item" bindtap="goTemplates">
       <image class="nav-icon" src="/images/icon-fitness.svg" mode="aspectFit" />
       <text class="nav-label">动作</text>
+    </view>
+    <view class="nav-item nav-active">
+      <image class="nav-icon" src="/images/icon-leaderboard.svg" mode="aspectFit" />
+      <text class="nav-label nav-label-active">排行榜</text>
     </view>
     <view class="nav-item" bindtap="goProfile">
       <image class="nav-icon" src="/images/icon-person.svg" mode="aspectFit" />

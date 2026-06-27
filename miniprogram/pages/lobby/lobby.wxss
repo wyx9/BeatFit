@@ -426,9 +426,9 @@
   width: 100%;
   z-index: 50;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  gap: 160rpx;
+  gap: 0;
   padding: 24rpx 40rpx calc(56rpx + env(safe-area-inset-bottom));
   box-sizing: border-box;
   background: rgba(255, 255, 255, 0.95);

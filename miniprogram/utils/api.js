@@ -85,9 +85,9 @@ function logout() {
   return request('POST', '/api/logout')
 }
 
-// 游客登录
-function guestLogin(nickname) {
-  return request('POST', '/api/guest-login', { nickname: nickname })
+// 游客登录（静默获取微信 openid，实现数据持久化）
+function guestLogin(code, nickname) {
+  return request('POST', '/api/guest-login', { code: code, nickname: nickname })
 }
 
 // 微信登录
@@ -115,11 +115,14 @@ function updateProfile(nickname, avatarUrl) {
   return request('PUT', '/api/user/profile', { nickname: nickname, avatar_url: avatarUrl })
 }
 
-// 获取训练历史
-function getWorkoutHistory(page, size) {
+// 获取训练历史（支持按年月筛选 + 获取训练日集合）
+function getWorkoutHistory(page, size, year, month) {
   if (!page) page = 1
-  if (!size) size = 20
-  return request('GET', '/api/user/workouts?page=' + page + '&size=' + size)
+  if (!size) size = 200
+  var params = '?page=' + page + '&size=' + size
+  if (year) params += '&year=' + year
+  if (month) params += '&month=' + month
+  return request('GET', '/api/user/workouts' + params)
 }
 
 // 查询当前用户活跃房间（断线重连用）
@@ -167,12 +170,13 @@ function getLeaderboard(type = 'duration', date = '') {
 }
 
 // 上报训练数据
-function reportWorkout(roomId, minutes, kcal, count) {
+function reportWorkout(roomId, minutes, kcal, count, exercises) {
   return request('POST', '/api/workout/report', {
     room_id: roomId,
     minutes: minutes,
     kcal: kcal,
-    count: count
+    count: count,
+    exercises: exercises || []
   })
 }
 

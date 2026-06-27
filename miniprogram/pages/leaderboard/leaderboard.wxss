@@ -85,7 +85,7 @@
 
 /* === Main Content === */
 .main {
-  padding-top: 176rpx;   /* header height + status bar */
+  padding-top: 120rpx;   /* status bar space */
   padding-bottom: 256rpx; /* bottom nav space */
   padding-left: 48rpx;
   padding-right: 48rpx;
@@ -402,6 +402,48 @@
   color: #454747;
 }
 
+/* === My Rank Capsule === */
+.my-rank-capsule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  padding: 20rpx 40rpx;
+  margin-top: 32rpx;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 9999rpx;
+  border: 1rpx solid rgba(34, 197, 94, 0.2);
+  box-shadow: 0 8rpx 32rpx rgba(34, 197, 94, 0.08);
+  white-space: nowrap;
+}
+
+.my-rank-icon {
+  font-size: 28rpx;
+}
+
+.my-rank-text {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #454747;
+}
+
+.my-rank-empty {
+  color: #94a3b8;
+}
+
+.my-rank-sep {
+  font-size: 24rpx;
+  color: #cbd5e1;
+}
+
+.my-rank-value {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
 /* === Bottom Navigation Bar === */
 .bottom-nav {
   position: fixed;
@@ -410,9 +452,9 @@
   width: 100%;
   z-index: 50;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  gap: 160rpx;
+  gap: 0;
   padding: 24rpx 40rpx calc(56rpx + env(safe-area-inset-bottom));
   box-sizing: border-box;
   background: rgba(255, 255, 255, 0.95);
@@ -436,30 +478,16 @@
   color: var(--color-primary);
 }
 
-.nav-icon-wrap {
-  position: relative;
-}
-
 .nav-icon {
   width: 48rpx;
   height: 48rpx;
-}
-
-.nav-dot {
-  position: absolute;
-  top: -4rpx;
-  right: -4rpx;
-  width: 12rpx;
-  height: 12rpx;
-  background: var(--color-primary);
-  border-radius: 50%;
-  border: 4rpx solid #fff;
 }
 
 .nav-label {
   font-size: 22rpx;
   font-weight: 700;
   margin-top: 2rpx;
+  color: #454747;
 }
 
 .nav-label-active {

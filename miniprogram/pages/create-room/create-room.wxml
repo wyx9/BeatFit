@@ -82,10 +82,10 @@
                     <image class="workout-close" src="/images/icon-close.svg" mode="aspectFit" bindtap="removeExercise" data-cat="{{item.key}}" data-name="{{ex.name}}" />
                   </view>
                   <view class="workout-inputs">
-                    <view class="workout-field"><text class="workout-label">组数</text><input class="workout-input" type="number" value="{{ex.sets}}" /></view>
-                    <view class="workout-field"><text class="workout-label">次数</text><input class="workout-input" type="number" value="{{ex.reps}}" /></view>
-                    <view class="workout-field"><text class="workout-label">动作时长(秒)</text><input class="workout-input" type="number" value="{{ex.duration_sec}}" /></view>
-                    <view class="workout-field"><text class="workout-label">组间休息(秒)</text><input class="workout-input" type="number" value="{{ex.rest_sec}}" /></view>
+                    <view class="workout-field"><text class="workout-label">组数</text><input class="workout-input" type="number" value="{{ex.sets}}" bindinput="onWorkoutFieldChange" data-cat="{{item.key}}" data-name="{{ex.name}}" data-field="sets" /></view>
+                    <view class="workout-field"><text class="workout-label">次数</text><input class="workout-input" type="number" value="{{ex.reps}}" bindinput="onWorkoutFieldChange" data-cat="{{item.key}}" data-name="{{ex.name}}" data-field="reps" /></view>
+                    <view class="workout-field"><text class="workout-label">动作时长(秒)</text><input class="workout-input" type="number" value="{{ex.duration_sec}}" bindinput="onWorkoutFieldChange" data-cat="{{item.key}}" data-name="{{ex.name}}" data-field="duration_sec" /></view>
+                    <view class="workout-field"><text class="workout-label">组间休息(秒)</text><input class="workout-input" type="number" value="{{ex.rest_sec}}" bindinput="onWorkoutFieldChange" data-cat="{{item.key}}" data-name="{{ex.name}}" data-field="rest_sec" /></view>
                   </view>
                 </view>
               </view>

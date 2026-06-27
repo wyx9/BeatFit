@@ -115,8 +115,13 @@ Page({
 
   // ===== 动作选择器（复用 exercise-editor picker）=====
   onShowPicker() {
-    this.setData({ showPicker: true, pickerSearch: '', isSearching: false })
-    this.loadPickerExercises(this.data.activePickerPart)
+    var part = this.data.activePart
+    this.setData({
+      showPicker: true, pickerSearch: '', isSearching: false,
+      activePickerPart: part,
+      activePickerPartName: PART_NAMES[part] || part
+    })
+    this.loadPickerExercises(part)
   },
 
   onHidePicker() {
@@ -173,6 +178,7 @@ Page({
       ...ex,
       image: ex.image ? api.getExerciseImageUrl(ex.image) : '',
       emoji: ex.emoji || PART_EMOJI[partKey] || '🏋️',
+      _partKey: partKey,
       _added: addedNames.includes(ex.name)
     }))
     this.setData({ pickerExercises: list })
@@ -204,7 +210,7 @@ Page({
         key: activePart,
         name: PART_NAMES[activePart] || activePart,
         icon: PART_EMOJI[activePart] || '🏋️',
-        exercises: [{ ...found }]
+        exercises: [api.resolveExerciseImage({ ...found })]
       })
     }
 
@@ -255,7 +261,7 @@ Page({
     const activePart = this.data.activePart
     const categories = this.data.categories
     const catIdx = categories.findIndex(c => c.key === activePart)
-    const cloned = api.resolveExerciseImages(tpl.exercises.map(ex => ({ ...ex })))
+    const cloned = api.resolveExerciseImages(tpl.exercises.map(ex => exerciseUtils.enrichExerciseImage({ ...ex })))
 
     if (catIdx >= 0) {
       categories[catIdx].exercises = cloned
@@ -284,9 +290,35 @@ Page({
   },
   noop() {},
 
-  // ===== 计算属性（通过 wxml 表达式实现） =====
-  // filteredCategories: activePart === 'all' ? categories : categories.filter(c => c.key === activePart)
-  // totalDuration: 所有动作 (sets * duration) 求和
+  // ===== 输入框变更 → 更新数据 + 重算总时长 =====
+  onWorkoutFieldChange(e) {
+    var catKey = e.currentTarget.dataset.cat
+    var exName = e.currentTarget.dataset.name
+    var field = e.currentTarget.dataset.field
+    var raw = e.detail.value
+    var val = parseInt(raw, 10)
+    if (isNaN(val) || val < 0) val = 0
+
+    var categories = this.data.categories
+    for (var i = 0; i < categories.length; i++) {
+      if (categories[i].key !== catKey) continue
+      var exs = categories[i].exercises
+      for (var j = 0; j < exs.length; j++) {
+        if (exs[j].name === exName) {
+          var updated = Object.assign({}, exs[j])
+          updated[field] = val
+          var newExs = exs.slice()
+          newExs[j] = updated
+          categories[i] = Object.assign({}, categories[i], { exercises: newExs })
+          break
+        }
+      }
+      break
+    }
+
+    this.setData({ categories: categories })
+    this.refreshFiltered()
+  },
 
   // ===== 创建房间 =====
   handleCreate() {

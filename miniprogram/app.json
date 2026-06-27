@@ -9,7 +9,8 @@
     "pages/training/training",
     "pages/room-waiting/room-waiting",
     "pages/exercise-templates/exercise-templates",
-    "pages/exercise-editor/exercise-editor"
+    "pages/exercise-editor/exercise-editor",
+    "pages/workout-history/workout-history"
   ],
   "window": {
     "navigationStyle": "custom",

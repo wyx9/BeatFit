@@ -87,19 +87,19 @@
 }
 .card-remove { width: 32rpx; height: 32rpx; opacity: 0.4; }
 
-.card-inputs { display: flex; gap: 20rpx; }
-.card-field { flex: 1; display: flex; flex-direction: column; gap: 6rpx; }
-.field-label { font-size: 22rpx; font-weight: 500; color: #3d4a3d; white-space: nowrap; line-height: 1.4; min-height: 32rpx; }
+.card-inputs { display: flex; gap: 24rpx; }
+.card-field { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8rpx; }
+.field-label { font-size: 22rpx; font-weight: 500; color: #3d4a3d; text-align: center; white-space: nowrap; line-height: 1.4; min-height: 32rpx; }
 .field-input {
-  width: 100%; height: 72rpx; background: #e5eeff;
-  border: none; border-radius: 20rpx; text-align: center;
-  font-size: 26rpx; font-weight: 700; color: #0b1c30;
-  padding: 0 6rpx; box-sizing: border-box;
+  width: 100%; height: 80rpx; background: #e5eeff;
+  border: none; border-radius: 24rpx; text-align: center;
+  font-size: 28rpx; font-weight: 700; color: #0b1c30;
+  padding: 0 8rpx; box-sizing: border-box;
 }
 .field-input:focus { box-shadow: 0 0 0 4rpx rgba(34,197,94,0.3); }
 .field-value {
   display: flex; align-items: center; justify-content: center;
-  height: 72rpx; font-size: 26rpx; font-weight: 700; color: #0b1c30;
+  height: 80rpx; font-size: 28rpx; font-weight: 700; color: #0b1c30;
 }
 
 /* === Empty State === */

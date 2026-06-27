@@ -1,0 +1,230 @@
+/* ===== 训练记录页 ===== */
+
+.page {
+  animation: pageFadeIn 0.2s ease both;
+}
+@keyframes pageFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* === Header === */
+.header {
+  position: fixed; top: 0; width: 100%; z-index: 50;
+  background: rgba(248,249,255,0.95);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+.header-inner {
+  display: flex; justify-content: space-between; align-items: center;
+  height: 88rpx; padding: 0 40rpx;
+}
+.header-left {
+  display: flex; align-items: center; gap: 24rpx;
+}
+.header-back { width: 48rpx; height: 48rpx; }
+.header-title { font-size: 36rpx; font-weight: 700; color: #0b1c30; }
+
+/* === Main === */
+.main {
+  padding-top: 148rpx; padding-bottom: 80rpx;
+  padding-left: 40rpx; padding-right: 40rpx;
+  max-width: 900rpx; margin: 0 auto;
+}
+
+/* === Summary Card === */
+.summary-card {
+  background: linear-gradient(135deg, rgba(34,197,94,0.08), rgba(34,197,94,0.02));
+  border: 2rpx solid rgba(34,197,94,0.1);
+  border-radius: 40rpx;
+  padding: 28rpx 28rpx 24rpx;
+  margin-bottom: 48rpx;
+}
+
+/* ---- 日历导航 ---- */
+.cal-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 18rpx;
+  padding: 0 4rpx;
+}
+.cal-nav-arrow {
+  width: 40rpx; height: 40rpx;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: rgba(34,197,94,0.06);
+  font-size: 20rpx; color: var(--color-primary);
+  transition: all 0.15s;
+}
+.cal-nav-arrow:active {
+  background: rgba(34,197,94,0.15); transform: scale(0.95);
+}
+.cal-nav-arrow-disabled {
+  opacity: 0.2; pointer-events: none;
+}
+.cal-nav-title {
+  font-size: 24rpx; font-weight: 700; color: #0b1c30;
+  letter-spacing: 1rpx;
+}
+
+/* ---- 星期头 ---- */
+.cal-weekdays {
+  display: flex; margin-bottom: 6rpx;
+}
+.cal-weekday {
+  flex: 1; text-align: center;
+  font-size: 18rpx; font-weight: 600; color: #94a3b8;
+  padding: 4rpx 0;
+}
+
+/* ---- 日期网格 ---- */
+.cal-grid {
+  display: flex; flex-wrap: wrap;
+  margin-bottom: 18rpx;
+}
+.cal-cell {
+  width: calc(100% / 7);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 10rpx 0;
+  position: relative;
+  border-radius: 12rpx;
+}
+.cal-cell-empty {
+  visibility: hidden;
+}
+.cal-day {
+  font-size: 22rpx; font-weight: 600; color: #1e293b;
+  line-height: 1;
+}
+
+/* 训练日绿点 */
+.cal-dot {
+  width: 8rpx; height: 8rpx;
+  border-radius: 50%;
+  background: var(--color-primary);
+  margin-top: 4rpx;
+}
+
+/* ---- 汇总行 ---- */
+.summary-row {
+  display: flex; align-items: center; justify-content: center;
+  padding-top: 16rpx;
+  border-top: 1rpx solid rgba(34,197,94,0.1);
+}
+.summary-item {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 4rpx;
+}
+.summary-value {
+  font-size: 36rpx; font-weight: 700; color: var(--color-primary);
+}
+.summary-label {
+  font-size: 18rpx; font-weight: 500; color: #94a3b8;
+}
+.summary-divider {
+  width: 2rpx; height: 44rpx;
+  background: rgba(34,197,94,0.15);
+  flex-shrink: 0;
+}
+
+/* === Log List === */
+.log-list { display: flex; flex-direction: column; gap: 24rpx; }
+
+.log-card {
+  background: #fff;
+  border: 2rpx solid rgba(188,203,185,0.1);
+  border-radius: 32rpx;
+  padding: 36rpx;
+  box-shadow: 0 2rpx 16rpx rgba(0,0,0,0.04);
+  transition: all 0.2s;
+}
+.log-card-hover {
+  background: rgba(34,197,94,0.02);
+  border-color: rgba(34,197,94,0.12);
+}
+.log-card-expanded {
+  border-color: rgba(34,197,94,0.15);
+}
+
+/* 顶部行：日期 + 展开箭头 */
+.log-card-top {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 28rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid rgba(226,232,240,0.3);
+}
+.log-date-left { display: flex; align-items: baseline; gap: 16rpx; }
+.log-date {
+  font-size: 34rpx; font-weight: 700; color: #0b1c30;
+}
+.log-weekday {
+  font-size: 24rpx; font-weight: 500; color: #94a3b8;
+}
+
+/* 展开箭头 */
+.log-expand-hint { flex-shrink: 0; }
+.expand-arrow {
+  font-size: 28rpx; color: #cbd5e1;
+  transition: transform 0.2s;
+  display: inline-block;
+}
+.expand-arrow-up {
+  transform: rotate(180deg);
+  color: var(--color-primary);
+}
+
+/* 数据行 */
+.log-stats {
+  display: flex; align-items: center;
+}
+.log-stat {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 8rpx;
+}
+.log-stat-icon { font-size: 36rpx; line-height: 1; }
+.log-stat-text {
+  display: flex; align-items: baseline; gap: 4rpx;
+}
+.log-stat-value {
+  font-size: 32rpx; font-weight: 700; color: #0b1c30;
+}
+.log-stat-unit {
+  font-size: 22rpx; font-weight: 500; color: #94a3b8;
+}
+
+/* === 展开：训练内容 === */
+.log-detail {
+  margin-top: 24rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid rgba(226,232,240,0.3);
+  display: flex; flex-direction: column; gap: 4rpx;
+}
+.detail-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14rpx 8rpx;
+  border-radius: 12rpx;
+}
+.detail-name {
+  font-size: 26rpx; font-weight: 500; color: #3d4a3d;
+}
+.detail-sets {
+  font-size: 24rpx; font-weight: 600; color: var(--color-primary);
+  background: rgba(34,197,94,0.06);
+  padding: 4rpx 20rpx; border-radius: 9999rpx;
+}
+
+/* === Empty Hint === */
+.empty-hint {
+  padding: 80rpx 0; text-align: center;
+}
+.empty-text {
+  font-size: 28rpx; color: #cbd5e1; font-weight: 500;
+}
+
+/* === Bottom Hint === */
+.bottom-hint {
+  margin-top: 48rpx;
+  text-align: center;
+}
+.hint-text {
+  font-size: 24rpx; color: #cbd5e1;
+}

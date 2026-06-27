@@ -26,8 +26,9 @@ func NewLeaderboardHandler(db *gorm.DB) *LeaderboardHandler {
 func (h *LeaderboardHandler) Get(c *gin.Context) {
 	typ := c.DefaultQuery("type", "duration")
 	date := c.DefaultQuery("date", time.Now().Format("2006-01-02"))
+	userID := getUserID(c)
 
-	list, err := service.GetLeaderboard(h.db, typ, date)
+	list, myRank, err := service.GetLeaderboard(h.db, typ, date, userID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "查询排行榜失败"})
 		return
@@ -36,17 +37,22 @@ func (h *LeaderboardHandler) Get(c *gin.Context) {
 		list = []service.LeaderboardEntry{} // 返回空数组而非 null
 	}
 
-	c.JSON(http.StatusOK, gin.H{"list": list})
+	resp := gin.H{"list": list}
+	if myRank != nil {
+		resp["my_rank"] = myRank
+	}
+	c.JSON(http.StatusOK, resp)
 }
 
 // Report 上报训练数据 POST /api/workout/report
-// 请求体: { "room_id": 1, "minutes": 30, "kcal": 200, "count": 120 }
+// 请求体: { "room_id": 1, "minutes": 30, "kcal": 200, "count": 120, "exercises": [...] }
 func (h *LeaderboardHandler) Report(c *gin.Context) {
 	var req struct {
-		RoomID  uint64 `json:"room_id"`
-		Minutes int    `json:"minutes"`
-		Kcal    int    `json:"kcal"`
-		Count   int    `json:"count"`
+		RoomID    uint64                   `json:"room_id"`
+		Minutes   int                      `json:"minutes"`
+		Kcal      int                      `json:"kcal"`
+		Count     int                      `json:"count"`
+		Exercises []map[string]interface{} `json:"exercises"`
 	}
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "参数错误"})
@@ -67,7 +73,7 @@ func (h *LeaderboardHandler) Report(c *gin.Context) {
 		}
 	}
 
-	wlog, err := service.ReportWorkout(h.db, userID, req.RoomID, req.Minutes, req.Kcal, req.Count)
+	wlog, err := service.ReportWorkout(h.db, userID, req.RoomID, req.Minutes, req.Kcal, req.Count, req.Exercises)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "上报训练数据失败"})
 		return

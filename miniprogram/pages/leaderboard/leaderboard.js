@@ -18,7 +18,8 @@ Page({
     // 各 tab 对应的单位和缓存
     unitMap: { duration: 'min', calories: 'kcal', count: '次' },
 
-    userAvatar: '', // 用户头像
+    // 我的排名胶囊（null=不显示，{rank,value}=正常，{}空对象=无训练记录）
+    myRank: null,
 
     // 本地静态数据（后端未连接时兜底）
     fallbackData: {
@@ -53,22 +54,7 @@ Page({
     }
     const sys = wx.getSystemInfoSync()
     this.setData({ statusBarHeight: sys.statusBarHeight })
-    this.loadUserAvatar()
     this.loadLeaderboard('duration')
-  },
-
-  onShow() {
-    this.loadUserAvatar()
-  },
-
-  loadUserAvatar() {
-    const user = api.getUserInfo()
-    if (user) {
-      this.setData({
-        userAvatar: user.avatar_url || '',
-        userInitial: (user.nickname || '?')[0]
-      })
-    }
   },
 
   // 从后端加载排行榜数据
@@ -77,25 +63,39 @@ Page({
       const data = await api.getLeaderboard(type)
       const list = data.list || []
 
-      // 前3名 → 领奖台
+      // 前3名 → 领奖台（防御空昵称）
+      function safeName(item) {
+        if (!item) return '--'
+        var n = item.nickname
+        return (n && typeof n === 'string' && n.trim()) ? n.trim() : '--'
+      }
       const podium = {
-        first:  { name: list[0] ? list[0].nickname : '--', value: list[0] ? list[0].value : 0 },
-        second: { name: list[1] ? list[1].nickname : '--', value: list[1] ? list[1].value : 0 },
-        third:  { name: list[2] ? list[2].nickname : '--', value: list[2] ? list[2].value : 0 }
+        first:  { name: safeName(list[0]), value: list[0] ? list[0].value : 0 },
+        second: { name: safeName(list[1]), value: list[1] ? list[1].value : 0 },
+        third:  { name: safeName(list[2]), value: list[2] ? list[2].value : 0 }
       }
 
       // 第4名以后 → 排行列表
       const rankingList = list.slice(3).map((item, i) => ({
         rank: i + 4,
-        name: item.nickname,
-        level: 'Lv.' + String(item.level).padStart(2, '0') + ' ' + (item.title || '运动达人'),
+        name: safeName(item),
+        level: 'Lv.' + String(item.level || 1).padStart(2, '0') + ' ' + (item.title || '运动达人'),
         value: item.value
       }))
 
-      this.setData({ podium, rankingList, unit: this.data.unitMap[type] })
+      // 我的排名（API 仅在有排名时返回 my_rank 字段）
+      var myRank = null
+      if (data.my_rank && data.my_rank.rank) {
+        myRank = { rank: data.my_rank.rank, value: data.my_rank.value }
+      } else {
+        myRank = {} // 空对象 → 显示"无训练"文案
+      }
+
+      this.setData({ podium, rankingList, unit: this.data.unitMap[type], myRank: myRank })
     } catch (err) {
-      // 后端未连接，加载本地静态数据
+      // 后端未连接，加载本地静态数据（不显示我的排名胶囊）
       this.loadFallback(type)
+      this.setData({ myRank: null })
     }
   },
 

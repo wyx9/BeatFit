@@ -49,7 +49,7 @@ Page({
         this.setData({
           tplId: tpl.id,
           tplName: tpl.name,
-          exercises: tpl.exercises.map(ex => api.resolveExerciseImage({ ...ex })),
+          exercises: tpl.exercises.map(ex => api.resolveExerciseImage(exerciseUtils.enrichExerciseImage({ ...ex }))),
           readonly
         })
         return
