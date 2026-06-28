@@ -10,7 +10,9 @@ Page({
     ENABLE_LEADERBOARD: features.ENABLE_LEADERBOARD
   },
 
-  onLoad() {},
+  onLoad() {
+    this.refresh()
+  },
 
   onShow() {
     this.refresh()
@@ -18,18 +20,30 @@ Page({
 
   refresh() {
     const all = exerciseUtils.getAllTemplates()
-    const presets = all.filter(t => t.preset === true)
-    const userTemplates = all.filter(t => t.preset !== true)
+    // 预计算 totalMinutes 写入 data，避免 WXML 中传复杂对象调用方法
+    const presets = all.filter(t => t.preset === true).map(t => ({
+      ...t,
+      totalMinutes: this.computeTotalMinutes(t)
+    }))
+    const userTemplates = all.filter(t => t.preset !== true).map(t => ({
+      ...t,
+      totalMinutes: this.computeTotalMinutes(t)
+    }))
     this.setData({ presets, userTemplates })
   },
 
   // 计算模板总时长（分钟）
-  totalMinutes(tpl) {
+  computeTotalMinutes(tpl) {
     let sec = 0
     ;(tpl.exercises || []).forEach(ex => {
       sec += (ex.sets || 1) * ((ex.duration_sec || 0) + (ex.rest_sec || 0))
     })
     return Math.ceil(sec / 60)
+  },
+
+  // 保留 WXML 兼容（供旧模板调用）
+  totalMinutes(tpl) {
+    return this.computeTotalMinutes(tpl)
   },
 
   // 点击系统预设 → 只读查看

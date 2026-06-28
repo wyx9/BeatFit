@@ -54,7 +54,10 @@ Page({
     vibrationEnabled: true,
 
     // —— 热量 ——
-    totalKcal: 0                 // 累计热量（千卡）
+    totalKcal: 0,                // 累计热量（千卡）
+
+    // —— 动作间休息 ——
+    interRestSec: 60             // 动作间休息时长（秒）
   },
 
   onLoad(options) {
@@ -86,13 +89,19 @@ Page({
     app.globalData.roomExercises = null
     app.globalData.startedAt = null
 
+    // 读取动作间休息（房间级全局设置）
+    const interRestSec = (app.globalData && app.globalData.interRestSec) || 60
+
     let totalPlan = 0
-    exercises.forEach(ex => { totalPlan += (ex.sets || 1) * ((ex.duration_sec || 30) + (ex.rest_sec || 60)) })
+    exercises.forEach(ex => { totalPlan += (ex.sets || 1) * (ex.duration_sec || 30) + ((ex.sets || 1) - 1) * (ex.rest_sec || 60) })
+    // 动作间休息
+    if (exercises.length > 1) totalPlan += (exercises.length - 1) * interRestSec
 
     const now = Date.now()
     this.setData({
       exerciseList: exercises,
       totalPlanSec: totalPlan,
+      interRestSec: interRestSec,
       trainingStartTime: now,
       phaseStartTime: now
     })
@@ -181,7 +190,7 @@ Page({
     this.setData({
       exIndex, currentSet: setNum,
       currentExercise: { name: ex.name, currentSet: setNum, totalSets: ex.sets || 4, targetReps: ex.reps, currentReps: 0, image: ex.image ? api.getExerciseImageUrl(ex.image) : '' },
-      nextExercise: nextEx ? { name: nextEx.name, duration: Math.ceil((nextEx.sets || 1) * ((nextEx.duration_sec || 30) + (nextEx.rest_sec || 60)) / 60), image: nextEx.image ? api.getExerciseImageUrl(nextEx.image) : '' } : null,
+      nextExercise: nextEx ? { name: nextEx.name, duration: Math.ceil(((nextEx.sets || 1) * (nextEx.duration_sec || 30) + ((nextEx.sets || 1) - 1) * (nextEx.rest_sec || 60)) / 60), image: nextEx.image ? api.getExerciseImageUrl(nextEx.image) : '' } : null,
       phase: 'exercise', phaseLabel: '动作中',
       countdownSec: ex.duration_sec || 30, totalPhaseSec: ex.duration_sec || 30,
       rightDeg: 180, leftDeg: 0, showLeft: false
@@ -234,9 +243,9 @@ Page({
     this.setData({ timerInterval: setInterval(update, 100) })
   },
 
-  // —— 阶段切换：累加热量，直接进入下一阶段 ——
+  // —— 阶段切换：累加热量，决定下一阶段类型 ——
   nextPhase() {
-    const { phase, exIndex, currentSet, exerciseList, totalPhaseSec } = this.data
+    const { phase, exIndex, currentSet, exerciseList, totalPhaseSec, interRestSec } = this.data
     const ex = exerciseList[exIndex]
     if (!ex) return
 
@@ -245,32 +254,45 @@ Page({
     const kcalPerSec = TAG_KCAL_PER_SEC[tag] || DEFAULT_KCAL_PER_SEC
     const phaseKcal = totalPhaseSec * kcalPerSec
     const newTotalKcal = this.data.totalKcal + phaseKcal
-
-    // 累加已完成阶段的总时长
-    const newTotalElapsed = this.data.totalElapsedSec + totalPhaseSec
+    // totalElapsedSec 由 update() 基于绝对时间实时计算，不在此处累加
 
     if (phase === 'exercise') {
       if (currentSet < ex.sets) {
-        // 当前动作还有剩余组 → 进入休息
+        // 当前动作还有剩余组 → 组间休息
         this.vibrate('light')
         this.setData({
           phase: 'rest', phaseLabel: '休息中',
           countdownSec: ex.rest_sec || 60, totalPhaseSec: ex.rest_sec || 60,
-          totalKcal: newTotalKcal, totalElapsedSec: newTotalElapsed
+          totalKcal: newTotalKcal
+        })
+        this.beforeNextPhase()
+      } else if (exIndex + 1 < exerciseList.length) {
+        // 当前动作所有组完成，且还有下一动作 → 动作间休息
+        this.vibrate('light')
+        this.setData({
+          phase: 'inter_rest', phaseLabel: '动作间休息',
+          countdownSec: interRestSec || 60, totalPhaseSec: interRestSec || 60,
+          totalKcal: newTotalKcal
         })
         this.beforeNextPhase()
       } else {
-        // 当前动作所有组完成 → 直接进入下一动作
+        // 最后一个动作的最后一组完成 → 训练结束
         this.vibrate('light')
-        this.setData({ totalKcal: newTotalKcal, totalElapsedSec: newTotalElapsed })
+        this.setData({ totalKcal: newTotalKcal })
         const done = this.loadExercise(exIndex + 1, 1)
         if (!done) this.beforeNextPhase()
       }
-    } else {
-      // 休息结束 → 下一组
+    } else if (phase === 'rest') {
+      // 组间休息结束 → 同动作下一组
       this.vibrate('medium')
-      this.setData({ totalKcal: newTotalKcal, totalElapsedSec: newTotalElapsed })
+      this.setData({ totalKcal: newTotalKcal })
       const done = this.loadExercise(exIndex, currentSet + 1)
+      if (!done) this.beforeNextPhase()
+    } else if (phase === 'inter_rest') {
+      // 动作间休息结束 → 进入下一动作第1组
+      this.vibrate('medium')
+      this.setData({ totalKcal: newTotalKcal })
+      const done = this.loadExercise(exIndex + 1, 1)
       if (!done) this.beforeNextPhase()
     }
   },

@@ -1,0 +1,43 @@
+.rs-trigger {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 0 20rpx; margin: 0;
+}
+.rs-trigger-text {
+  font-size: 28rpx; color: #64748b; font-weight: 500;
+}
+.rs-trigger-arrow {
+  font-size: 28rpx; color: #94a3b8;
+}
+
+.rs-dropdown {
+  background: #fff;
+  border-radius: 24rpx;
+  border: 2rpx solid #e5eeff;
+  box-shadow: 0 -4rpx 20rpx rgba(0,0,0,0.06);
+  padding: 28rpx 32rpx;
+  margin-bottom: 20rpx;
+}
+.rs-item {
+  display: flex; justify-content: space-between; align-items: center;
+}
+.rs-item-label {
+  font-size: 28rpx; color: #3d4a3d; font-weight: 500;
+}
+.rs-item-control {
+  display: flex; align-items: center; gap: 12rpx;
+}
+.rs-item-input {
+  width: 100rpx; height: 60rpx; padding: 0 16rpx;
+  background: #f8f9ff;
+  border: 2rpx solid #e5eeff;
+  border-radius: 16rpx;
+  font-size: 28rpx; font-weight: 600; color: #0b1c30; text-align: center;
+  box-sizing: border-box;
+}
+.rs-item-input:focus {
+  border-color: var(--color-primary);
+  background: #fff;
+}
+.rs-item-unit {
+  font-size: 24rpx; color: #94a3b8;
+}

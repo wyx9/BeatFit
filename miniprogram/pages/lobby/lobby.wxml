@@ -54,7 +54,8 @@
 
       <view class="rooms-grid">
         <view class="empty-hint" wx:if="{{rooms.length === 0 && !loading}}">
-          <text>暂无活跃房间，快去创建一个吧</text>
+          <text class="empty-hint-icon">🏠</text>
+          <text class="empty-hint-text">暂无活跃房间，快去创建一个吧</text>
         </view>
         <view
           class="room-card"

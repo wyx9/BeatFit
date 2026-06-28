@@ -47,7 +47,7 @@
 
     <!-- 当前动作卡片 -->
     <view class="exercise-card">
-      <view class="card-badge">当前动作</view>
+      <view class="card-badge {{phase === 'inter_rest' ? 'card-badge-done' : ''}}">{{phase === 'inter_rest' ? '已完成' : '当前动作'}}</view>
       <view class="card-top">
         <view class="card-top-text">
           <text class="card-exercise-name">{{currentExercise.name}}</text>
@@ -67,20 +67,19 @@
     </view>
 
     <!-- 下一个动作预览 -->
-    <view class="next-section" wx:if="{{nextExercise}}">
-      <text class="next-label">下一个动作</text>
-      <view class="next-card">
-        <view class="next-card-left">
-          <view class="next-thumb">
-            <image wx:if="{{nextExercise.image}}" class="next-thumb-img" src="{{nextExercise.image}}" mode="aspectFill" />
-            <image wx:else class="next-thumb-img" src="/images/avatar-placeholder.svg" mode="aspectFill" />
-          </view>
-          <view class="next-info">
-            <text class="next-name">{{nextExercise.name}}</text>
+    <view class="next-card" wx:if="{{nextExercise}}">
+      <view class="card-badge next-badge">下一个动作</view>
+      <view class="card-top">
+        <view class="card-top-text">
+          <text class="card-exercise-name">{{nextExercise.name}}</text>
+          <view class="card-meta-row">
             <text class="next-duration">预计耗时 {{nextExercise.duration}} 分钟</text>
           </view>
         </view>
-        <image class="next-arrow" src="/images/icon-chevron-right.svg" mode="aspectFit" />
+        <image wx:if="{{nextExercise.image}}" class="next-thumb" src="{{nextExercise.image}}" mode="aspectFill" />
+        <view wx:else class="next-thumb next-thumb-placeholder">
+          <image class="card-placeholder-icon" src="/images/icon-fitness.svg" mode="aspectFit" />
+        </view>
       </view>
     </view>
 

@@ -7,6 +7,7 @@ const PRESET_TEMPLATES = [
     id: 'preset_full_body',
     name: '全身燃脂入门',
     preset: true,
+    inter_rest_sec: 60,
     exercises: [
       { name: '深蹲',         tag: '复合', sets: 2, reps: 8,  duration_sec: 30, rest_sec: 60 },
       { name: '平板卧推',     tag: '力量', sets: 2, reps: 10, duration_sec: 30, rest_sec: 60 },
@@ -18,6 +19,7 @@ const PRESET_TEMPLATES = [
     id: 'preset_back_power',
     name: '背部力量突破',
     preset: true,
+    inter_rest_sec: 60,
     exercises: [
       { name: '引体向上',     tag: '力量', sets: 3, reps: 10, duration_sec: 30, rest_sec: 90 },
       { name: '杠铃划船',     tag: '力量', sets: 3, reps: 12, duration_sec: 30, rest_sec: 60 },
@@ -28,6 +30,7 @@ const PRESET_TEMPLATES = [
     id: 'preset_tan_back',
     name: '谭成义背部训练',
     preset: true,
+    inter_rest_sec: 60,
     exercises: [
       { name: '反手高位下拉',     tag: '力量', sets: 4, reps: 12, duration_sec: 40, rest_sec: 60, tips: '身体保持中立，下落时不要后仰，向上时身体稍前倾，缓慢控制感受背阔肌拉伸。' },
       { name: '坐姿绳索划船',     tag: '力量', sets: 4, reps: 12, duration_sec: 40, rest_sec: 60, tips: '脚蹬紧踏板，保持骨盆和身体稳定，后拉时身体不要后仰，感受背阔肌收缩。' },

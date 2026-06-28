@@ -1,0 +1,15 @@
+<view class="rs-root">
+  <view class="rs-trigger" bindtap="onToggle">
+    <text class="rs-trigger-text">⚙ 房间设置 · 休息{{value}}s</text>
+    <text class="rs-trigger-arrow">{{expanded ? '‹' : '›'}}</text>
+  </view>
+  <view class="rs-dropdown" wx:if="{{expanded}}">
+    <view class="rs-item">
+      <text class="rs-item-label">动作间休息</text>
+      <view class="rs-item-control">
+        <input class="rs-item-input" type="number" value="{{value}}" bindinput="onInput" />
+        <text class="rs-item-unit">秒</text>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,20 @@
+# Beat Fit 服务配置文件
+# 环境变量会覆盖此文件中的对应值（优先级：环境变量 > YAML）
+# 敏感信息（密码、密钥）建议通过环境变量设置，不要写入此文件
+
+server:
+  port: "8080"           # 服务监听端口
+
+mysql:
+  dsn: "root:123456@tcp(127.0.0.1:3306)/beat_fit?charset=utf8mb4&parseTime=True&loc=Local"
+
+redis:
+  addr: "127.0.0.1:6379"
+  password: ""            # Redis 密码，无密码留空
+
+jwt:
+  secret: "beat-fit-dev-secret-2026"   # 生产环境务必修改
+
+wechat:
+  app_id: ""
+  app_secret: ""

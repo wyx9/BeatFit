@@ -10,7 +10,7 @@
           <view class="tpl-card-top">
             <view class="tpl-card-info">
               <text class="tpl-card-name">{{item.name}}</text>
-              <text class="tpl-card-count">{{item.exercises.length}}个动作 · 约{{totalMinutes(item)}}分钟</text>
+              <text class="tpl-card-count">{{item.exercises.length}}个动作 · 约{{item.totalMinutes}}分钟</text>
             </view>
             <text class="tpl-card-arrow">→</text>
           </view>
@@ -37,7 +37,7 @@
           <view class="tpl-card-top" bindtap="onEditTemplate" data-id="{{item.id}}">
             <view class="tpl-card-info">
               <text class="tpl-card-name">{{item.name}}</text>
-              <text class="tpl-card-count">{{item.exercises.length}}个动作 · 约{{totalMinutes(item)}}分钟</text>
+              <text class="tpl-card-count">{{item.exercises.length}}个动作 · 约{{item.totalMinutes}}分钟</text>
             </view>
             <text class="tpl-card-arrow">→</text>
           </view>

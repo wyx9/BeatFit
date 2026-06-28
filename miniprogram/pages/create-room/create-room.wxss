@@ -63,7 +63,7 @@
 /* === Main Content === */
 .main {
   padding-top: 192rpx;
-  padding-bottom: 256rpx;
+  padding-bottom: 400rpx;
   padding-left: 40rpx;
   padding-right: 40rpx;
   max-width: 960rpx;
@@ -161,6 +161,7 @@
   color: rgba(61, 74, 61, 0.4);
   font-size: 32rpx;
 }
+
 
 /* === Body Part Tabs === */
 .tabs-scroll {
@@ -382,58 +383,22 @@
   color: #3d4a3d;
 }
 
-/* === Room Settings === */
-.settings-card {
-  background: #eff4ff;
-  border-radius: 48rpx;
-  padding: 48rpx;
-  margin-bottom: 64rpx;
-}
-
-.settings-title {
-  display: block;
-  font-size: 28rpx;
-  font-weight: 600;
-  color: #0b1c30;
-  letter-spacing: 0.05em;
-  margin-bottom: 32rpx;
-}
-
-.settings-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24rpx;
-}
-
-.chip {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-  background: #fff;
-  border: 2rpx solid rgba(188, 203, 185, 0.2);
-  border-radius: 9999rpx;
-  padding: 16rpx 32rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.02);
-}
-
-.chip-icon {
-  width: 36rpx;
-  height: 36rpx;
-}
-
-.chip-text {
-  font-size: 24rpx;
-  font-weight: 500;
-  color: #3d4a3d;
-}
-
-/* === Bottom Action Bar === */
-.bottom-bar {
+/* === Bottom Section (fixed wrapper) === */
+.bottom-section {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
   z-index: 50;
+}
+
+/* === Settings Bar (transparent, between main and bottom-bar) === */
+.settings-bar {
+  padding: 0 40rpx;
+}
+
+/* === Bottom Action Bar (frosted glass) === */
+.bottom-bar {
   background: rgba(248, 249, 255, 0.9);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);

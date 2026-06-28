@@ -23,6 +23,8 @@ Page({
     tplName: '',
     exercises: [],
     readonly: false,
+    interRestSec: 60,
+    totalMinutes: 0,
 
     // 动作选择器弹窗
     showPicker: false,
@@ -50,8 +52,10 @@ Page({
           tplId: tpl.id,
           tplName: tpl.name,
           exercises: tpl.exercises.map(ex => api.resolveExerciseImage(exerciseUtils.enrichExerciseImage({ ...ex }))),
+          interRestSec: tpl.inter_rest_sec || 60,
           readonly
         })
+        this.updateTotalMinutes()
         return
       }
     }
@@ -64,6 +68,11 @@ Page({
     this.setData({ tplName: e.detail.value })
   },
 
+  onRestChange(e) {
+    this.setData({ interRestSec: e.detail.value })
+    this.updateTotalMinutes()
+  },
+
   // ===== 参数编辑 =====
   onParamChange(e) {
     const { index, field } = e.currentTarget.dataset
@@ -71,6 +80,7 @@ Page({
     const exercises = [...this.data.exercises]
     exercises[index] = { ...exercises[index], [field]: value }
     this.setData({ exercises })
+    this.updateTotalMinutes()
   },
 
   // ===== 删除动作 =====
@@ -79,6 +89,7 @@ Page({
     const exercises = [...this.data.exercises]
     exercises.splice(index, 1)
     this.setData({ exercises })
+    this.updateTotalMinutes()
   },
 
   // ===== 动作选择器 =====
@@ -169,7 +180,23 @@ Page({
         image: found.image
       })]
       this.setData({ exercises, showPicker: false, pickerSearch: '', isSearching: false })
+      this.updateTotalMinutes()
     }
+  },
+
+  // ===== 计算总时长 =====
+  computeTotalMinutes() {
+    let sec = 0
+    ;(this.data.exercises || []).forEach(ex => {
+      sec += (ex.sets || 1) * (ex.duration_sec || 30) + ((ex.sets || 1) - 1) * (ex.rest_sec || 60)
+    })
+    const exCount = (this.data.exercises || []).length
+    if (exCount > 1) sec += (exCount - 1) * (this.data.interRestSec || 60)
+    return Math.ceil(sec / 60)
+  },
+
+  updateTotalMinutes() {
+    this.setData({ totalMinutes: this.computeTotalMinutes() })
   },
 
   // ===== 保存 =====
@@ -189,6 +216,7 @@ Page({
       id,
       name,
       preset: false,
+      inter_rest_sec: this.data.interRestSec || 60,
       exercises: this.data.exercises.map(ex => ({ ...ex }))
     }
 
@@ -225,6 +253,7 @@ Page({
       id: newId,
       name: name + '(副本)',
       preset: false,
+      inter_rest_sec: this.data.interRestSec || 60,
       exercises: this.data.exercises.map(ex => ({ ...ex }))
     }
 

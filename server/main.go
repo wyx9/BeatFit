@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/url"
 	"os/signal"
 	"syscall"
 	"time"
@@ -92,7 +93,13 @@ func main() {
 	r := gin.Default()
 
 	// 动作图片静态文件服务（公开访问）
-	r.Static("/static/exercises", "./static/exercises")
+	r.GET("/static/exercises/*filepath", func(c *gin.Context) {
+		fp := c.Param("filepath")
+		if decoded, err := url.PathUnescape(fp); err == nil {
+			fp = decoded
+		}
+		c.File("./static/exercises" + fp)
+	})
 
 	r.GET("/health", func(c *gin.Context) {
 		healthy := true

@@ -58,8 +58,8 @@ Page({
     pickerSearch: '',
     isSearching: false,
 
-    // 功能开关
-    ENABLE_ROOM_SETTINGS: features.ENABLE_ROOM_SETTINGS,
+    // 动作间休息（秒）
+    interRestSec: 60,
 
     // 计算属性
     filteredCategories: [],
@@ -77,6 +77,11 @@ Page({
 
   onRoomNameInput(e) { this.setData({ roomName: e.detail.value }) },
 
+  onRestChange(e) {
+    this.setData({ interRestSec: e.detail.value })
+    this.refreshFiltered()
+  },
+
   switchPart(e) {
     this.setData({ activePart: e.currentTarget.dataset.part })
     this.refreshFiltered()
@@ -88,11 +93,15 @@ Page({
     const filtered = categories.filter(c => c.key === activePart)
 
     let total = 0
+    let exCount = 0
     categories.forEach(cat => {
       cat.exercises.forEach(ex => {
-        total += (ex.sets || 0) * ((ex.duration_sec || 0) + (ex.rest_sec || 0))
+        total += (ex.sets || 1) * (ex.duration_sec || 30) + ((ex.sets || 1) - 1) * (ex.rest_sec || 60)
+        exCount++
       })
     })
+    // 动作间休息
+    if (exCount > 1) total += (exCount - 1) * (this.data.interRestSec || 60)
     // 总时长从秒转为分钟显示
     const totalMin = Math.ceil(total / 60)
 
@@ -233,7 +242,10 @@ Page({
 
   // ===== 导入模板 =====
   onShowImportModal() {
-    const templates = exerciseUtils.getAllTemplates()
+    const templates = exerciseUtils.getAllTemplates().map(t => ({
+      ...t,
+      totalMinutes: this.tplMinutes(t)
+    }))
     this.setData({ showImportModal: true, importTemplates: templates, selectedTplId: '' })
   },
 
@@ -271,6 +283,8 @@ Page({
     }
 
     this.setData({ categories, showImportModal: false })
+    // 同步模板的动作间休息设置
+    if (tpl.inter_rest_sec) this.setData({ interRestSec: tpl.inter_rest_sec })
     this.refreshFiltered()
     wx.showToast({ title: '已导入 ' + tpl.name, icon: 'success' })
   },
@@ -279,8 +293,10 @@ Page({
   tplMinutes(tpl) {
     let sec = 0
     ;(tpl.exercises || []).forEach(ex => {
-      sec += (ex.sets || 1) * ((ex.duration_sec || 0) + (ex.rest_sec || 0))
+      sec += (ex.sets || 1) * (ex.duration_sec || 30) + ((ex.sets || 1) - 1) * (ex.rest_sec || 60)
     })
+    const exCount = (tpl.exercises || []).length
+    if (exCount > 1) sec += (exCount - 1) * (tpl.inter_rest_sec || 60)
     return Math.ceil(sec / 60)
   },
 
@@ -353,6 +369,7 @@ Page({
       app.globalData = app.globalData || {}
       app.globalData.currentRoom = data.room
       app.globalData.roomExercises = exercises
+      app.globalData.interRestSec = this.data.interRestSec || 60
       wx.redirectTo({ url: '/pages/room-waiting/room-waiting' })
     }).catch((err) => {
       wx.hideLoading()

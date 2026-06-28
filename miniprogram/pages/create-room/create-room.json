@@ -1,4 +1,6 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "room-settings": "/components/room-settings/room-settings"
+  },
   "navigationStyle": "custom"
 }
